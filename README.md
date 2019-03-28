@@ -16,18 +16,19 @@ Week | TODOs
 ---  | ---
 Week2 | Monday: Get familar with client and teammates
 Week2 | Thursday: Discuss with tutor and understand the course requirements
-Week3 | Monday: (1) Discuss with client and get to know their requirement (2)Finish the Intellectural Property Agreement
-Week3 | Wednesday: (1) Prepare for audit 1 (2) Discuss what tools would be used in our project (like: Trello, Android Studio etc.)
-Week 4 | Tuesday: modify the prototype design if client needs some changes
-Week 4 | Thursday: Each developer pick (an) interface(s) and work on it(them) 
-Week 5 | Wednesday: (1) Discuss the backlog, which is about the basic functions MVP(most vable product)should have.
-		     (2) Decide the which SKD is best for our project
-Week 5 | Thursday: Each interface should have all the elements it needs with some basic functions work & Client review & Test (Client)
-Week 6 | Thursday: Make sure each interface should have all the elements it needs with some basic functions work & Client review & Test (Client)
-Week 7 | Thursday: Follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
-Week 8 | Thursday: Continuing to follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
-Week 9 | Due Friday: Project Poster
-Week 10| Due Monday: Fix all the bugs during the test & Prepare for TechLauncher Showcase
+Week3 | Monday: (1) Discuss with client and get to know their requirement (2)Finish the Intellectural Property Agreement (3) Discuss with client about the statement of work and sign it.
+Week3 | Wednesday: (1) Prepare for audit 1 (2) Research on what tools would be used in our project (like: Trello, Android Studio etc.) (3) Have a prototype of the project. 
+Week4 | Monday: (1) Understand and plan the user story (2) Understand and plan what is done (3)Agree on the basic functions MVP(most vable product) should have
+Week4 | Wednesday: (1) Finish the possible user story (2) Research on which SDK could be used for the application (3) Extract functions form user story and finish a user stroy log
+Week4 | Thursday: (1) Choose the platform we would implement the application (2) Try to finish the acceptance criteria (3) Trello Integration
+Week5 | Monday: (1)discuss with clients the part we have already finished and get the possible feedbacks form them (2) Discuss the possible platform of our project with client and attempt to get support from them
+Week5 | Wednesday: (1) By Discuss the backlog, which is about all the possible functions the application could have. (2) Decide the final SKD (3) Trello Organization 
+Week5 | Thursday: (1) Prepare for next week's audit (2) Get familiar with Unity and could run a Demo in the platform
+Week6 | Thursday: Make sure each interface should have all the elements it needs with some basic functions work & Client review & Test (Client)
+Week7 |  Follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
+Week8 |  Continuing to follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
+Week9 | Due Friday: Project Poster
+Week10| Due Monday: Fix all the bugs during the test & Prepare for TechLauncher Showcase
 
 ## Team Members
 UID | Name 
