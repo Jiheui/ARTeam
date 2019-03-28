@@ -80,6 +80,8 @@ Users can obtain relevant information or details that are not covered in a poste
 
 * We schedule our project by Trello [Trello](https://trello.com/b/xPJ8Ozfq/ar-team)
 
+* All the corresponding code are in this github resources, and in the first folder name "ARPostReader"
+
 ## Milestones, Scheduling, Deliverables 
 
 ## Resources, Risks, Potential Costs 
