@@ -89,6 +89,19 @@ Users can obtain relevant information or details that are not covered in a poste
 * All the corresponding code are in this github resources, and in the first folder name "ARPostReader"
 
 ## Milestones, Scheduling, Deliverables 
+### Milestones
+(1) Decide which platform and SDK to use
+(2) Finish the user story and extract the MVP inside
+(3) Design all the possible functions of our application
+(4) Successfully run the Demo on Unity
+(5) Finsih the essential functions which is designed in "Trello"
+(6) Test the essential funciton 
+(7) Attempt to add the high level functions
+(8) Attempt to use Machine Learning Algorithms in the application
+(9) Test the whole application
+(10) Document all the functions
+### Scheduling, Deliverables
+Please see the table of Deliverable Schedule above
 
 ## Resources, Risks, Potential Costs 
 Resources: ANU library, Free Android Studio platform for students, MySQL 
