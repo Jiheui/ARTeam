@@ -14,10 +14,10 @@ The three months work will include analysis of requirement, project design, prot
 #### D. Deliverable Schedule
 Week | TODOs
 ---  | ---
-Week 2 | Monday: Get familar with client and teammates
-Week 2 | Thursday: Discuss with tutor and understand the course requirements
-Week 3 | Monday: (1) Discuss with client and get to know their requirement (2)Finish the Intellectural Property Agreement
-Week 3 | Wednesday: (1) Prepare for audit 1 (2) Discuss what tools would be used in our project (like: Trello, Android Studio etc.)
+Week2 | Monday: Get familar with client and teammates
+Week2 | Thursday: Discuss with tutor and understand the course requirements
+Week3 | Monday: (1) Discuss with client and get to know their requirement (2)Finish the Intellectural Property Agreement
+Week3 | Wednesday: (1) Prepare for audit 1 (2) Discuss what tools would be used in our project (like: Trello, Android Studio etc.)
 Week 4 | Tuesday: modify the prototype design if client needs some changes
 Week 4 | Thursday: Each developer pick (an) interface(s) and work on it(them) 
 Week 5 | Wednesday: (1) Discuss the backlog, which is about the basic functions MVP(most vable product)should have.
