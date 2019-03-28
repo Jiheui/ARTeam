@@ -11,18 +11,23 @@ The objective of this project is to develop Accenture build a mobile phone based
 #### C. Scope of Work
 The three months work will include analysis of requirement, project design, prototype, implement and project testing. The final application would contain several stable functions including poster scanning, poster demonstration, personalization of information etc.
 
-#### D. Deliverables Schedule
+#### D. Deliverable Schedule
 Week  | TODOs
 ----  | ---
-Week 3  | Thursday: prototype design of the interface & Client review
-Week 4  | Tuesday: modify the prototype design if client needs some changes
-Week 4  | Thursday: Each developer pick (an) interface(s) and work on it(them) 
-Week 5  | Thursday: Each interface should have all the elements it needs with some basic functions work & Client review & Test (Client)
-Week 6  | Thursday: Make sure each interface should have all the elements it needs with some basic functions work & Client review & Test (Client)
-Week 7  | Thursday: Follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
-Week 8  | Thursday: Continuing to follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
-Week 9  | Due Friday: Project Poster
-Week 10 | Due Monday: Fix all the bugs during the test & Prepare for TechLauncher Showcase
+Week 3 |
+Week 3 | Monday: (1) Discuss with client and get to know their requirements
+		  (2) Finish the 
+Week 3 | Thursday: prototype design of the interface & Client review
+Week 4 | Tuesday: modify the prototype design if client needs some changes
+Week 4 | Thursday: Each developer pick (an) interface(s) and work on it(them) 
+Week 5 | Wednesday: (1) Discuss the backlog, which is about the basic functions MVP(most vable product)should have.
+		     (2) Decide the which SKD is best for our project
+Week 5 | Thursday: Each interface should have all the elements it needs with some basic functions work & Client review & Test (Client)
+Week 6 | Thursday: Make sure each interface should have all the elements it needs with some basic functions work & Client review & Test (Client)
+Week 7 | Thursday: Follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
+Week 8 | Thursday: Continuing to follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
+Week 9 | Due Friday: Project Poster
+Week 10| Due Monday: Fix all the bugs during the test & Prepare for TechLauncher Showcase
 
 ## Team Members
 UID | Name 
