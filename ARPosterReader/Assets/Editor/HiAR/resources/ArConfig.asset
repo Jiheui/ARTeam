@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a5d5776fcad43241ae67ea3bd9c2263, type: 3}
+  m_Name: ArConfig
+  m_EditorClassIdentifier: 
+  UserName: default user
+  _passWord: 
+  PovEnablep: 0
+  PovConfigsCenter: {fileID: 0}
+  PovType: 0
