@@ -33,7 +33,7 @@ u6063871 | JiHeui Yu
 u6311789 | Yue Jiang
 u6293777 | Zemin Chen
 u6283016 | Yutao GE
-u5847571 | Lachlan John Grainger (Can do git stuff)
+u5847571 | Lachlan John Grainger
 
 ## Stakeholders
 ### Accenture: supporting development
