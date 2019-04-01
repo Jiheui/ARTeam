@@ -104,16 +104,18 @@ Users can obtain relevant information or details that are not covered in a poste
 
 ## Milestones, Scheduling, Deliverables 
 ### Milestones
-(1) Decide which platform and SDK to use
-(2) Finish the user story and extract the MVP inside
-(3) Design all the possible functions of our application
-(4) Successfully run the Demo on Unity
-(5) Finsih the essential functions which is designed in "Trello"
-(6) Test the essential funciton 
-(7) Attempt to add the high level functions
-(8) Attempt to use Machine Learning Algorithms in the application
-(9) Test the whole application
-(10) Document all the functions
+
+- Decide which platform and SDK to use.
+- Finish the user story and extract the MVP inside.
+- Design all the possible functions of our application.
+- Successfully run the Demo on Unity.
+- Complete the essential development tasks.
+- Test the essential funcitons.
+- Attempt to add the high level functions.
+- Attempt to use Machine Learning Algorithms in the application.
+- Test the whole application.
+- Document all the functions.
+
 ### Scheduling, Deliverables
 Please see the table of Deliverable Schedule above
 
