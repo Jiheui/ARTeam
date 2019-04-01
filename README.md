@@ -12,8 +12,8 @@ The objective of this project is to develop Accenture build a mobile phone based
 The three months work will include analysis of requirement, project design, prototype, implement and project testing. The final application would contain several stable functions including poster scanning, poster demonstration, personalization of information etc.
 
 #### D. Deliverable Schedule
-Week | TODOs
----  | ---
+Week   | TODOs
+---    | ---
 Week 2 | Monday: Get familar with client and teammates
 Week 2 | Thursday: Discuss with tutor and understand the course requirements
 Week 3 | Monday: (1) Discuss with client and get to know their requirement (2)Finish the Intellectural Property Agreement (3) Discuss with client about the statement of work and sign it.
