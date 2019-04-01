@@ -28,15 +28,15 @@ The three months work will include analysis of requirement, project design, prot
 |         | Wednesday | (1) Finish the possible user story
 |         |           | (2) Research on which SDK could be used for the application
 |         |           | (3) Extract functions form user story and finish a user stroy log
-| Week 4  | Thursday  | (1) Choose the platform we would implement the application
+|         | Thursday  | (1) Choose the platform we would implement the application
 |         |           | (2) Try to finish the acceptance criteria
 |         |           | (3) Trello Integration
 | Week 5  | Monday    | (1) Discuss with clients the part we have already finished and get the possible feedbacks form them 
 |         |           | (2) Discuss the possible platform of our project with client and attempt to get support from them
-| Week 5  | Wednesday | (1) By Discuss the backlog, which is about all the possible functions the application could have.
+|         | Wednesday | (1) By Discuss the backlog, which is about all the possible functions the application could have.
 |         |           | (2) Decide the final SKD
 |         |           | (3) Trello Organization 
-| Week 5  | Thursday  |(1) Prepare for next week's audit
+|         | Thursday  |(1) Prepare for next week's audit
 |         |           | (2) Get familiar with Unity and could run a Demo in the platform
 | Week 6  | Thursday  | Make sure each interface should have all the elements it needs with some basic functions work & Client review & Test (Client)
 | Week 7  |           | Follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
