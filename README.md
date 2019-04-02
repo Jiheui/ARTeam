@@ -99,7 +99,7 @@ Users can obtain relevant information or details that are not covered in a poste
 * The communication tools we use is the Slack [Slack](https://arteam-workspace.slack.com/messages/CGJJQ2CDP/)
 
 * We put our documents on Google Drive [Google Drive](https://drive.google.com/open?id=1NyZDoYjGLtBiY_9318AHdVCzSrkkdq6g)
-  Which includes six folders:
+  Which includes seven folders:
   (1) "Arichive": legal documents and team information
   (2) "Audit": Audit detail information
   (3) "Development": Technical document description
