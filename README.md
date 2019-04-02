@@ -89,7 +89,7 @@ It is possible for the business partner to display and give information to user 
 The user consumes content, in this instance the AR poster. They interact with the project through using the AR poster reader application.
 
 #### B. Expectations
-User expects to see personalized information of a poster, save/share their favorite posters and find nearby posters they may interested by using the AR poster reader application.
+User expects to see personalized information of a poster, save/share their favorite posters and find nearby posters they may interested by using the AR poster reader application. 
 
 #### C. Improvements
 Users can obtain relevant information or details that are not covered in a poster.
@@ -99,14 +99,22 @@ Users can obtain relevant information or details that are not covered in a poste
 * The communication tools we use is the Slack [Slack](https://arteam-workspace.slack.com/messages/CGJJQ2CDP/)
 
 * We put our documents on Google Drive [Google Drive](https://drive.google.com/open?id=1NyZDoYjGLtBiY_9318AHdVCzSrkkdq6g)
-
+  Which includes six folders:
+  (1) "Arichive": legal documents and team information
+  (2) "Audit": Audit detail information
+  (3) "Development": Technical document description
+  (4) "Meeting Notes": Meeting notes for each week within group and with clients
+  (5) "Research": "Project Research" and "S.W.O.T Analysis" of SDK selection
+  (6) "Sprints": development goals for different sprint of the project
+  (7) "Trello Document": Trello descriptions and the meaning of formats
+  and one "Acceptance Criteria for Essential Tasks"
 * We schedule our project by Trello [Trello](https://trello.com/b/xPJ8Ozfq/ar-team)
-
+  Trello Description: Detialed description please refer to https://docs.google.com/document/d/1iltgQ3WQxYEXyhbN40pkbkjNSTX24k-No0UpwnqX55Y/edit#  
 * All the corresponding code are in this github resources, and in the first folder name "ARPostReader"
 
 ## Milestones, Scheduling, Deliverables 
-### Milestones
 
+### Milestones
 - Decide which platform and SDK to use.
 - Finish the user story and extract the MVP inside.
 - Design all the possible functions of our application.
@@ -145,7 +153,6 @@ Design a complete AR Reader that could be pushed to the market and be used by go
 To provide efficient, user-friendly and environmentally friendly medium to provide information for users by utilising AR technology.
 
 ## Objective :
-
 To identify the key information and provide that information to the users.
 To identify and understand stakeholders’ needs and interests to provide satisfying user experience.
 To provide a customised and easily accessible product for the users.
