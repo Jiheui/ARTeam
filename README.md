@@ -6,7 +6,9 @@ Accenture is an experienced firm which provides professional strategy, technolog
 The AR poster reader also can help solve the problem of paper waste.
 
 #### B. Objectives
-The objective of this project is to develop Accenture build a mobile phone based application for AR poster viewing.
+The objective of this project is to develop a mobile phone-based application for AR poster viewing to solve the problems of traditional posters.
+
+In addition, through this project, we want to gain experience in real-world business methodologies, issue analysing and application development.
 
 #### C. Scope of Work
 The three months work will include analysis of requirement, project design, prototype, implement and project testing. The final application would contain several stable functions including poster scanning, poster demonstration, personalization of information etc.
