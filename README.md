@@ -1,9 +1,9 @@
 # Project Title: AR Poster Reader
 
 #### A. Introduction/Background
-Despite the rapid leaps of technological innovation, paper-based mediums are still preferred in nemorous situations, and there are many reasons why this is an expensive, inefficient and environmentally impactful way for information displays. Meanwhile, the traditional ones are hardly to be updated when information on the posters are changed.
-Accenture is an experienced firm which provides professional strategy, technology and consulting services for clients all over the world and have long term cooperation with Australia’s most successful sector organisations. Accenture is dedicated to help clients gain initiative in market competition and turn client’s ideas to business values. In this project, Accenture wants to seek an environmental and efficient alternative to the printed poster and pamphlets.  Therefore, the idea of AR poster reader is formed. With the help of technology of AR, business partners could have an interactive experience to acquire all the latest information of a poster intuitively and also ideally be personalized to the user’s needs and interests. 
-The AR poster reader also can help solve the problem of paper waste.
+Accenture is an experienced firm which provides professional strategy, technology and consulting services for clients all over the world and have long term cooperation with Australia’s most successful organisations. Accenture is dedicated to helping clients gain initiative in market competition and turn the client’s ideas to business values. 
+
+The traditional printed poster and pamphlets waste natural resources and are hard to update outdated information. As a result, they are usually expensive, inefficient, unattractive and environmentally impactful. However, digital posters with AR technology can help to solve these problems and give clients a new reading experience
 
 #### B. Objectives
 The objective of this project is to develop a mobile phone-based application for AR poster viewing to solve the problems of traditional posters.
@@ -11,7 +11,7 @@ The objective of this project is to develop a mobile phone-based application for
 In addition, through this project, we want to gain experience in real-world business methodologies, issue analysing and application development.
 
 #### C. Scope of Work
-The three months work will include analysis of requirement, project design, prototype, implement and project testing. The final application would contain several stable functions including poster scanning, poster demonstration, personalization of information etc.
+In the next three months, we will work to do the researches about the issues, analyse clients’ requirement, design the project, develop each function of the application, do both internal and external testing. The final application would contain the main functions of poster scanning, poster viewing, poster saving and sharing.
 
 #### D. Deliverable Schedule
 | WEEK    | DAY       | TODO
