@@ -14,15 +14,15 @@ The three months work will include analysis of requirement, project design, prot
 #### D. Deliverable Schedule
 | WEEK    | DAY       | TODO
 | :-----: | :-------: | ----
-| Week 2  | Monday    | Get familar with client and teammates
+| Week2  | Monday    | Get familar with client and teammates
 |         | Thursday  | Discuss with tutor and understand the course requirements
-| Week 3  | Monday    | Discuss with client and get to know their requirement 
+| Week3  | Monday    | Discuss with client and get to know their requirement 
 |         |           | Finish the Intellectural Property Agreement
 |         |           | Discuss with client about the statement of work and sign it.
 |         | Wednesday | Prepare for audit 1 
 |         |           | Research on what tools would be used in our project (like: Trello, Android Studio etc.) 
 |         |           | Have a prototype of the project. 
-| Week 4  | Monday    | Understand and plan the user story
+| Week4  | Monday    | Understand and plan the user story
 |         |           | Understand and plan what is done 
 |         |           | Agree on the basic functions MVP(most vable product) should have
 |         | Wednesday | Finish the possible user story
@@ -31,18 +31,18 @@ The three months work will include analysis of requirement, project design, prot
 |         | Thursday  | Choose the platform we would implement the application
 |         |           | Try to finish the acceptance criteria
 |         |           | Trello Integration
-| Week 5  | Monday    | Discuss with clients the part we have already finished and get the possible feedbacks form them 
+| Week5  | Monday    | Discuss with clients the part we have already finished and get the possible feedbacks form them 
 |         |           | Discuss the possible platform of our project with client and attempt to get support from them
 |         | Wednesday | By Discuss the backlog, which is about all the possible functions the application could have.
 |         |           | Decide the final SKD
 |         |           | Trello Organization 
 |         | Thursday  | Prepare for next week's audit
 |         |           | Get familiar with Unity and could run a Demo in the platform
-| Week 6  | Thursday  | Make sure each interface should have all the elements it needs with some basic functions work & Client review & Test (Client)
-| Week 7  |           | Follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
-| Week 8  |           | Continuing to follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
-| Week 9  | Friday    | Project Poster
-| Week 10 | Monday    | Fix all the bugs during the test & Prepare for TechLauncher Showcase
+| Week6  | Thursday  | Make sure each interface should have all the elements it needs with some basic functions work & Client review & Test (Client)
+| Week7  |           | Follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
+| Week8  |           | Continuing to follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
+| Week9  | Friday    | Project Poster
+| Week10 | Monday    | Fix all the bugs during the test & Prepare for TechLauncher Showcase
 
 ## Team Members
 UID | Name 
@@ -120,7 +120,7 @@ Users can obtain relevant information or details that are not covered in a poste
 Please see the table of Deliverable Schedule above
 
 ## Resources, Risks, Potential Costs 
-Resources: ANU library, Free Android Studio platform for students, MySQL 
+Resources: ANU library, Unity platform, MySQL, HiAR 
 Risks: “example: client expectations and the relationships among group members”
            Technological risks: our selection of technology could not work in some platforms
 	People risk: not having the expertise to deliver the product
@@ -137,6 +137,7 @@ Hosting cost will be covered by Accenture.
 
 
 ## Client’s Vision and Objectives
+Design a complete AR Reader that could be pushed to the market and be used by government agencies.
 
 ## Vision :
 To provide efficient, user-friendly and environmentally friendly medium to provide information for users by utilising AR technology.
