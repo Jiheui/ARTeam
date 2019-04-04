@@ -60,38 +60,38 @@ u5847571 | Lachlan John Grainger
 ## Stakeholders
 ### Accenture: supporting development
 
-#### A. What they do / How they Interact
+#### What they do / How they Interact
 Accenture is a company that focuses on improving existing organisations business models and driving entrepreneurship. They interact with the project through supporting and guiding the AR poster reader’s development.
 
-#### B. Expectations
+#### Expectations
 Accenture expects to have a proof of concept application developed by the end of semester. This application would utilise AR technology to display a digital poster which is personalisable to the user and allow for a interactive experience.
 
-#### C. Improvements
+#### Improvements
 Accenture will be able to provide extended support to improve existing companies.
 
 
 ### Business Partner: wants to display AR Posters
 
-#### A. What they do / How they Interact
+#### What they do / How they Interact
 The business partner is an individual/organisation that is interested in advertising an event or product. They interact with the project through supplying a digital poster design that could be displayed through the application.
 
-#### B. Expectations
+#### Expectations
 The business partner expects a service to display their digital poster. The service includes accepting a certain form of digital poster, displaying digital poster on an application through AR technology and providing a platform for sharing the poster.
 
-#### C. Improvements
+#### Improvements
 The business partner may save cost by minimizing the waste, such as reprinting a poster due to an update or minimizing the copy of the posters to print.
 It is possible for the business partner to display and give information to user in diverse ways and allows for more interactive user engagement.
 
 
 ### User: wants to view posters
 
-#### A. What they do / How they Interact
+#### What they do / How they Interact
 The user consumes content, in this instance the AR poster. They interact with the project through using the AR poster reader application.
 
-#### B. Expectations
+#### Expectations
 User expects to see personalized information of a poster, save/share their favorite posters and find nearby posters they may interested by using the AR poster reader application. 
 
-#### C. Improvements
+#### Improvements
 Users can obtain relevant information or details that are not covered in a poster.
 
 ## Project Management Tools
@@ -135,7 +135,7 @@ Resources:
 - MySQL
 - HiAR 
 
-Risks: “example: client expectations and the relationships among group members”
+Risks:
 - Technological risks: our selection of technology could not work in some platforms
 - People risk: not having the expertise to deliver the product
 - Workload risks:  time arrangement, four course simultaneously
