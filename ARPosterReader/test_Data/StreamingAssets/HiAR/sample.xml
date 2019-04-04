@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HiAR>
+	<KeyItemList>
+		<KeyItem name="color3d" targetID="2799d80c498feb62a8876bffb011b034" width="1024" height="1024" extName=".jpg" version="1.2.0"></KeyItem>
+		<KeyItem name="table" targetID="e75bddbf1bdced0446bac8d6b57cb0eb" width="854" height="480" extName=".jpg" version="1.2.0"></KeyItem>
+		<KeyItem name="backtofuture" targetID="485512d531f52364a97b4b1cf7446b67" width="850" height="850" extName=".jpg" version="1.2.0"></KeyItem>
+		<KeyItem name="apple" targetID="e58931b38b636696f65caafb0ed80f0b" width="854" height="480" extName=".jpg" version="1.2.0"></KeyItem>
+	</KeyItemList>
+</HiAR>
