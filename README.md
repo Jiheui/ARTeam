@@ -99,13 +99,13 @@ Users can obtain relevant information or details that are not covered in a poste
 The communication tools we use is the [Slack](https://arteam-workspace.slack.com/messages/CGJJQ2CDP/)
 
 We put our documents on [Google Drive](https://drive.google.com/open?id=1NyZDoYjGLtBiY_9318AHdVCzSrkkdq6g) which includes seven folders:
-- "Arichive": legal documents and team information
-- "Audit": Audit detail information
-- "Development": Technical document description
-- "Meeting Notes": Meeting notes for each week within group and with clients
-- "Research": "Project Research" and "S.W.O.T Analysis" of SDK selection
-- "Sprints": development goals for different sprint of the project
-- "Trello Document": Trello descriptions and the meaning of formats and one "Acceptance Criteria for Essential Tasks"
+- [Arichive](https://drive.google.com/drive/folders/1qiAMTC4M6lGgHO6zHwfXGdVR5JrMgRW_): legal documents and team information
+- [Audit](https://drive.google.com/drive/folders/1ebyzZv831eelGBfkkgQz-SqoZcBjuxHy): Audit detail information
+- [Development](https://drive.google.com/drive/folders/1wAeFMp864nuLNUbUBbFj_7qCFePJdami): Technical document description
+- [Meeting Notes](https://drive.google.com/drive/folders/1_X3D03GAB3mFYYlqjp2EfYHi7JCUyIpe): Meeting notes for each week within group and with clients
+- [Research](https://drive.google.com/drive/folders/1xlEpvilTqNY2NnCM3GLYMek_-rK9CGvb): "Project Research" and "S.W.O.T Analysis" of SDK selection
+- [Sprints](https://drive.google.com/drive/folders/1H3AA1GaY19p7FiPGqe6vvqNt3un8-lJq): development goals for different sprint of the project
+- [Trello Document](https://drive.google.com/drive/folders/1g-MO6QEO_JS2OZjQEccHfzjk8MV1f9Up): Trello descriptions and the meaning of formats and one "Acceptance Criteria for Essential Tasks"
 
 We schedule our development through [Trello](https://trello.com/b/xPJ8Ozfq/ar-team). To find a detialed description please refer to the [Trello Card Formatting](https://docs.google.com/document/d/1iltgQ3WQxYEXyhbN40pkbkjNSTX24k-No0UpwnqX55Y/edit#) document.
 
@@ -146,11 +146,6 @@ Potential Costs:
 - Apple platforms has potential publishing cost
 - Cloud Server Costs, domain name costs
 - Printing costs
-
-Find the previous similar projects and their resources,risks and potential costs
-ANU is covering the fund.
-Hosting cost will be covered by Accenture.
-
 
 ## Client’s Vision and Objectives
 Design a complete AR Reader that could be pushed to the market and be used by government agencies.
