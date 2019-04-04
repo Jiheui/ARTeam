@@ -5,7 +5,6 @@ using UnityEngine;
 //[RequireComponent(typeof(HiARBaseObjectMovement))]
 public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBundleEventHandler 
 {
-
     private void Start()
     {
         if (Application.isPlaying)
