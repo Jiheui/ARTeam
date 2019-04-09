@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LeavePage : MonoBehaviour {
+public class LeavePresentPage : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -18,9 +18,7 @@ public class LeavePage : MonoBehaviour {
     // This is called when the "scan poster" button is clicked, 
     // then the camera view shows up waiting for recognisation
     // Wrote by Norton
-    public void TurnOnCameraOnClick(string cameraScene) {
-        SceneManager.LoadScene(cameraScene);
+    public void MoveToNextScene(string nextScene) {
+        SceneManager.LoadScene(nextScene);
     }
-
-   
 }
