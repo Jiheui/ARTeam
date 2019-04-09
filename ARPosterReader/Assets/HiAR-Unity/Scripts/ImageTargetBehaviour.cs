@@ -5,6 +5,8 @@ using UnityEngine;
 //[RequireComponent(typeof(HiARBaseObjectMovement))]
 public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBundleEventHandler 
 {
+	private bool targetFound = false;
+
     private void Start()
     {
         if (Application.isPlaying)
@@ -41,6 +43,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         {
             transform.GetChild(i).gameObject.SetActive(true);
         }
+		targetFound = true;
     }
 
     public virtual void OnTargetTracked(RecoResult recoResult, Matrix4x4 pose) { }
@@ -51,7 +54,13 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         {
             transform.GetChild(i).gameObject.SetActive(false);
         }
+		targetFound = false;
     }
+
+	public bool IsTargetFound()
+	{
+		return targetFound;
+	}
 
     public void OnLoadBundleError(Exception error)
     {
