@@ -2,29 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum CameraState{
+public enum CameraState{
 	HiAR,
 	Zoom
 }
 
 public class CameraManager : MonoBehaviour {
 
-	public GameObject HiARCamera;
+	public GameObject HiARCameraManager;
+	private HiAREngineBehaviour HiAREngineBehaviour;
+	private Camera HiARMainCamera;
+	public Camera HiARBackgroundCamera;
+	private AudioListener HiARAudioListener;
+
 	public GameObject zoomCamera;
+	private AudioListener zoomAudioListener;
 
 	private CameraState cameraState = CameraState.HiAR;
 
-	private AudioListener HiARAudioListener;
-	private AudioListener zoomAudioListener;
-
 	void Start () {
-		HiARAudioListener = HiARCamera.GetComponent<AudioListener>();
+		HiAREngineBehaviour = HiARCameraManager.GetComponent<HiAREngineBehaviour>();
+		HiARMainCamera = HiARCameraManager.GetComponentInChildren<Camera>();
+		HiARAudioListener = HiARCameraManager.GetComponentInChildren<AudioListener>();
+
 		zoomAudioListener = zoomCamera.GetComponent<AudioListener>();
 
 		SetCameras(cameraState);
 	}
 
 	new void SendMessage(string str) {
+		HiARBackgroundCamera = GameObject.Find("camera background").GetComponent<Camera>();
 		cameraState = (cameraState == CameraState.HiAR) ? CameraState.Zoom : CameraState.HiAR;
 		SetCameras(cameraState);
 	}
@@ -32,7 +39,9 @@ public class CameraManager : MonoBehaviour {
 	void SetCameras(CameraState state){
 		bool isHiAR = state == CameraState.HiAR;
 
-		HiARCamera.SetActive(isHiAR);
+		HiAREngineBehaviour.enabled = isHiAR;
+		HiARMainCamera.enabled = isHiAR;
+		HiARBackgroundCamera.enabled = isHiAR;
 		HiARAudioListener.enabled = isHiAR;
 
 		zoomCamera.SetActive(!isHiAR);
