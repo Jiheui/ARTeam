@@ -15,17 +15,39 @@ public class CameraManager : MonoBehaviour {
 	private Camera HiARBackgroundCamera;
 	private AudioListener HiARAudioListener;
 
-	public GameObject zoomCamera;
+	public GameObject zoomObject;
+	private Camera zoomCamera;
 	private AudioListener zoomAudioListener;
 
 	private CameraState cameraState = CameraState.HiAR;
+
+	public float zoomSpeed = 0.9f;
 
 	void Start () {
 		HiAREngineBehaviour = HiARCameraManager.GetComponent<HiAREngineBehaviour>();
 		HiARMainCamera = HiARCameraManager.GetComponentInChildren<Camera>();
 		HiARAudioListener = HiARCameraManager.GetComponentInChildren<AudioListener>();
 
-		zoomAudioListener = zoomCamera.GetComponent<AudioListener>();
+		zoomCamera = zoomObject.GetComponent<Camera>();
+		zoomAudioListener = zoomObject.GetComponent<AudioListener>();
+	}
+
+	void Update () {
+		if (cameraState == CameraState.Zoom) {
+			if (Input.mouseScrollDelta.y > 0) {
+				zoomCamera.orthographicSize -= zoomSpeed;
+			}
+			else if (Input.mouseScrollDelta.y < 0) {
+				zoomCamera.orthographicSize += zoomSpeed;
+			}
+
+			if (zoomCamera.orthographicSize < 0) {
+				zoomCamera.orthographicSize = 0.1f;
+			}
+			else if (zoomCamera.orthographicSize > 20) {
+				zoomCamera.orthographicSize = 20;
+			}
+		}
 	}
 
 	new void SendMessage(string str) {
@@ -44,7 +66,7 @@ public class CameraManager : MonoBehaviour {
 		HiARBackgroundCamera.enabled = isHiAR;
 		HiARAudioListener.enabled = isHiAR;
 
-		zoomCamera.SetActive(!isHiAR);
+		zoomCamera.enabled = !isHiAR;
 		zoomAudioListener.enabled = !isHiAR;
 	}
 }
