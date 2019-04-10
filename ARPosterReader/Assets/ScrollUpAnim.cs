@@ -2,26 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// this script is used for the animation of showing poster details in camera view
+// written by Norton
 public class ScrollUpAnim : MonoBehaviour
 {
-    private Vector2 initialPosition, targetPosition, terminalPosition;  //用于存储菜单动画相关的位置
-    public float SmoothRate = 1.0f;                                       //控制动画快慢的参数
-    private float halfWidth, halfHeight;                                //用于计算动画移动目的地的参数
+    private Vector2 initialPosition, targetPosition, terminalPosition; 
+    public float SmoothRate = 1.0f;                                     //used to control the speed of animation
+    private float halfWidth, halfHeight;                                
 
-    private bool isAnimStart = false;                                   //控制是否开始动画
-    private bool isOpen = false;                                        //控制打开还是关闭菜单
+    private bool isAnimStart = false;                                   
+    private bool isOpen = false;                                        //check the control is open or close
     // Use this for initialization
     void Start()
     {
-        initialPosition = transform.position;                           //获取菜单的初始位置
-        halfHeight = GetComponent<RectTransform>().rect.height;         //计算菜单的高
-        terminalPosition = initialPosition + new Vector2(0, halfHeight/2);
+        initialPosition = transform.position;                           //get the initial position of panel
+        halfHeight = GetComponent<RectTransform>().rect.height;         //get the height of the panel
+        terminalPosition = initialPosition + new Vector2(0, halfHeight);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isAnimStart)   //菜单动画开始执行
+        if (isAnimStart)   //starts the animation
         {
             transform.position = Vector2.Lerp(transform.position, targetPosition, SmoothRate * 10 * Time.deltaTime);
 
@@ -34,18 +36,18 @@ public class ScrollUpAnim : MonoBehaviour
     }
 
     /// <summary>
-    /// 控制菜单弹出还是收回
+    /// control the pamel is raising or not
     /// </summary>
     public void ShowOrHide()
     {
         isOpen = !isOpen;
         if (isOpen)
         {
-            targetPosition = terminalPosition;   //菜单弹出
+            targetPosition = terminalPosition;
         }
         else
         {
-            targetPosition = initialPosition;    //菜单收回
+            targetPosition = initialPosition;
         }
         isAnimStart = true;
     }
