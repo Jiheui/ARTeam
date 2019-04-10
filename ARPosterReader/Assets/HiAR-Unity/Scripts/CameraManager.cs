@@ -12,7 +12,7 @@ public class CameraManager : MonoBehaviour {
 	public GameObject HiARCameraManager;
 	private HiAREngineBehaviour HiAREngineBehaviour;
 	private Camera HiARMainCamera;
-	public Camera HiARBackgroundCamera;
+	private Camera HiARBackgroundCamera;
 	private AudioListener HiARAudioListener;
 
 	public GameObject zoomCamera;
@@ -26,12 +26,12 @@ public class CameraManager : MonoBehaviour {
 		HiARAudioListener = HiARCameraManager.GetComponentInChildren<AudioListener>();
 
 		zoomAudioListener = zoomCamera.GetComponent<AudioListener>();
-
-		SetCameras(cameraState);
 	}
 
 	new void SendMessage(string str) {
-		HiARBackgroundCamera = GameObject.Find("camera background").GetComponent<Camera>();
+		if (HiARBackgroundCamera == null) {
+			HiARBackgroundCamera = GameObject.Find ("camera background").GetComponent<Camera> ();
+		}
 		cameraState = (cameraState == CameraState.HiAR) ? CameraState.Zoom : CameraState.HiAR;
 		SetCameras(cameraState);
 	}
