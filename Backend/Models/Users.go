@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-31 19:00:29
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-04 10:32:10
+* @Last Modified time: 2019-04-10 23:39:03
  */
 package Models
 
@@ -43,7 +43,7 @@ func (u UserResource) WebService() *restful.WebService {
 
 	ws.Route(ws.GET("/{user-id}").To(u.findUser).
 		Doc("get a user").
-		Param(ws.PathParameter("user-id", "identifier of the user").DataType("integer").DefaultValue("1")).
+		Param(ws.PathParameter("user-id", "identifier of the user").DataType("integer").DefaultValue("0")). //make sure if no user-id pass in, it will return a not found
 		Metadata(restfulspec.KeyOpenAPITags, tags).
 		Writes(User{}). // on the response
 		Returns(200, "OK", User{}).
