@@ -41,5 +41,6 @@ sysinfo.txt
 *.meta
 ARPosterReader/Assets/HiAR-Unity/Core/HiAR_Unity.dll.meta
 ARPosterReader/Assets/HiAR-Unity/Core/ICSharpCode.SharpZipLib.dll.meta
+ARPosterReader/Assets/HiAR-Unity/Scripts/Tools/Proyecto26.RestClient/Utils/*.meta
 ARPosterReader/Assets/HiAR-Unity/Scripts/Tools/*.meta
 ARPosterReader/Assets/HiAR-Unity/Scripts/Utils/*.meta
