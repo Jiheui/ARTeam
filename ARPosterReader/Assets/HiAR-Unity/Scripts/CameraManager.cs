@@ -56,6 +56,7 @@ public class CameraManager : MonoBehaviour {
 		}
 		cameraState = (cameraState == CameraState.HiAR) ? CameraState.Zoom : CameraState.HiAR;
 		SetCameras(cameraState);
+		Debug.Log ("Test " + str);
 	}
 
 	void SetCameras(CameraState state){
