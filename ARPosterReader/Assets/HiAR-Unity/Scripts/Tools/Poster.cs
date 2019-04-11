@@ -40,18 +40,16 @@ namespace Models {
 
 		public void Put(string endpoint) {
 			var uri = Settings.server + endpoint;
-			EditorUtility.DisplayDialog ("Success", ConvertToJsonString(), "Ok");
 			RestClient.Put<PostersResponse>(new RequestHelper {
 				Uri = uri,
 				BodyString = ConvertToJsonString(),
 				EnableDebug = true
 			}).Then(res => {
-				var response = JsonUtility.ToJson(res, true);
 				if(string.Equals(res.error, "")) {
-					EditorUtility.DisplayDialog ("Success", response, "Ok");
+					EditorUtility.DisplayDialog ("Success", res.success, "Ok");
 				} else {
 					
-					EditorUtility.DisplayDialog ("Error", response, "Ok");
+					EditorUtility.DisplayDialog ("Error", res.error, "Ok");
 				}
 			});
 		}
