@@ -32,7 +32,7 @@ public class User {
 
 	// RESTful, HTTP verb: GET
 	private void Get(string endpoint) {
-		var uri = Settings.server + endpoint;
+		var uri = Tools.Server + endpoint;
 		switch (endpoint) {
 		case "/users/login":
 			RestClient.Get<User> (new RequestHelper {
@@ -55,9 +55,5 @@ public class User {
 			});
 			return;
 		}
-	}
-
-	private string ConvertToJsonString(){
-		return "";
 	}
 }

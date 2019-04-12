@@ -11,10 +11,10 @@ using System;
 namespace Models {
 	[Serializable]
 	public class Poster {
-		public string KeyGroup { get; set; }
-		public string KeyId { get; set; }
-		public string Detail { get; set; }
-		public string Url { get; set; }
+		public string KeyGroup;
+		public string KeyId;
+		public string Detail;
+		public string Url;
 
 		public void GetPoster() {
 			Get ("/posters");
@@ -25,38 +25,31 @@ namespace Models {
 		}
 
 		// RESTful, HTTP verb: GET
-		public void Get(string endpoint) {
-			var uri = Settings.server + endpoint + "/" + KeyGroup + "/" + KeyId + "/" + Detail + "/" + Url;
-			RestClient.Get<Poster> (new RequestHelper {
+		public string Get(string endpoint) {
+			var uri = Tools.Server + endpoint + "/" + KeyGroup + "/" + KeyId + "/" + Detail + "/" + Url;
+			RestClient.Get<PostersResponse> (new RequestHelper {
 				Uri = uri
-			}, (err, res, body) => {
-				if (err != null) {
-					EditorUtility.DisplayDialog ("Error", err.Message, "Ok");
-				} else {
-					EditorUtility.DisplayDialog ("Success", res.Text, "Ok");
-				}	
+			}).Then(res => {
+				this.Detail = res.poster.Detail;
+				this.Url = res.poster.Url;
+				return res.error;
 			});
 		}
 
-		public void Put(string endpoint) {
-			var uri = Settings.server + endpoint;
+		public string Put(string endpoint) {
+			var uri = Tools.Server + endpoint;
 			RestClient.Put<PostersResponse>(new RequestHelper {
 				Uri = uri,
-				BodyString = ConvertToJsonString(),
+				BodyString = new Tools().MakeJsonStringFromClass<Poster>(this),
 				EnableDebug = true
 			}).Then(res => {
-				if(string.Equals(res.error, "")) {
-					EditorUtility.DisplayDialog ("Success", res.success.ToString(), "Ok");
-				} else {
-					
-					EditorUtility.DisplayDialog ("Error", res.error, "Ok");
-				}
+				//if(!string.Equals(res.error, "")) {
+					//EditorUtility.DisplayDialog ("Error", res.error, "Ok");
+				//} else {
+					//EditorUtility.DisplayDialog ("Success", res.success.ToString(), "Ok");
+				//}
+				return res.error;
 			});
-		}
-
-		private string ConvertToJsonString(){
-			var jsonStr = "{\"keygroup\":\"" + KeyGroup + "\", \"keyid\":\"" + KeyId + "\", \"detail\":\"" + Detail + "\", \"url\":\"" + Url + "\"}";
-			return jsonStr;
 		}
 
 		[Serializable]
@@ -64,6 +57,8 @@ namespace Models {
 			public string error;
 			public bool isexist;
 			public bool success;
+
+			public Poster poster;
 		}
 	}
 }
