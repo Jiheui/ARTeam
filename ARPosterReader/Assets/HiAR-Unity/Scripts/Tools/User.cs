@@ -8,11 +8,13 @@ using System;
 using UnityEditor;
 
 public class User {
-	public int id { get; set; }
-	public string name { get; set; }
-	public DateTime dob { get; set; }
-	public string username { get; set; }
-	public string password { get; set; }
+	public int id;
+	public string name;
+	public DateTime dob;
+	public string username;
+	public string password;
+	public string facebook;
+	public string google;
 
 	public void Login() {
 		Get ("/users/login");
@@ -31,7 +33,7 @@ public class User {
 	}
 
 	// RESTful, HTTP verb: GET
-	private void Get(string endpoint) {
+	private string Get(string endpoint) {
 		var uri = Tools.Server + endpoint;
 		switch (endpoint) {
 		case "/users/login":
@@ -55,5 +57,14 @@ public class User {
 			});
 			return;
 		}
+	}
+
+	[Serializable]
+	public class UsersResponse {
+		public string error;
+		public bool isexist;
+		public bool success;
+
+		public User user;
 	}
 }

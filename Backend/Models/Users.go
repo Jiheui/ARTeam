@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-31 19:00:29
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-10 23:39:03
+* @Last Modified time: 2019-04-12 23:40:18
  */
 package Models
 
@@ -23,6 +23,17 @@ type User struct {
 
 	Username string `json:"username" description:"login info" xorm:"username"`
 	Password string `json:"password" description:"login info" xorm:"password"`
+
+	Facebook string `json:"facebook" description:"facebook credential" xorm:"facebook"`
+	Google   string `json:"google" description:"google credential" xorm:"google"`
+}
+
+type UsersResponse struct {
+	Error   string `json:"error"`
+	IsExist bool   `json:"isexist"`
+	Success bool   `json:"success"`
+
+	User User `json:"user"`
 }
 
 type UserResource struct {
@@ -69,11 +80,11 @@ func (u UserResource) findUser(request *restful.Request, response *restful.Respo
 	usr := User{ID: id}
 
 	if has, err := db.Engine.Get(&usr); err != nil {
-		response.WriteError(http.StatusInternalServerError, err)
+		response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
 	} else if !has {
-		response.WriteErrorString(http.StatusNotFound, "User could not be found.")
+		response.WriteHeaderAndEntity(http.StatusNotFound, UsersResponse{Error: "User could not be found."})
 	} else {
-		response.WriteEntity(usr)
+		response.WriteEntity(UsersResponse{Success: true, User: usr})
 	}
 }
 
@@ -87,16 +98,16 @@ func (u *UserResource) updateUser(request *restful.Request, response *restful.Re
 		defer db.WUnlock() //unlock when exit this method
 
 		if _, err = db.Engine.Id(usr.ID).Update(usr); err != nil {
-			response.WriteError(http.StatusInternalServerError, err)
+			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
 		} else {
-			response.WriteEntity(usr)
+			response.WriteEntity(UsersResponse{Success: true})
 		}
 	} else {
-		response.WriteError(http.StatusInternalServerError, err)
+		response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
 	}
 }
 
-// PUT http://localhost:8080/users/1
+// PUT http://localhost:8080/users/
 //
 func (u *UserResource) createUser(request *restful.Request, response *restful.Response) {
 	usr := User{}
@@ -105,13 +116,13 @@ func (u *UserResource) createUser(request *restful.Request, response *restful.Re
 		db.WLock()
 		defer db.WUnlock() //unlock when exit this method
 
-		if affected, err := db.Engine.Insert(&usr); err != nil {
-			response.WriteError(http.StatusInternalServerError, err)
+		if _, err := db.Engine.Insert(&usr); err != nil {
+			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
 		} else {
-			response.WriteHeaderAndEntity(http.StatusCreated, affected)
+			response.WriteHeaderAndEntity(http.StatusCreated, UsersResponse{Success: true})
 		}
 	} else {
-		response.WriteError(http.StatusInternalServerError, err)
+		response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
 	}
 }
 
@@ -121,17 +132,12 @@ func (u UserResource) login(request *restful.Request, response *restful.Response
 	usr := User{}
 	err := request.ReadEntity(&usr)
 	if err == nil {
-		if usr.Username == "" || usr.Password == "" {
-			response.WriteError(http.StatusInternalServerError, ErrNotEnoughInfo)
-			return
-		}
-
 		if has, err := db.Engine.Table("user").Where("username = ?", usr.Username).And("password = ?", usr.Password).Get(&usr); err != nil {
-			response.WriteError(http.StatusInternalServerError, err)
+			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
 		} else {
-			response.WriteEntity(has)
+			response.WriteEntity(UsersResponse{Success: has})
 		}
 	} else {
-		response.WriteError(http.StatusInternalServerError, err)
+		response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
 	}
 }
