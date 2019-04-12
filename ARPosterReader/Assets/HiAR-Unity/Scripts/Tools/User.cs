@@ -17,26 +17,27 @@ public class User {
 	public string google;
 	public bool isAuthenticated;
 
-	public void Login() {
-		Get ("/users/login");
+	public string Login() {
+		return Get ("/users/login");
 	}
 
-	public void FindUser() {
-		Get ("/users/" + id.ToString ());
+	public string FindUser() {
+		return Get ("/users/" + id.ToString ());
 	}
 
 	// Create a new user
-	public void Create() {
-		Put ("/users");
+	public string Create() {
+		return Put ("/users");
 	}
 
 	// Update user info
-	public void Update() {
-		Patch ("/users");
+	public string Update() {
+		return Patch ("/users");
 	}
 
 	// RESTful, HTTP verb: GET
 	private string Get(string endpoint) {
+		var err = "";
 		var uri = Tools.Server + endpoint;
 		switch (endpoint) {
 		case "/users/login":
@@ -44,37 +45,42 @@ public class User {
 				Uri = uri,
 			}).Then(res => {
 				this.isAuthenticated = res.success;
-				return res.error;
+				err = res.error;
 			});
 			break;
 		default:
-			RestClient.Get<UsersResponse>(uri).Then(res => {
+			RestClient.Get<UsersResponse> (uri).Then (res => {
 				this.name = res.user.name;
 				this.dob = res.user.dob;
-				return res.error;
+				err = res.error;
 			});
-			return;
+			break;
 		}
+		return err;
 	}
 
 	private string Put(string endpoint) {
+		var err = "";
 		var uri = Tools.Server + endpoint;
 		RestClient.Put<UsersResponse>(new RequestHelper {
 			Uri = uri,
 			BodyString = new Tools().MakeJsonStringFromClass<User>(this)
 		}).Then(res => {
-			return res.error;
+			err = res.error;
 		});
+		return err;
 	}
 
 	private string Patch(string endpoint) {
+		var err = "";
 		var uri = Tools.Server + endpoint;
 		RestClient.Patch<UsersResponse>(new RequestHelper {
 			Uri = uri,
 			BodyString = new Tools().MakeJsonStringFromClass<User>(this)
 		}).Then(res => {
-			return res.error;
+			err = res.error;
 		});
+		return err;
 	}
 
 	[Serializable]

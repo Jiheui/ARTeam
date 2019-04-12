@@ -16,27 +16,30 @@ namespace Models {
 		public string Detail;
 		public string Url;
 
-		public void GetPoster() {
-			Get ("/posters");
+		public string GetPoster() {
+			return Get ("/posters");
 		}
 
-		public void SavePoster() {
-			Put ("/posters");
+		public string SavePoster() {
+			return Put ("/posters");
 		}
 
 		// RESTful, HTTP verb: GET
 		public string Get(string endpoint) {
+			var err = "";
 			var uri = Tools.Server + endpoint + "/" + KeyGroup + "/" + KeyId + "/" + Detail + "/" + Url;
 			RestClient.Get<PostersResponse> (new RequestHelper {
 				Uri = uri
 			}).Then(res => {
 				this.Detail = res.poster.Detail;
 				this.Url = res.poster.Url;
-				return res.error;
+				err = res.error;
 			});
+			return err;
 		}
 
 		public string Put(string endpoint) {
+			var err = "";
 			var uri = Tools.Server + endpoint;
 			RestClient.Put<PostersResponse>(new RequestHelper {
 				Uri = uri,
@@ -47,8 +50,9 @@ namespace Models {
 				//} else {
 					//EditorUtility.DisplayDialog ("Success", res.success.ToString(), "Ok");
 				//}
-				return res.error;
+				err = res.error;
 			});
+			return err;
 		}
 
 		[Serializable]
