@@ -40,8 +40,7 @@ namespace Models {
 			var uri = Tools.Server + endpoint;
 			RestClient.Put<PostersResponse>(new RequestHelper {
 				Uri = uri,
-				BodyString = new Tools().MakeJsonStringFromClass<Poster>(this),
-				EnableDebug = true
+				BodyString = new Tools().MakeJsonStringFromClass<Poster>(this)
 			}).Then(res => {
 				//if(!string.Equals(res.error, "")) {
 					//EditorUtility.DisplayDialog ("Error", res.error, "Ok");

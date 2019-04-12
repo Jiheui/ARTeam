@@ -15,6 +15,7 @@ public class User {
 	public string password;
 	public string facebook;
 	public string google;
+	public bool isAuthenticated;
 
 	public void Login() {
 		Get ("/users/login");
@@ -26,10 +27,12 @@ public class User {
 
 	// Create a new user
 	public void Create() {
+		Put ("/users");
 	}
 
 	// Update user info
 	public void Update() {
+		Patch ("/users");
 	}
 
 	// RESTful, HTTP verb: GET
@@ -37,26 +40,41 @@ public class User {
 		var uri = Tools.Server + endpoint;
 		switch (endpoint) {
 		case "/users/login":
-			RestClient.Get<User> (new RequestHelper {
+			RestClient.Get<UsersResponse> (new RequestHelper {
 				Uri = uri,
-			}, (err, res, body) => {
-				if (err != null) {
-					EditorUtility.DisplayDialog ("Error", err.Message, "Ok");
-				} else {
-					EditorUtility.DisplayDialog ("Success", res.Text, "Ok");
-				}	
+			}).Then(res => {
+				this.isAuthenticated = res.success;
+				return res.error;
 			});
 			break;
 		default:
-			RestClient.Get (uri, (err, res) => {
-				if (err != null) {
-					EditorUtility.DisplayDialog ("Error", err.Message, "Ok");
-				} else {
-					EditorUtility.DisplayDialog ("Success", res.Text, "Ok");
-				}	
+			RestClient.Get<UsersResponse>(uri).Then(res => {
+				this.name = res.user.name;
+				this.dob = res.user.dob;
+				return res.error;
 			});
 			return;
 		}
+	}
+
+	private string Put(string endpoint) {
+		var uri = Tools.Server + endpoint;
+		RestClient.Put<UsersResponse>(new RequestHelper {
+			Uri = uri,
+			BodyString = new Tools().MakeJsonStringFromClass<User>(this)
+		}).Then(res => {
+			return res.error;
+		});
+	}
+
+	private string Patch(string endpoint) {
+		var uri = Tools.Server + endpoint;
+		RestClient.Patch<UsersResponse>(new RequestHelper {
+			Uri = uri,
+			BodyString = new Tools().MakeJsonStringFromClass<User>(this)
+		}).Then(res => {
+			return res.error;
+		});
 	}
 
 	[Serializable]
