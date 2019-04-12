@@ -8,56 +8,87 @@ using System;
 using UnityEditor;
 
 public class User {
-	public int id { get; set; }
-	public string name { get; set; }
-	public DateTime dob { get; set; }
-	public string username { get; set; }
-	public string password { get; set; }
+	public int id;
+	public string name;
+	public DateTime dob;
+	public string username;
+	public string password;
+	public string facebook;
+	public string google;
+	public bool isAuthenticated;
 
-	public void Login() {
-		Get ("/users/login");
+	public string Login() {
+		return Get ("/users/login");
 	}
 
-	public void FindUser() {
-		Get ("/users/" + id.ToString ());
+	public string FindUser() {
+		return Get ("/users/" + id.ToString ());
 	}
 
 	// Create a new user
-	public void Create() {
+	public string Create() {
+		return Put ("/users");
 	}
 
 	// Update user info
-	public void Update() {
+	public string Update() {
+		return Patch ("/users");
 	}
 
 	// RESTful, HTTP verb: GET
-	private void Get(string endpoint) {
-		var uri = Settings.server + endpoint;
+	private string Get(string endpoint) {
+		var err = "";
+		var uri = Tools.Server + endpoint;
 		switch (endpoint) {
 		case "/users/login":
-			RestClient.Get<User> (new RequestHelper {
+			RestClient.Get<UsersResponse> (new RequestHelper {
 				Uri = uri,
-			}, (err, res, body) => {
-				if (err != null) {
-					EditorUtility.DisplayDialog ("Error", err.Message, "Ok");
-				} else {
-					EditorUtility.DisplayDialog ("Success", res.Text, "Ok");
-				}	
+			}).Then(res => {
+				this.isAuthenticated = res.success;
+				err = res.error;
 			});
 			break;
 		default:
-			RestClient.Get (uri, (err, res) => {
-				if (err != null) {
-					EditorUtility.DisplayDialog ("Error", err.Message, "Ok");
-				} else {
-					EditorUtility.DisplayDialog ("Success", res.Text, "Ok");
-				}	
+			RestClient.Get<UsersResponse> (uri).Then (res => {
+				this.name = res.user.name;
+				this.dob = res.user.dob;
+				err = res.error;
 			});
-			return;
+			break;
 		}
+		return err;
 	}
 
-	private string ConvertToJsonString(){
-		return "";
+	private string Put(string endpoint) {
+		var err = "";
+		var uri = Tools.Server + endpoint;
+		RestClient.Put<UsersResponse>(new RequestHelper {
+			Uri = uri,
+			BodyString = new Tools().MakeJsonStringFromClass<User>(this)
+		}).Then(res => {
+			err = res.error;
+		});
+		return err;
+	}
+
+	private string Patch(string endpoint) {
+		var err = "";
+		var uri = Tools.Server + endpoint;
+		RestClient.Patch<UsersResponse>(new RequestHelper {
+			Uri = uri,
+			BodyString = new Tools().MakeJsonStringFromClass<User>(this)
+		}).Then(res => {
+			err = res.error;
+		});
+		return err;
+	}
+
+	[Serializable]
+	public class UsersResponse {
+		public string error;
+		public bool isexist;
+		public bool success;
+
+		public User user;
 	}
 }
