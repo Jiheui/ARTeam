@@ -46,7 +46,7 @@ namespace Models {
 				EnableDebug = true
 			}).Then(res => {
 				if(string.Equals(res.error, "")) {
-					EditorUtility.DisplayDialog ("Success", res.success, "Ok");
+					EditorUtility.DisplayDialog ("Success", res.success.ToString(), "Ok");
 				} else {
 					
 					EditorUtility.DisplayDialog ("Error", res.error, "Ok");

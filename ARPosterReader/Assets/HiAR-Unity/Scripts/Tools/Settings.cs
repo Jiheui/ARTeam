@@ -6,7 +6,7 @@ using Models;
 
 public class Settings
 {
-	public static string serverIP {get { return "localhost";}}
+	public static string serverIP {get { return "shmily.me";}}
 	public static string serverPort {get { return "8080";}}
 
 	public static string server { get { return serverIP + ":" + serverPort;}}
