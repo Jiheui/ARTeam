@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-31 19:00:29
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-12 23:40:18
+* @Last Modified time: 2019-04-13 02:06:54
  */
 package Models
 
@@ -84,7 +84,7 @@ func (u UserResource) findUser(request *restful.Request, response *restful.Respo
 	} else if !has {
 		response.WriteHeaderAndEntity(http.StatusNotFound, UsersResponse{Error: "User could not be found."})
 	} else {
-		response.WriteEntity(UsersResponse{Success: true, User: usr})
+		response.WriteEntity(UsersResponse{IsExist: true, User: usr})
 	}
 }
 
