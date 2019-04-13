@@ -27,7 +27,7 @@ namespace Models {
 		// RESTful, HTTP verb: GET
 		public string Get(string endpoint) {
 			var err = "";
-			var uri = Tools.Server + endpoint + "/" + KeyGroup + "/" + KeyId + "/" + Detail + "/" + Url;
+			var uri = Tools.Server + endpoint + "/" + KeyGroup + "/" + KeyId;
             Debug.Log(uri);
 			RestClient.Get<PostersResponse> (new RequestHelper {
 				Uri = uri
