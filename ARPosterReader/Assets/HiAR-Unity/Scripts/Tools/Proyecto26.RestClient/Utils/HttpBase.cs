@@ -86,6 +86,7 @@ namespace Proyecto26
 				var body = default(TResponse);
 				if (err == null && !string.IsNullOrEmpty(res.Text))
 				{
+                    Debug.Log(res.Text);
 					body = JsonUtility.FromJson<TResponse>(res.Text);
 				}
 				callback(err, res, body);
