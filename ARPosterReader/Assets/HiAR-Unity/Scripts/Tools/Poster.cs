@@ -28,6 +28,7 @@ namespace Models {
 		public string Get(string endpoint) {
 			var err = "";
 			var uri = Tools.Server + endpoint + "/" + KeyGroup + "/" + KeyId + "/" + Detail + "/" + Url;
+            Debug.Log(uri);
 			RestClient.Get<PostersResponse> (new RequestHelper {
 				Uri = uri
 			}).Then(res => {

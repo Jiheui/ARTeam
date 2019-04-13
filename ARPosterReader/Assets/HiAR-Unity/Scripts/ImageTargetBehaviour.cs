@@ -1,6 +1,8 @@
 ﻿using System;
 using hiscene;
+using Models;
 using UnityEngine;
+using UnityEngine.UI;
 
 //[RequireComponent(typeof(HiARBaseObjectMovement))]
 public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBundleEventHandler 
@@ -44,6 +46,19 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
             transform.GetChild(i).gameObject.SetActive(true);
         }
 		targetFound = true;
+
+        Poster poster = new Poster();
+        poster.KeyGroup = recoResult.KeyGroup;
+        poster.KeyId = recoResult.KeyId;
+        poster.GetPoster();
+
+        Text timeText = GameObject.Find("Time").GetComponent<Text>();
+        Text addressText = GameObject.Find("Address").GetComponent<Text>();
+        Text linkText = GameObject.Find("Link").GetComponent<Text>();
+
+
+
+
     }
 
     public virtual void OnTargetTracked(RecoResult recoResult, Matrix4x4 pose) { }
