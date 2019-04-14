@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using hiscene;
 using Models;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 //[RequireComponent(typeof(HiARBaseObjectMovement))]
@@ -48,17 +50,40 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
 		targetFound = true;
 
         Poster poster = new Poster();
-        poster.KeyGroup = recoResult.KeyGroup;
-        poster.KeyId = recoResult.KeyId;
+        poster.keygroup = recoResult.KeyGroup;
+        poster.keyid = recoResult.KeyId;
+        poster.SetTarget(this.gameObject);
         poster.GetPoster();
+    }
 
+    public void showDetail(string detail)
+    {
         Text timeText = GameObject.Find("Time").GetComponent<Text>();
         Text addressText = GameObject.Find("Address").GetComponent<Text>();
-        Text linkText = GameObject.Find("Link").GetComponent<Text>();
+        Text linkText = GameObject.Find("Web Link").GetComponent<Text>();
 
+        string detailRaw = detail;
+        string[] detailList = detailRaw.Split(';');
 
+        timeText.text = detailList[0];
+        addressText.text = detailList[1];
+        linkText.text = detailList[2];
+    }
 
+    public IEnumerator updateDetailPanel(String url)
+    {
+        UnityWebRequest www = UnityWebRequest.Get(url);
+        yield return www.Send();
 
+        if (www.isError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            string rawString = www.downloadHandler.text;
+            Debug.Log(" The Coroutine : \n" + rawString);
+        }
     }
 
     public virtual void OnTargetTracked(RecoResult recoResult, Matrix4x4 pose) { }

@@ -7,14 +7,22 @@ using Proyecto26;
 using System.Net;
 using System.IO;
 using System;
+using UnityEngine.UI;
 
 namespace Models {
 	[Serializable]
 	public class Poster {
-		public string KeyGroup;
-		public string KeyId;
-		public string Detail;
-		public string Url;
+		public string keygroup;
+		public string keyid;
+		public string detail = " ABDKLFJ";
+		public string url;
+
+        GameObject target;
+
+        public void SetTarget(GameObject obj)
+        {
+            target = obj;
+        }
 
 		public string GetPoster() {
 			return Get ("/posters");
@@ -27,19 +35,21 @@ namespace Models {
 		// RESTful, HTTP verb: GET
 		public string Get(string endpoint) {
 			var err = "";
-			var uri = Tools.Server + endpoint + "/" + KeyGroup + "/" + KeyId;
+			var uri = Tools.Server + endpoint + "/" + keygroup + "/" + keyid;
             Debug.Log(uri);
 			RestClient.Get<PostersResponse> (new RequestHelper {
 				Uri = uri
 			}).Then(res => {
-				this.Detail = res.poster.Detail;
-				this.Url = res.poster.Url;
+				this.detail = res.poster.detail;
+                target.GetComponent<ImageTargetBehaviour>().showDetail(this.detail);
+                //this.updateDetailPanel(this.Detail);
+				this.url = res.poster.url;
 				err = res.error;
 			});
 			return err;
 		}
 
-		public string Put(string endpoint) {
+        public string Put(string endpoint) {
 			var err = "";
 			var uri = Tools.Server + endpoint;
 			RestClient.Put<PostersResponse>(new RequestHelper {
