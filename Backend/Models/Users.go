@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-31 19:00:29
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-13 02:06:54
+* @Last Modified time: 2019-04-15 02:49:29
  */
 package Models
 
@@ -49,7 +49,7 @@ func (u UserResource) WebService() *restful.WebService {
 
 	tags := []string{"users"}
 
-	ws.Route(ws.GET("/login").To(u.login)).
+	ws.Route(ws.POST("/login").To(u.login)).
 		Doc("check login info")
 
 	ws.Route(ws.GET("/{user-id}").To(u.findUser).
@@ -65,7 +65,7 @@ func (u UserResource) WebService() *restful.WebService {
 		Metadata(restfulspec.KeyOpenAPITags, tags).
 		Reads(User{})) // from the request
 
-	ws.Route(ws.PUT("").To(u.createUser).
+	ws.Route(ws.POST("").To(u.createUser).
 		Doc("create a user").
 		Metadata(restfulspec.KeyOpenAPITags, tags).
 		Reads(User{})) // from the request

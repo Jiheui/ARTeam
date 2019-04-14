@@ -19,7 +19,7 @@ public class LeavePresentPage : MonoBehaviour {
     // This is called when the "scan poster" button is clicked, 
     // then the camera view shows up waiting for recognisation
     // Written by Norton
-    public void MoveToNextScene(string nextScene) {
+	public void MoveToNextScene(string nextScene) {
         SceneManager.LoadScene(nextScene);
     }
 }

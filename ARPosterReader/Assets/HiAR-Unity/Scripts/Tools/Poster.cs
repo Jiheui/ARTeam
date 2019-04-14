@@ -8,59 +8,50 @@ using System.Net;
 using System.IO;
 using System;
 using UnityEngine.UI;
+using RSG;
+using System.Web;
 
 namespace Models {
 	[Serializable]
 	public class Poster {
 		public string keygroup;
 		public string keyid;
-		public string detail = " ABDKLFJ";
+		public string detail;
 		public string url;
 
-        GameObject target;
-
-        public void SetTarget(GameObject obj)
-        {
-            target = obj;
-        }
-
 		public string GetPoster() {
-			return Get ("/posters");
+			return Get("/posters");
 		}
 
 		public string SavePoster() {
 			return Put ("/posters");
 		}
 
-		// RESTful, HTTP verb: GET
-		public string Get(string endpoint) {
-			var err = "";
-			var uri = Tools.Server + endpoint + "/" + keygroup + "/" + keyid;
-            Debug.Log(uri);
-			RestClient.Get<PostersResponse> (new RequestHelper {
-				Uri = uri
-			}).Then(res => {
-				this.detail = res.poster.detail;
-                target.GetComponent<ImageTargetBehaviour>().showDetail(this.detail);
-                //this.updateDetailPanel(this.Detail);
-				this.url = res.poster.url;
-				err = res.error;
-			});
-			return err;
+		public string Get(string endpoint)
+		{
+			var uri = "http://" + new Tools().Server + endpoint + "/" + keygroup + "/" + keyid;
+			var req = HttpWebRequest.Create(uri);
+
+			req.ContentType = "application/json";
+			req.Method = "GET";
+
+			var response = req.GetResponse() as HttpWebResponse;
+		
+			using (var reader = new StreamReader(response.GetResponseStream())) {
+				var json = reader.ReadToEnd();
+				var pr = JsonUtility.FromJson<PostersResponse>(json);
+				this.detail = pr.poster.detail;
+				return pr.error;
+			}
 		}
 
         public string Put(string endpoint) {
 			var err = "";
-			var uri = Tools.Server + endpoint;
+			var uri = new Tools().Server + endpoint;
 			RestClient.Put<PostersResponse>(new RequestHelper {
 				Uri = uri,
 				BodyString = new Tools().MakeJsonStringFromClass<Poster>(this)
 			}).Then(res => {
-				//if(!string.Equals(res.error, "")) {
-					//EditorUtility.DisplayDialog ("Error", res.error, "Ok");
-				//} else {
-					//EditorUtility.DisplayDialog ("Success", res.success.ToString(), "Ok");
-				//}
 				err = res.error;
 			});
 			return err;

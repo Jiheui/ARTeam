@@ -52,7 +52,6 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         Poster poster = new Poster();
         poster.keygroup = recoResult.KeyGroup;
         poster.keyid = recoResult.KeyId;
-        poster.SetTarget(this.gameObject);
         poster.GetPoster();
     }
 
