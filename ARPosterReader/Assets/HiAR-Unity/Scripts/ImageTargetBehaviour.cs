@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading;
 using hiscene;
 using Models;
 using UnityEngine;
@@ -15,11 +16,14 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     Text addressText;
     Text linkText;
 
+    Action<object> showDetailAction;
+
     private void Start()
     {
         timeText = GameObject.Find("Time").GetComponent<Text>();
         addressText = GameObject.Find("Address").GetComponent<Text>();
         linkText = GameObject.Find("Web Link").GetComponent<Text>();
+        showDetailAction = new Action<object>(showDetail);
 
         if (Application.isPlaying)
         {
@@ -57,16 +61,29 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         }
 		targetFound = true;
 
-        Poster poster = new Poster();
-        poster.keygroup = recoResult.KeyGroup;
-        poster.keyid = recoResult.KeyId;
-        poster.GetPoster();
-        showDetail(poster.detail);
+        // The Method in Loom.Run Async can start a thread. And In the Thread, add the action that can only process on main thread.
+        Loom.RunAsync(() => {
+            Poster poster = new Poster();
+            poster.keygroup = recoResult.KeyGroup;
+            poster.keyid = recoResult.KeyId;
+            poster.GetPoster();
+            Thread thread = new Thread(new ParameterizedThreadStart(getPoster));
+            thread.Start(poster);
+        });
     }
 
-    public void showDetail(string detail)
+    public void getPoster(object obj)
     {
-        string detailRaw = detail;
+        Poster poster = obj as Poster;
+        poster.GetPoster();
+
+        //The action added to Loom.QueueOnMainThread is run on Main Thread.
+        Loom.QueueOnMainThread(showDetailAction, poster.detail);
+    }
+
+    public void showDetail(object detail)
+    {
+        string detailRaw = detail as string;
         string[] detailList = detailRaw.Split(';');
 
         timeText.text = detailList[0];
@@ -79,22 +96,6 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         timeText.text = "Time";
         addressText.text = "Address";
         linkText.text = "Web Link";
-    }
-
-    public IEnumerator updateDetailPanel(String url)
-    {
-        UnityWebRequest www = UnityWebRequest.Get(url);
-        yield return www.Send();
-
-        if (www.isError)
-        {
-            Debug.Log(www.error);
-        }
-        else
-        {
-            string rawString = www.downloadHandler.text;
-            Debug.Log(" The Coroutine : \n" + rawString);
-        }
     }
 
     public virtual void OnTargetTracked(RecoResult recoResult, Matrix4x4 pose) { }
