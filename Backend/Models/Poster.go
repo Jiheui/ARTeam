@@ -3,14 +3,14 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-11 15:42:37
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-13 02:39:41
+* @Last Modified time: 2019-04-15 10:45:11
  */
 package Models
 
 import (
 	"net/http"
 
-	log "github.com/Sirupsen/logrus"
+	//log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
 	//restfulspec "github.com/emicklei/go-restful-openapi"
 )
@@ -43,9 +43,9 @@ func (p PosterResource) WebService() *restful.WebService {
 	ws.Route(ws.GET("/{KeyGroup}/{KeyId}").To(p.Get)).
 		Param(ws.PathParameter("KeyGroup", "identifier of the poster").DataType("string").DefaultValue("")).
 		Param(ws.PathParameter("KeyId", "identifier of the poster").DataType("string").DefaultValue("")).
-		Doc("check login info")
+		Doc("get poster key info")
 
-	ws.Route(ws.PUT("").To(p.Put).
+	ws.Route(ws.POST("").To(p.Post).
 		Doc("store poster info")) // from the request
 
 	return ws
@@ -60,12 +60,11 @@ func (p PosterResource) Get(request *restful.Request, response *restful.Response
 	if has, err := db.Engine.Table("poster").Where("keygroup = ?", keyGroup).And("keyid = ?", keyId).Get(&poster); err != nil {
 		response.WriteHeaderAndEntity(http.StatusInternalServerError, PosterResponse{Error: err.Error()})
 	} else {
-		log.Info(PosterResponse{Poster: poster, IsExist: has})
 		response.WriteHeaderAndEntity(http.StatusOK, PosterResponse{Poster: poster, IsExist: has})
 	}
 }
 
-func (p *PosterResource) Put(request *restful.Request, response *restful.Response) {
+func (p *PosterResource) Post(request *restful.Request, response *restful.Response) {
 	poster := Poster{}
 	err := request.ReadEntity(&poster)
 	if err == nil {

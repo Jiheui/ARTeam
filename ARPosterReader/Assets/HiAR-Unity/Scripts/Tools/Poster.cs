@@ -24,7 +24,7 @@ namespace Models {
 		}
 
 		public string SavePoster() {
-			return Put ("/posters");
+			return Post ("/posters");
 		}
 
 		public string Get(string endpoint)
@@ -45,10 +45,10 @@ namespace Models {
 			}
 		}
 
-        public string Put(string endpoint) {
+        public string Post(string endpoint) {
 			var err = "";
 			var uri = new Tools().Server + endpoint;
-			RestClient.Put<PostersResponse>(new RequestHelper {
+			RestClient.Post<PostersResponse>(new RequestHelper {
 				Uri = uri,
 				BodyString = new Tools().MakeJsonStringFromClass<Poster>(this)
 			}).Then(res => {

@@ -67,7 +67,6 @@ namespace Models {
 					this.authenticated = ur.success;
 					return ur.error;
 				}
-				break;
 			default:
 				response = req.GetResponse() as HttpWebResponse;
 
@@ -80,7 +79,6 @@ namespace Models {
 					this.google = ur.user.google;
 					return ur.error;
 				}
-				break;
 			}
 		}
 
