@@ -11,8 +11,16 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
 {
 	private bool targetFound = false;
 
+    Text timeText;
+    Text addressText;
+    Text linkText;
+
     private void Start()
     {
+        timeText = GameObject.Find("Time").GetComponent<Text>();
+        addressText = GameObject.Find("Address").GetComponent<Text>();
+        linkText = GameObject.Find("Web Link").GetComponent<Text>();
+
         if (Application.isPlaying)
         {
             for (var i = 0; i < transform.childCount; i++) transform.GetChild(i).gameObject.SetActive(false);
@@ -53,20 +61,24 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         poster.keygroup = recoResult.KeyGroup;
         poster.keyid = recoResult.KeyId;
         poster.GetPoster();
+        showDetail(poster.detail);
     }
 
     public void showDetail(string detail)
     {
-        Text timeText = GameObject.Find("Time").GetComponent<Text>();
-        Text addressText = GameObject.Find("Address").GetComponent<Text>();
-        Text linkText = GameObject.Find("Web Link").GetComponent<Text>();
-
         string detailRaw = detail;
         string[] detailList = detailRaw.Split(';');
 
         timeText.text = detailList[0];
         addressText.text = detailList[1];
         linkText.text = detailList[2];
+    }
+
+    public void clearDetail()
+    {
+        timeText.text = "Time";
+        addressText.text = "Address";
+        linkText.text = "Web Link";
     }
 
     public IEnumerator updateDetailPanel(String url)
@@ -94,6 +106,8 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
             transform.GetChild(i).gameObject.SetActive(false);
         }
 		targetFound = false;
+
+        clearDetail();
     }
 
 	public bool IsTargetFound()
