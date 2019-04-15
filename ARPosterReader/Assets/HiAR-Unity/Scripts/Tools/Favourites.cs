@@ -29,6 +29,10 @@ namespace Models {
 			return Post ("/favourites");
 		}
 
+		public string Dislike() {
+			return Delete ("/favourites");
+		}
+
 		public string Get(string endpoint)
 		{
 			var uri = "http://" + new Tools().Server + endpoint + "/" + userid;
