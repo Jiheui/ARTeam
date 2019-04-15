@@ -19,6 +19,7 @@ namespace Models {
 		public string keyid;
 		public string time;
 
+		[NonSerialized]
 		public Favourite[] favourites;
 
 		public string GetFavourites() {
