@@ -3,12 +3,13 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-13 00:06:38
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-15 10:48:06
+* @Last Modified time: 2019-04-15 11:50:11
  */
 package Models
 
 import (
 	"net/http"
+	"strconv"
 
 	//log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
@@ -19,6 +20,7 @@ type Favourite struct {
 	UserId   int    `json:"userid" xorm:"userid"`
 	GroupKey string `json:"groupkey" xorm:"groupkey"`
 	GroupId  string `json:"groupid" xorm:"groupid"`
+	Time     string `json:"time" xorm:"time"`
 }
 
 type FavouriteResponse struct {
@@ -46,6 +48,10 @@ func (f FavouritePosterResource) WebService() *restful.WebService {
 	ws.Route(ws.POST("").To(f.Post).
 		Doc("save favourite poster info")) // from the request
 
+	ws.Route(ws.DELETE("/{user-id}/{group-key}/{group-id}").To(f.Get)).
+		Param(ws.PathParameter("user-id", "identifier of the user").DataType("integer").DefaultValue("0")).
+		Param(ws.PathParameter("group-key", "identifier of the user").DataType("string").DefaultValue("")).
+		Param(ws.PathParameter("group-id", "identifier of the user").DataType("string").DefaultValue(""))
 	return ws
 }
 
@@ -54,7 +60,7 @@ func (f FavouritePosterResource) Get(request *restful.Request, response *restful
 
 	uid := request.PathParameter("user-id")
 
-	if err := db.Engine.Table("favourite").Where("userid = ?", uid).Find(&fs); err != nil {
+	if err := db.Engine.Table("favourite").Where("userid = ?", uid).Desc("time").Find(&fs); err != nil {
 		response.WriteHeaderAndEntity(http.StatusInternalServerError, FavouriteResponse{Error: err.Error()})
 	} else {
 		response.WriteHeaderAndEntity(http.StatusOK, FavouriteResponse{Favourites: fs})
@@ -75,5 +81,19 @@ func (p *FavouritePosterResource) Post(request *restful.Request, response *restf
 		}
 	} else {
 		response.WriteHeaderAndEntity(http.StatusInternalServerError, FavouriteResponse{Error: err.Error()})
+	}
+}
+
+func (f FavouritePosterResource) Delete(request *restful.Request, response *restful.Response) {
+	uid, _ := strconv.Atoi(request.PathParameter("user-id"))
+	groupKey := request.PathParameter("group-key")
+	groupId := request.PathParameter("group-id")
+
+	fs := Favourite{UserId: uid, GroupKey: groupKey, GroupId: groupId}
+
+	if _, err := db.Engine.Where("userid = ?", uid).Where("groupkey = ?", groupKey).Where("groupid", groupId).Delete(fs); err != nil {
+		response.WriteHeaderAndEntity(http.StatusInternalServerError, FavouriteResponse{Error: err.Error()})
+	} else {
+		response.WriteHeaderAndEntity(http.StatusOK, FavouriteResponse{Success: true})
 	}
 }
