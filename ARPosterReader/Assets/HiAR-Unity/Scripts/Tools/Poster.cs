@@ -41,6 +41,7 @@ namespace Models {
 				var json = reader.ReadToEnd();
 				var pr = JsonUtility.FromJson<PostersResponse>(json);
 				this.detail = pr.poster.detail;
+				this.url = pr.poster.url;
 				return pr.error;
 			}
 		}
