@@ -27,7 +27,6 @@ public class CloudRecoBehaiour : CloudRecognition,ICloudRecoEventHandler
 
         if (gameObject != null)
         {
-            Debug.Log("Get it !!!!!!!!!!!!!!!!!!!");
             bindingGameObject(gameObject, recoResult.KeyId);
         }
     }
