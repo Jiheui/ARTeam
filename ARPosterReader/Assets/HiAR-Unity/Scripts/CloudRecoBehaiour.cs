@@ -7,17 +7,11 @@ using UnityEngine.UI;
 
 public class CloudRecoBehaiour : CloudRecognition,ICloudRecoEventHandler
 {
-    Text timeText;
-    Text addressText;
-    Text linkText;
 
     new void Start()
     {
         base.Start();
         RegisterCloudRecoEventHandler(this);
-        timeText = GameObject.Find("Time").GetComponent<Text>();
-        addressText = GameObject.Find("Address").GetComponent<Text>();
-        linkText = GameObject.Find("Web Link").GetComponent<Text>();
     }
 
 	public override void OnCloudReco(RecoResult recoResult){
