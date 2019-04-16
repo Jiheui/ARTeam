@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using hiscene;
 using Models;
 using UnityEngine;
@@ -26,24 +27,9 @@ public class CloudRecoBehaiour : CloudRecognition,ICloudRecoEventHandler
 
         if (gameObject != null)
         {
+            Debug.Log("Get it !!!!!!!!!!!!!!!!!!!");
             bindingGameObject(gameObject, recoResult.KeyId);
         }
-
-        Poster poster = new Poster();
-        poster.keygroup = recoResult.KeyGroup;
-        poster.keyid = recoResult.KeyId;
-        poster.GetPoster();
-        showDetail(poster.detail);
-    }
-
-    public void showDetail(string detail)
-    {
-        string detailRaw = detail;
-        string[] detailList = detailRaw.Split(';');
-
-        timeText.text = detailList[0];
-        addressText.text = detailList[1];
-        linkText.text = detailList[2];
     }
 
     public override GameObject createGameObject(RecoResult recoResult)
