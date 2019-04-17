@@ -1,14 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.Networking;
-using System.Net;
+﻿using System.Net;
 using System.IO;
 using Proyecto26;
 using System;
-using UnityEditor;
 using UnityEngine;
 using System.Text;
-using System.Globalization;
 
 
 namespace Models {
