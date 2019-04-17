@@ -54,6 +54,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         if (recoResult.IsCloudReco)
         {
             downloadBundleFromHiAR(recoResult);
+            recoResult.KeyGroup = "ARPosterSample";
         }
         for (var i = 0; i < transform.childCount; i++)
         {
