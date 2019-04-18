@@ -16,7 +16,7 @@ public class ScrollUpAnim : MonoBehaviour
     void Start()
     {
         initialPosition = transform.position;                           //get the initial position of panel
-        halfHeight = GetComponent<RectTransform>().rect.height;         //get the height of the panel
+        halfHeight = GameObject.Find("Details").GetComponent<RectTransform>().rect.height;         //get the height of the panel
         terminalPosition = initialPosition + new Vector2(0, halfHeight);
     }
 
