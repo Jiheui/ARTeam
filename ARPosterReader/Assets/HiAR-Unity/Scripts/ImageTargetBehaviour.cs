@@ -99,34 +99,35 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         linkText.text = "Web Link";
     }
 
-    public void OpenURLOnClick(string urlToOpen)
+    public void OpenURLOnClick()
     {
         bool fail = false;
+        string urlToOpen = linkText.text;
         AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject ca = up.GetStatic<AndroidJavaObject>("currentActivity");
         AndroidJavaObject packageManager = ca.Call<AndroidJavaObject>("getPackageManager");
 
         AndroidJavaObject launchIntent = null;
-        try
-        {
-            launchIntent = packageManager.Call<AndroidJavaObject>("getLaunchIntentForPackage", urlToOpen);
-        }
-        catch (System.Exception e)
-        {
-            fail = true;
-        }
+        //try
+        //{
+            //launchIntent = packageManager.Call<AndroidJavaObject>("getLaunchIntentForPackage", urlToOpen);
+        //}
+        //catch (System.Exception e)
+        //{
+            //fail = true;
+        //}
 
-        if (fail)
+        if (true)
         { //open app in store
-            Application.OpenURL("https://google.com");
+            Application.OpenURL("https://www.google.com");
         }
         else //open the app
             ca.Call("startActivity", launchIntent);
 
-        up.Dispose();
-        ca.Dispose();
-        packageManager.Dispose();
-        launchIntent.Dispose();
+        //up.Dispose();
+        //ca.Dispose();
+        //packageManager.Dispose();
+        //launchIntent.Dispose();
     }
 
     public virtual void OnTargetTracked(RecoResult recoResult, Matrix4x4 pose) { }
