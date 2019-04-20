@@ -15,7 +15,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     Text timeText;
     Text addressText;
     Text linkText;
-
+    Text addressURL;
     Action<object> showDetailAction;
 
     private void Start()
@@ -23,6 +23,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         timeText = GameObject.Find("Time").GetComponent<Text>();
         addressText = GameObject.Find("Address").GetComponent<Text>();
         linkText = GameObject.Find("Web Link").GetComponent<Text>();
+        addressURL = GameObject.Find("Address URL").GetComponent<Text>();
         showDetailAction = new Action<object>(showDetail);
 
         if (Application.isPlaying)
@@ -99,36 +100,47 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         linkText.text = "Web Link";
     }
 
-    public void OpenURLOnClick()
+    public void OpenMapOnClick()
     {
         bool fail = false;
-        string urlToOpen = linkText.text;
         AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject ca = up.GetStatic<AndroidJavaObject>("currentActivity");
         AndroidJavaObject packageManager = ca.Call<AndroidJavaObject>("getPackageManager");
 
         AndroidJavaObject launchIntent = null;
-        //try
-        //{
-            //launchIntent = packageManager.Call<AndroidJavaObject>("getLaunchIntentForPackage", urlToOpen);
-        //}
-        //catch (System.Exception e)
-        //{
-            //fail = true;
-        //}
-
-        if (true)
-        { //open app in store
-            Application.OpenURL("https://www.google.com");
+        try
+        {
+            launchIntent = packageManager.Call<AndroidJavaObject>("getLaunchIntentForPackage", addressURL.text);
         }
-        else //open the app
-            ca.Call("startActivity", launchIntent);
+        catch (Exception e)
+        {
+            Console.WriteLine(e.StackTrace);
+            fail = true;
+        }
 
-        //up.Dispose();
-        //ca.Dispose();
-        //packageManager.Dispose();
-        //launchIntent.Dispose();
+        if (fail)
+        {   //open app in store
+            Application.OpenURL("https://google.com");
+        }
+        else
+        {
+            //open the app
+            Application.OpenURL("https://goo.gl/maps/sL2Tug3N5oytfJvR7");
+        }
+
+        up.Dispose();
+        ca.Dispose();
+        packageManager.Dispose();
+        launchIntent.Dispose();
     }
+
+    public void OpenWebOnClick()
+    {
+        //open the URL
+        Application.OpenURL(linkText.text);
+    }
+
+
 
     public virtual void OnTargetTracked(RecoResult recoResult, Matrix4x4 pose) { }
 
