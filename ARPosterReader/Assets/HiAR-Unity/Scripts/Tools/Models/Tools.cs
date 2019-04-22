@@ -1,4 +1,9 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
+using Proyecto26;
+using UnityEngine;
+using UnityEditor;
+using Models;
 
 public class Tools
 {

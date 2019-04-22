@@ -1,8 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine.Networking;
+using System.Collections;
+using UnityEditor;
+using UnityEngine;
 using Proyecto26;
 using System.Net;
 using System.IO;
 using System;
+using UnityEngine.UI;
+using RSG;
+using System.Web;
 
 namespace Models {
 	[Serializable]

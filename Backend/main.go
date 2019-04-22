@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-28 18:52:31
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-15 10:48:39
+* @Last Modified time: 2019-04-22 09:36:02
  */
 package main
 
@@ -20,9 +20,11 @@ func main() {
 	u := model.UserResource{}
 	p := model.PosterResource{}
 	f := model.FavouritePosterResource{}
+	fb := model.FeedbackResource{}
 	restful.DefaultContainer.Add(u.WebService())
 	restful.DefaultContainer.Add(p.WebService())
 	restful.DefaultContainer.Add(f.WebService())
+	restful.DefaultContainer.Add(fb.WebService())
 
 	log.Printf("start listening on localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))

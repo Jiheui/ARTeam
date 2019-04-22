@@ -1,9 +1,16 @@
-﻿using System.Net;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.Networking;
+using System.Net;
 using System.IO;
 using Proyecto26;
 using System;
+using UnityEditor;
 using UnityEngine;
 using System.Text;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Security.Cryptography;
 
 
 namespace Models {
@@ -22,6 +29,7 @@ namespace Models {
 		public bool authenticated;
 
 		public string Login() {
+			this.password = MD5Encrypt64 (this.password);
 			return Get ("/users/login");
 		}
 
@@ -31,11 +39,18 @@ namespace Models {
 
 		// Create a new user
 		public string Create() {
+			this.password = MD5Encrypt64 (this.password);
+			if (Regex.IsMatch (this.username, @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*")) {
+				// Do something, like send confirm email
+			}
 			return Post ("/users");
 		}
 
 		// Update user info
 		public string Update() {
+			if (!String.IsNullOrEmpty ()) {
+				this.password = MD5Encrypt64 (this.password);
+			}
 			return Patch ("/users");
 		}
 
@@ -108,6 +123,14 @@ namespace Models {
 			public bool success;
 
 			public User user;
+		}
+
+		public static string MD5Encrypt64(string password)
+		{
+			string cl = password;
+			MD5 md5 = MD5.Create();
+			byte[] s = md5.ComputeHash(Encoding.UTF8.GetBytes(cl));
+			return Convert.ToBase64String(s);
 		}
 	}
 }
