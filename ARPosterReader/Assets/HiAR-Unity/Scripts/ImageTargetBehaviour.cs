@@ -110,7 +110,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         AndroidJavaObject launchIntent = null;
         try
         {
-            launchIntent = packageManager.Call<AndroidJavaObject>("getLaunchIntentForPackage", addressURL.text);
+            launchIntent = packageManager.Call<AndroidJavaObject>("getLaunchIntentForPackage", "com.google.android.apps.maps");
         }
         catch (Exception e)
         {

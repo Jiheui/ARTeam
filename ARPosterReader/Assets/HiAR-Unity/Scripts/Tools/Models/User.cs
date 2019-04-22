@@ -1,14 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.Networking;
-using System.Net;
+﻿using System.Net;
 using System.IO;
 using Proyecto26;
 using System;
-using UnityEditor;
 using UnityEngine;
 using System.Text;
-using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 
@@ -48,7 +43,7 @@ namespace Models {
 
 		// Update user info
 		public string Update() {
-			if (!String.IsNullOrEmpty ()) {
+			if (!String.IsNullOrEmpty(this.password)) {
 				this.password = MD5Encrypt64 (this.password);
 			}
 			return Patch ("/users");
