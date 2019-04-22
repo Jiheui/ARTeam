@@ -125,7 +125,8 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         else
         {
             //open the app
-            Application.OpenURL("https://goo.gl/maps/sL2Tug3N5oytfJvR7");
+            //Application.OpenURL("https://goo.gl/maps/sL2Tug3N5oytfJvR7");
+            Application.OpenURL(addressURL.text);
         }
 
         up.Dispose();
