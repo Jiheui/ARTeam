@@ -3,13 +3,15 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-31 19:00:29
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-15 02:49:29
+* @Last Modified time: 2019-04-23 23:32:37
  */
 package Models
 
 import (
 	"net/http"
 	"strconv"
+
+	"../Tools"
 
 	//log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
@@ -26,6 +28,8 @@ type User struct {
 
 	Facebook string `json:"facebook" description:"facebook credential" xorm:"facebook"`
 	Google   string `json:"google" description:"google credential" xorm:"google"`
+
+	Activated int `json:"activated" xorm:"activated"`
 }
 
 type UsersResponse struct {
@@ -62,6 +66,11 @@ func (u UserResource) WebService() *restful.WebService {
 
 	ws.Route(ws.PATCH("").To(u.updateUser).
 		Doc("update a user").
+		Metadata(restfulspec.KeyOpenAPITags, tags).
+		Reads(User{})) // from the request
+
+	ws.Route(ws.PATCH("/confirm/{confirm-token}").To(u.confirm).
+		Doc("confirm activation").
 		Metadata(restfulspec.KeyOpenAPITags, tags).
 		Reads(User{})) // from the request
 
@@ -107,6 +116,25 @@ func (u *UserResource) updateUser(request *restful.Request, response *restful.Re
 	}
 }
 
+// PATCH http://localhost:8080/users/confirm
+//
+func (u *UserResource) confirm(request *restful.Request, response *restful.Response) {
+	token := request.PathParameter("confirm-token") // currently using email as the token
+	usr := User{Activated: 1}
+	if err == nil {
+		db.WLock()
+		defer db.WUnlock() //unlock when exit this method
+
+		if _, err := db.Engine.Table("user").Cols("activated").Where("username = ?", token).Update(usr); err != nil {
+			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
+		} else {
+			response.WriteEntity(UsersResponse{Success: true})
+		}
+	} else {
+		response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
+	}
+}
+
 // PUT http://localhost:8080/users/
 //
 func (u *UserResource) createUser(request *restful.Request, response *restful.Response) {
@@ -119,6 +147,8 @@ func (u *UserResource) createUser(request *restful.Request, response *restful.Re
 		if _, err := db.Engine.Insert(&usr); err != nil {
 			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
 		} else {
+			// send confirm link
+			Tools.SendConfirmLink(usr.Username)
 			response.WriteHeaderAndEntity(http.StatusCreated, UsersResponse{Success: true})
 		}
 	} else {

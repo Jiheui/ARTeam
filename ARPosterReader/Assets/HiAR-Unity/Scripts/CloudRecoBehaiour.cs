@@ -1,6 +1,9 @@
 using System;
+using System.Threading;
 using hiscene;
+using Models;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CloudRecoBehaiour : CloudRecognition,ICloudRecoEventHandler
 {

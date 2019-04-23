@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading;
 using hiscene;
 using Models;
 using UnityEngine;
@@ -14,12 +15,16 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     Text timeText;
     Text addressText;
     Text linkText;
+    Text addressURL;
+    Action<object> showDetailAction;
 
     private void Start()
     {
         timeText = GameObject.Find("Time").GetComponent<Text>();
         addressText = GameObject.Find("Address").GetComponent<Text>();
         linkText = GameObject.Find("Web Link").GetComponent<Text>();
+        addressURL = GameObject.Find("Address URL").GetComponent<Text>();
+        showDetailAction = new Action<object>(showDetail);
 
         if (Application.isPlaying)
         {
@@ -50,6 +55,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         if (recoResult.IsCloudReco)
         {
             downloadBundleFromHiAR(recoResult);
+            recoResult.KeyGroup = "ARPosterSample";
         }
         for (var i = 0; i < transform.childCount; i++)
         {
@@ -57,16 +63,29 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         }
 		targetFound = true;
 
-        Poster poster = new Poster();
-        poster.keygroup = recoResult.KeyGroup;
-        poster.keyid = recoResult.KeyId;
-        poster.GetPoster();
-        showDetail(poster.detail);
+        // The Method in Loom.Run Async can start a thread. And In the Thread, add the action that can only process on main thread.
+        Loom.RunAsync(() => {
+            Poster poster = new Poster();
+            poster.keygroup = recoResult.KeyGroup;
+            poster.keyid = recoResult.KeyId;
+            poster.GetPoster();
+            Thread thread = new Thread(new ParameterizedThreadStart(getPoster));
+            thread.Start(poster);
+        });
     }
 
-    public void showDetail(string detail)
+    public void getPoster(object obj)
     {
-        string detailRaw = detail;
+        Poster poster = obj as Poster;
+        poster.GetPoster();
+
+        //The action added to Loom.QueueOnMainThread is run on Main Thread.
+        Loom.QueueOnMainThread(showDetailAction, poster.detail);
+    }
+
+    public void showDetail(object detail)
+    {
+        string detailRaw = detail as string;
         string[] detailList = detailRaw.Split(';');
 
         timeText.text = detailList[0];
@@ -81,21 +100,48 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         linkText.text = "Web Link";
     }
 
-    public IEnumerator updateDetailPanel(String url)
+    public void OpenMapOnClick()
     {
-        UnityWebRequest www = UnityWebRequest.Get(url);
-        yield return www.Send();
+        bool fail = false;
+        AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject ca = up.GetStatic<AndroidJavaObject>("currentActivity");
+        AndroidJavaObject packageManager = ca.Call<AndroidJavaObject>("getPackageManager");
 
-        if (www.isError)
+        AndroidJavaObject launchIntent = null;
+        try
         {
-            Debug.Log(www.error);
+            launchIntent = packageManager.Call<AndroidJavaObject>("getLaunchIntentForPackage", "com.google.android.apps.maps");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.StackTrace);
+            fail = true;
+        }
+
+        if (fail)
+        {   //open app in store
+            Application.OpenURL("https://google.com");
         }
         else
         {
-            string rawString = www.downloadHandler.text;
-            Debug.Log(" The Coroutine : \n" + rawString);
+            //open the app
+            //Application.OpenURL("https://goo.gl/maps/sL2Tug3N5oytfJvR7");
+            Application.OpenURL(addressURL.text);
         }
+
+        up.Dispose();
+        ca.Dispose();
+        packageManager.Dispose();
+        launchIntent.Dispose();
     }
+
+    public void OpenWebOnClick()
+    {
+        //open the URL
+        Application.OpenURL(linkText.text);
+    }
+
+
 
     public virtual void OnTargetTracked(RecoResult recoResult, Matrix4x4 pose) { }
 
