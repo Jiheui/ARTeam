@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class Like_Button : MonoBehaviour {
 
 	public Sprite red_heart;
 	public Sprite white_heart;
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -19,6 +22,20 @@ public class Like_Button : MonoBehaviour {
 	}
 
 	public void unlikePoster(){
-		gameObject.GetComponent<Image>().sprite = white_heart;
+//		if (gameObject.GetComponent<Image> ().sprite == red_heart) {
+//			gameObject.GetComponent<Image> ().sprite = white_heart;
+//
+//		} else if (gameObject.GetComponent<Image> ().sprite == white_heart) {
+//			gameObject.GetComponent<Image> ().sprite = red_heart;
+//		} else {
+//			print ("error!");
+//		}
+
+		for (int i = 0; i < 10; i++) {
+			int l = 0;
+			print (l);
+		}
+
 	}
+
 }
