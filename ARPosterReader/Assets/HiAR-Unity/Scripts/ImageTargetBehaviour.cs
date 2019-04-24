@@ -15,7 +15,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     Text timeText;
     Text addressText;
     Text linkText;
-    string addressURL;
+    Text addressURL;
     Action<object> showDetailAction;
 
     private void Start()
@@ -23,6 +23,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         timeText = GameObject.Find("Time").GetComponent<Text>();
         addressText = GameObject.Find("Address").GetComponent<Text>();
         linkText = GameObject.Find("Web Link").GetComponent<Text>();
+        addressURL = GameObject.Find("Address Url").GetComponent<Text>();
         showDetailAction = new Action<object>(showDetail);
 
         if (Application.isPlaying)
@@ -89,7 +90,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         timeText.text = detailPos.posdate;
         addressText.text = detailPos.poslocation;
         linkText.text = detailPos.poslink;
-        addressURL = detailPos.posmap;
+        addressURL.text = detailPos.posmap;
     }
 
     public void clearDetail()
@@ -97,7 +98,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         timeText.text = "Time";
         addressText.text = "Address";
         linkText.text = "Web Link";
-        addressURL = "";
+        addressURL.text = "";
     }
 
     public void OpenMapOnClick()
@@ -123,12 +124,13 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         if (fail)
         {   //open app in store
             Application.OpenURL("https://google.com");
+
         }
         else
         {
             //open the app
             //Application.OpenURL("https://goo.gl/maps/sL2Tug3N5oytfJvR7");
-            Application.OpenURL(addressURL);
+            Application.OpenURL(addressURL.text);
         }
 
         up.Dispose();
