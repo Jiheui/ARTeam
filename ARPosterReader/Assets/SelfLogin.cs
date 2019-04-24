@@ -4,12 +4,21 @@ using UnityEngine.UI;
 
 public class SelfLogin : MonoBehaviour {
 
-	public InputField emial;
+
+	public InputField email;
 	public InputField password;
 
 	public void getTextLoginAndRegister()
 	{
+
+	}
+	// Use this for initialization
+	void Start () {
 		
 	}
+	
+	// Update is called once per frame
+	void Update () {
 		
+	}
 }
