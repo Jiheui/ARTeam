@@ -23,7 +23,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         timeText = GameObject.Find("Time").GetComponent<Text>();
         addressText = GameObject.Find("Address").GetComponent<Text>();
         linkText = GameObject.Find("Web Link").GetComponent<Text>();
-        addressURL = GameObject.Find("Address Url").GetComponent<Text>();
+        //addressURL = GameObject.Find("Address Url").GetComponent<Text>();
         showDetailAction = new Action<object>(showDetail);
 
         if (Application.isPlaying)
