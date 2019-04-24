@@ -80,17 +80,17 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         poster.GetPoster();
 
         //The action added to Loom.QueueOnMainThread is run on Main Thread.
-        Loom.QueueOnMainThread(showDetailAction, poster.detail);
+        Loom.QueueOnMainThread(showDetailAction, poster);
     }
 
     public void showDetail(object detail)
     {
-        string detailRaw = detail as string;
-        string[] detailList = detailRaw.Split(';');
+        Poster detailPos = detail as Poster;
 
-        timeText.text = detailList[0];
-        addressText.text = detailList[1];
-        linkText.text = detailList[2];
+        timeText.text = detailPos.posdate;
+        addressText.text = detailPos.poslocation;
+        linkText.text = detailPos.poslink;
+        addressURL.text = detailPos.posmap;
     }
 
     public void clearDetail()

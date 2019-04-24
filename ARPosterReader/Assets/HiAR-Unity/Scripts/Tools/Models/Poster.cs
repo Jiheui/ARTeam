@@ -8,8 +8,11 @@ namespace Models {
 	public class Poster {
 		public string keygroup;
 		public string keyid;
-		public string detail;
-		public string url;
+		public string posdate;
+        public string poslocation;
+        public string posmap;
+        public string poslink;
+		public string resurl;
 
 		public string GetPoster() {
 			return Get("/posters");
@@ -33,8 +36,11 @@ namespace Models {
 			using (var reader = new StreamReader(response.GetResponseStream())) {
 				var json = reader.ReadToEnd();
 				var pr = JsonUtility.FromJson<PostersResponse>(json);
-				this.detail = pr.poster.detail;
-				this.url = pr.poster.url;
+                this.posdate = pr.poster.posdate;
+                this.poslocation = pr.poster.poslocation;
+                this.posmap = pr.poster.posmap;
+                this.poslink = pr.poster.poslink;
+                this.resurl = pr.poster.resurl;
 				return pr.error;
 			}
 		}
