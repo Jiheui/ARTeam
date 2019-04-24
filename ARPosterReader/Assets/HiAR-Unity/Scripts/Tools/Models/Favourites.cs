@@ -47,10 +47,11 @@ namespace Models {
 
 		public string Post(string endpoint) {
 			var err = "";
-			var uri = new Tools().Server + endpoint;
+			var uri = "http://" + new Tools().Server + endpoint;
 			RestClient.Post<FavouritesResponse>(new RequestHelper {
 				Uri = uri,
-				BodyString = new Tools().MakeJsonStringFromClass<Favourite>(this)
+				//BodyString = new Tools().MakeJsonStringFromClass<Favourite>(this)
+				BodyString = JsonUtility.ToJson(this)
 			}).Then(res => {
 				err = res.error;
 			});

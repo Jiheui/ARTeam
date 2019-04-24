@@ -92,7 +92,8 @@ namespace Models {
 			var uri = new Tools().Server + endpoint;
 			RestClient.Post<UsersResponse>(new RequestHelper {
 				Uri = uri,
-				BodyString = new Tools().MakeJsonStringFromClass<User>(this)
+				//BodyString = new Tools().MakeJsonStringFromClass<User>(this)
+				BodyString = JsonUtility.ToJson(this)
 			}).Then(res => {
 				err = res.error;
 			});
@@ -104,7 +105,8 @@ namespace Models {
 			var uri = new Tools().Server + endpoint;
 			RestClient.Patch<UsersResponse>(new RequestHelper {
 				Uri = uri,
-				BodyString = new Tools().MakeJsonStringFromClass<User>(this)
+				//BodyString = new Tools().MakeJsonStringFromClass<User>(this)
+				BodyString = JsonUtility.ToJson(this)
 			}).Then(res => {
 				err = res.error;
 			});

@@ -50,7 +50,8 @@ namespace Models {
 			var uri = new Tools().Server + endpoint;
 			RestClient.Post<PostersResponse>(new RequestHelper {
 				Uri = uri,
-				BodyString = new Tools().MakeJsonStringFromClass<Poster>(this)
+				//BodyString = new Tools().MakeJsonStringFromClass<Poster>(this)
+				BodyString = JsonUtility.ToJson(this)
 			}).Then(res => {
 				err = res.error;
 			});

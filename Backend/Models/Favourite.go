@@ -3,13 +3,14 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-13 00:06:38
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-15 11:50:11
+* @Last Modified time: 2019-04-24 15:55:56
  */
 package Models
 
 import (
 	"net/http"
 	"strconv"
+	"time"
 
 	//log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
@@ -96,4 +97,8 @@ func (f FavouritePosterResource) Delete(request *restful.Request, response *rest
 	} else {
 		response.WriteHeaderAndEntity(http.StatusOK, FavouriteResponse{Success: true})
 	}
+}
+
+func (f *Favourite) BeforeInsert() {
+	f.Time = time.Now().String()
 }
