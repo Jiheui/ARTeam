@@ -16,10 +16,13 @@ import (
 )
 
 type Poster struct {
-	KeyGroup string `json:"keygroup" xorm:"keygroup"`
-	KeyId    string `json:"keyid" xorm:"keyid"`
-	Detail   string `json:"detail" xorm:"detail"`
-	Url      string `json:"url" xorm:"url"`
+	KeyGroup     string `json:"keygroup" xorm:"keygroup"`
+	KeyId        string `json:"keyid" xorm:"keyid"`
+	PosDate      string `json:"posdate" xorm:"posdate"`
+    PosLocation  string `json:"poslocation" xorm:"poslocation"`
+    PosMap       string `json:"posmap" xorm:"posmap"`
+    PosLink      string `json:"poslink" xorm:"poslink"`
+    ResUrl       string `json:"resurl" xorm:"resurl"`
 }
 
 type PosterResponse struct {
