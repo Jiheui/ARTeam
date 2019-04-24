@@ -2,23 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Models;
 
 public class SelfLogin : MonoBehaviour {
 
 
-	public InputField email;
-	public InputField password;
+	public InputField _email;
+	public InputField _password;
 
-	public bool ConnecttoDatabase()
-	{
-		return true;
-		
-	}
 
 	public void checkPassword()
 	{
-		print("Emial"+email.text);
-		print("Password"+password.text);
+		User u = new User ();
+		u.username = _email.text;
+		u.password = _password.text;
+		u.Login();
+		print(u.authenticated);
 	}
 
 
