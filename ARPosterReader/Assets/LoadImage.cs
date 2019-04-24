@@ -18,6 +18,20 @@ public class LoadImage : MonoBehaviour {
 		url = p1.url;
 
 		StartCoroutine (LoadImageFromUrl ());
+
+		Favourite f_save = new Favourite ();
+		f_save.userid = 11111;
+		f_save.keygroup = "testgroupZ1";
+		f_save.keyid = "testidZZ1";
+		print(f_save.Like ());
+
+		Favourite f_get = new Favourite ();
+		f_get.userid = 11111;
+		f_get.GetFavourites ();
+		foreach (Favourite f in f_get.favourites) {
+			print (f.keyid);
+		}
+
 	}
 	
 	// Update is called once per frame

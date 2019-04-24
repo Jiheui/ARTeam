@@ -3,22 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Models;
 
-using UnityEngine.Networking;
-using System.Collections;
-using UnityEditor;
-using Proyecto26;
-using System.Net;
-using System.IO;
-using System;
-using UnityEngine.UI;
-using RSG;
-using System.Web;
-
 public class Poster_Thumbnail : MonoBehaviour {
 
-	public string url;
-//	Texture img;
-	public Renderer thisRenderer;
+//	public string url;
+////	Texture img;
+//	public Renderer thisRenderer;
 
 	// Use this for initialization
 	void Start () {
@@ -29,21 +18,26 @@ public class Poster_Thumbnail : MonoBehaviour {
 //		p.detail = "";
 //		p.SavePoster ();
 
+//
+//		Poster p1 = new Poster ();
+//		p1.keygroup = "testgroupZ1";
+//		p1.keyid = "testidZZ1";
+//		p1.GetPoster ();
+//
+//
 
-		Poster p1 = new Poster ();
-		p1.keygroup = "testgroupZ1";
-		p1.keyid = "testidZZ1";
-		p1.GetPoster ();
-		url = p1.url;
+
+
+//		url = p1.url;
 //		print (p1.url);
 //		for (int i = 0; i < 100; i++) {
 //			p1.GetPoster ();
 //			print (p1.url);
 //		}
 
-		StartCoroutine (LoadImage ());
-		thisRenderer.material.color = Color.red;
-
+//		StartCoroutine (LoadImage ());
+//		thisRenderer.material.color = Color.red;
+//
 
 	}
 	
@@ -52,17 +46,17 @@ public class Poster_Thumbnail : MonoBehaviour {
 		
 	}
 
-	private IEnumerator LoadImage(){
-		yield return 0;
-		WWW wwwLoader = new WWW (url);
-		yield return wwwLoader;
-//		img = wwwLoader.texture;
-
-		thisRenderer.material.color = Color.white;
-		thisRenderer.material.mainTexture = wwwLoader.texture;
-
-	
-	}
+//	private IEnumerator LoadImage(){
+//		yield return 0;
+//		WWW wwwLoader = new WWW (url);
+//		yield return wwwLoader;
+////		img = wwwLoader.texture;
+//
+//		thisRenderer.material.color = Color.white;
+//		thisRenderer.material.mainTexture = wwwLoader.texture;
+//
+//	
+//	}
 
 //	void OnGUI(){
 //		GUILayout.Label (img);

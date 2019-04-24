@@ -22,19 +22,16 @@ public class Like_Button : MonoBehaviour {
 	}
 
 	public void unlikePoster(){
-//		if (gameObject.GetComponent<Image> ().sprite == red_heart) {
-//			gameObject.GetComponent<Image> ().sprite = white_heart;
-//
-//		} else if (gameObject.GetComponent<Image> ().sprite == white_heart) {
-//			gameObject.GetComponent<Image> ().sprite = red_heart;
-//		} else {
-//			print ("error!");
-//		}
+		if (gameObject.GetComponent<Image> ().sprite == red_heart) {
+			gameObject.GetComponent<Image> ().sprite = white_heart;
 
-		for (int i = 0; i < 10; i++) {
-			int l = 0;
-			print (l);
+		} else if (gameObject.GetComponent<Image> ().sprite == white_heart) {
+			gameObject.GetComponent<Image> ().sprite = red_heart;
+		} else {
+			print ("error!");
 		}
+
+
 
 	}
 
