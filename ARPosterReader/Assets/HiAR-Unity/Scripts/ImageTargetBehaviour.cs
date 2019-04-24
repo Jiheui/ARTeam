@@ -15,7 +15,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     Text timeText;
     Text addressText;
     Text linkText;
-    Text addressURL;
+    string addressURL;
     Action<object> showDetailAction;
 
     private void Start()
@@ -23,7 +23,6 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         timeText = GameObject.Find("Time").GetComponent<Text>();
         addressText = GameObject.Find("Address").GetComponent<Text>();
         linkText = GameObject.Find("Web Link").GetComponent<Text>();
-        addressURL = GameObject.Find("Address URL").GetComponent<Text>();
         showDetailAction = new Action<object>(showDetail);
 
         if (Application.isPlaying)
@@ -90,7 +89,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         timeText.text = detailPos.posdate;
         addressText.text = detailPos.poslocation;
         linkText.text = detailPos.poslink;
-        addressURL.text = detailPos.posmap;
+        addressURL = detailPos.posmap;
     }
 
     public void clearDetail()
@@ -98,10 +97,13 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         timeText.text = "Time";
         addressText.text = "Address";
         linkText.text = "Web Link";
+        addressURL = "";
     }
 
     public void OpenMapOnClick()
     {
+        if (addressURL.Equals(""))
+            return;
         bool fail = false;
         AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject ca = up.GetStatic<AndroidJavaObject>("currentActivity");
@@ -126,7 +128,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         {
             //open the app
             //Application.OpenURL("https://goo.gl/maps/sL2Tug3N5oytfJvR7");
-            Application.OpenURL(addressURL.text);
+            Application.OpenURL(addressURL);
         }
 
         up.Dispose();
