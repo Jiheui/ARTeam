@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-17 19:05:19
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-24 16:01:55
+* @Last Modified time: 2019-04-24 16:08:33
  */
 package Models
 
@@ -113,5 +113,5 @@ func (f FeedbackResource) Delete(request *restful.Request, response *restful.Res
 }
 
 func (f *Feedback) BeforeInsert() {
-	f.Time = time.Now().String()
+	f.Time = time.Now().Format("2006-01-02 15:04:05")
 }

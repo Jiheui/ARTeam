@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-13 00:06:38
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-24 15:55:56
+* @Last Modified time: 2019-04-24 16:08:26
  */
 package Models
 
@@ -100,5 +100,5 @@ func (f FavouritePosterResource) Delete(request *restful.Request, response *rest
 }
 
 func (f *Favourite) BeforeInsert() {
-	f.Time = time.Now().String()
+	f.Time = time.Now().Format("2006-01-02 15:04:05")
 }
