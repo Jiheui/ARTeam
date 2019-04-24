@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-17 19:05:19
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-22 12:44:18
+* @Last Modified time: 2019-04-24 16:00:12
  */
 package Models
 
@@ -109,4 +109,8 @@ func (f FeedbackResource) Delete(request *restful.Request, response *restful.Res
 	} else {
 		response.WriteHeaderAndEntity(http.StatusOK, FeedbackResponse{Success: true})
 	}
+}
+
+func (f *Feedback) BeforeInsert() {
+	f.Time = time.Now().String()
 }
