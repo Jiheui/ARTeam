@@ -15,7 +15,7 @@ public class LoadImage : MonoBehaviour {
 		p1.keygroup = "testgroupZ1";
 		p1.keyid = "testidZZ1";
 		p1.GetPoster ();
-		url = p1.url;
+		url = p1.poslink;
 
 		StartCoroutine (LoadImageFromUrl ());
 
