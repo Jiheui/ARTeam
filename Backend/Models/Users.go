@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-31 19:00:29
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-23 23:32:37
+* @Last Modified time: 2019-04-25 13:21:07
  */
 package Models
 
@@ -19,10 +19,12 @@ import (
 )
 
 type User struct {
-	ID   int    `json:"id" description:"identifier of the user" xorm:"id pk autoincr"`
-	Name string `json:"name" description:"name of the user" xorm:"name"`
-	DoB  string `json:"dob" description:"age of the user" xorm:"dob"`
+	ID       int    `json:"id" description:"identifier of the user" xorm:"id pk autoincr"`
+	Name     string `json:"name" description:"name of the user" xorm:"name"`
+	DoB      string `json:"dob" description:"age of the user" xorm:"dob"`
+	NickName string `json:"nickname" xorm:"nickname"`
 
+	Email    string `json:"email" xorm:"email"`
 	Username string `json:"username" description:"login info" xorm:"username"`
 	Password string `json:"password" description:"login info" xorm:"password"`
 
