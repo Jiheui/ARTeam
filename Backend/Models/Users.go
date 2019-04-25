@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-31 19:00:29
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-25 22:59:40
+* @Last Modified time: 2019-04-25 23:53:56
  */
 package Models
 
@@ -57,6 +57,9 @@ func (u UserResource) WebService() *restful.WebService {
 
 	ws.Route(ws.POST("/login").To(u.login)).
 		Doc("check login info")
+
+	ws.Route(ws.POST("/checkExist").To(u.checkExist)).
+		Doc("check login key info existence")
 
 	ws.Route(ws.GET("/{user-id}").To(u.findUser).
 		Doc("get a user").
@@ -176,6 +179,33 @@ func (u UserResource) login(request *restful.Request, response *restful.Response
 			has, err = db.Engine.Table("user").Where("email = ?", usr.Email).And("password = ?", usr.Password).Get(&usr)
 		} else {
 			has, err = db.Engine.Table("user").Where("username = ?", usr.Username).And("password = ?", usr.Password).Get(&usr)
+		}
+		if err != nil {
+			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
+		} else {
+			response.WriteEntity(UsersResponse{Success: has})
+		}
+	} else {
+		response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
+	}
+}
+
+// GET http://localhost:8080/users/checkExists
+//
+func (u UserResource) checkExist(request *restful.Request, response *restful.Response) {
+	usr := User{}
+	err := request.ReadEntity(&usr)
+	has := false
+
+	if err == nil {
+		if usr.Facebook != "" {
+			has, err = db.Engine.Table("user").Where("facebook = ?", usr.Facebook).Get(&usr)
+		} else if usr.Google != "" {
+			has, err = db.Engine.Table("user").Where("google = ?", usr.Google).Get(&usr)
+		} else if usr.Email != "" {
+			has, err = db.Engine.Table("user").Where("email = ?", usr.Email).Get(&usr)
+		} else {
+			has, err = db.Engine.Table("user").Where("username = ?", usr.Username).Get(&usr)
 		}
 		if err != nil {
 			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})

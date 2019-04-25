@@ -28,6 +28,10 @@ namespace Models {
 			return Get ("/users/login");
 		}
 
+		public string CheckExist() {
+			return Post("/users/checkExist");
+		}
+
 		public string FindUser() {
 			return Get ("/users/" + id.ToString ());
 		}
