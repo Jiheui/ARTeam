@@ -3,14 +3,14 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-02 19:00:20
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-25 15:09:44
+* @Last Modified time: 2019-04-25 16:23:49
  */
 package Models
 
 import (
+	"encoding/json"
+	"os"
 	"sync"
-
-	"../Tools"
 
 	log "github.com/Sirupsen/logrus"
 	_ "github.com/go-sql-driver/mysql"
