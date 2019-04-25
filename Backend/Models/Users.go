@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-31 19:00:29
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-25 13:21:07
+* @Last Modified time: 2019-04-25 22:59:40
  */
 package Models
 
@@ -122,12 +122,11 @@ func (u *UserResource) updateUser(request *restful.Request, response *restful.Re
 //
 func (u *UserResource) confirm(request *restful.Request, response *restful.Response) {
 	token := request.PathParameter("confirm-token") // currently using email as the token
-	usr := User{Activated: 1}
 	if err == nil {
 		db.WLock()
 		defer db.WUnlock() //unlock when exit this method
 
-		if _, err := db.Engine.Table("user").Cols("activated").Where("username = ?", token).Update(usr); err != nil {
+		if _, err := db.Engine.Exec("update user set activated=1 where email=\"" + token + "\";"); err != nil {
 			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
 		} else {
 			response.WriteEntity(UsersResponse{Success: true})
@@ -150,7 +149,10 @@ func (u *UserResource) createUser(request *restful.Request, response *restful.Re
 			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
 		} else {
 			// send confirm link
-			Tools.SendConfirmLink(usr.Username)
+			if usr.Email != "" && usr.Facebook == "" && usr.Google == "" {
+				usr.Activated = 0
+				Tools.SendConfirmLink(usr.Email)
+			}
 			response.WriteHeaderAndEntity(http.StatusCreated, UsersResponse{Success: true})
 		}
 	} else {
@@ -163,8 +165,19 @@ func (u *UserResource) createUser(request *restful.Request, response *restful.Re
 func (u UserResource) login(request *restful.Request, response *restful.Response) {
 	usr := User{}
 	err := request.ReadEntity(&usr)
+	has := false
+
 	if err == nil {
-		if has, err := db.Engine.Table("user").Where("username = ?", usr.Username).And("password = ?", usr.Password).Get(&usr); err != nil {
+		if usr.Facebook != "" {
+			has, err = db.Engine.Table("user").Where("facebook = ?", usr.Facebook).Get(&usr)
+		} else if usr.Google != "" {
+			has, err = db.Engine.Table("user").Where("google = ?", usr.Google).Get(&usr)
+		} else if usr.Email != "" {
+			has, err = db.Engine.Table("user").Where("email = ?", usr.Email).And("password = ?", usr.Password).Get(&usr)
+		} else {
+			has, err = db.Engine.Table("user").Where("username = ?", usr.Username).And("password = ?", usr.Password).Get(&usr)
+		}
+		if err != nil {
 			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
 		} else {
 			response.WriteEntity(UsersResponse{Success: has})
