@@ -11,26 +11,32 @@ public class LoadImage : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Poster p1 = new Poster ();
-		p1.keygroup = "testgroupZ1";
-		p1.keyid = "testidZZ1";
-		p1.GetPoster ();
-		url = p1.url;
 
-		StartCoroutine (LoadImageFromUrl ());
+		Poster p = new Poster ();
+		p.keygroup = "testgroupZ11";
+		p.keyid = "testidZZ2";
+		p.resurl = "https://k.zol-img.com.cn/sjbbs/7692/a7691515_s.jpg";
+//		p.detail = "13 Apr 2019;The ANU Library;https://www.google.com";
+		p.SavePoster ();
+
+//		Poster p1 = new Poster ();
+//		p1.keygroup = "testgroupZ1";
+//		p1.keyid = "testidZZ1";
+//		p1.GetPoster ();
+//		url = p1.resurl;
+
+//		StartCoroutine (LoadImageFromUrl ());
 
 		Favourite f_save = new Favourite ();
 		f_save.userid = 11111;
-		f_save.keygroup = "testgroupZ1";
-		f_save.keyid = "testidZZ1";
-		print(f_save.Like ());
+		f_save.keygroup = "testgroupZ11";
+		f_save.keyid = "testidZZ2";
+		f_save.Like ();
 
-		Favourite f_get = new Favourite ();
-		f_get.userid = 11111;
-		f_get.GetFavourites ();
-		foreach (Favourite f in f_get.favourites) {
-			print (f.keyid);
-		}
+
+//		img.color = Color.red;
+
+
 
 	}
 	

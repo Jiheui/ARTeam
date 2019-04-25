@@ -2,70 +2,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Models;
 
 public class Favourite_content : MonoBehaviour {
 
+	public GameObject originObject;
+	public Transform parentTransForm;
 
 
 	// Use this for initialization
 	void Start () {
 
-
-//		for (int j = 0; j < 3; j++) {
-//			GameObject panel = new GameObject ();
-//			panel.AddComponent<CanvasRenderer>();
-//			panel.transform.SetParent (this.transform, false);
-//
-//			Image i = panel.AddComponent<Image> ();
-////			i.color = Color.red;
-//
-//			i.transform.SetParent (panel.transform, false);
-//			i.transform.position = new Vector3 (0, 110*j-230, 0);
-//		}
+		GameObject posters;
 
 
-
-//		GameObject panel = new GameObject ();
-//		panel.AddComponent<CanvasRenderer>();
-//		panel.transform.SetParent (this.transform, false);
-//		Text t = panel.AddComponent<Text> ();
-//		t.text = "1234567890";
-//		t.transform.SetParent (panel.transform, false);
+		//clone list items (poster)
 
 
+		Favourite f_get = new Favourite ();
+		f_get.userid = 11111;
+		f_get.GetFavourites ();
 
-//		GameObject thumbnail = new GameObject ();
-//		thumbnail.AddComponent<CanvasRenderer>();
-//		thumbnail.transform.SetParent (panel.transform, false);
+		Favourite firstone = f_get.favourites [0];
 
-
-
-
-//		GameObject posterTitle = new GameObject ("posterTitle");
-//		posterTitle.transform.SetParent (panel.transform, false);
-//
-//		posterTitle.AddComponent<CanvasRenderer> ();
-//		posterTitle.transform.position = new Vector3 (-10.0f, -10.0f, 1.0f);
-
-
-//
-//		t.fontSize = 20;
-//		t.color = Color.blue;
-
-	
-
-//		t.rectTransform.localScale = new Vector3 (3f,3f,1);
-//		t.rectTransform.localPosition = new Vector3 (100f, -100f, 1);
-//		t.transform.SetParent (posterTitle.transform, false);
+		Poster pFirst = new Poster ();
+		pFirst.keygroup = firstone.keygroup;
+		pFirst.keyid = firstone.keyid;
+		pFirst.GetPoster ();
+		string urlFirst = pFirst.resurl;
+		RawImage imgFirst = this.GetComponentsInChildren<RawImage> ()[0];
+		StartCoroutine (LoadImageFromUrl (urlFirst, imgFirst));
+		Text tFirst = this.GetComponentsInChildren<Text> () [0];
+		tFirst.text = pFirst.keyid;
 
 
-//		Image i2 = posterTitle.AddComponent<Image> ();
-//		i2.color = Color.blue;
-//		i2.rectTransform.localScale = new Vector3 (1f,1f,1);
-//		i2.rectTransform.localPosition = new Vector3 (10f, -50f, 1);
-//		i2.transform.SetParent (posterTitle.transform, false);
+		for (int i = 1; i < f_get.favourites.Length; i++) {
 
+			Poster p1 = new Poster ();
+			p1.keygroup = f_get.favourites[i].keygroup;
+			p1.keyid = f_get.favourites[i].keyid;
+			p1.GetPoster ();
+			string url = p1.resurl;
 
+			posters = (GameObject)GameObject.Instantiate(originObject, parentTransForm);
+			RawImage[] imgs = posters.GetComponentsInChildren<RawImage> ();
+			foreach (RawImage img in imgs) {
+//				i.color = Random.ColorHSV ();
+				StartCoroutine (LoadImageFromUrl (url,img));
+			}
+
+			Text[] texts = posters.GetComponentsInChildren<Text> ();
+			foreach (Text t in texts) {
+				t.text = p1.keyid;
+			}
+
+//			StartCoroutine (LoadImageFromUrl (url,img));
+
+//			print (url);
+		}
+			
 
 
 	}
@@ -74,4 +69,28 @@ public class Favourite_content : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	private IEnumerator LoadImageFromUrl(string url, RawImage img){
+
+		WWW wwwLoader = new WWW (url);
+		yield return wwwLoader;
+		//		img = wwwLoader.texture;
+
+		Texture2D t = wwwLoader.texture;
+		img.texture = t;
+
+	}
+
+//	private RawImage[] getRawImages (Favourite[] favourites){
+//		foreach (Favourite f in favourites) {
+//			Poster p1 = new Poster ();
+//			p1.keygroup = f.keygroup;
+//			p1.keyid = f.keyid;
+//			p1.GetPoster ();
+//			string url = p1.resurl;
+//
+//		}
+//	}
+
+
 }
