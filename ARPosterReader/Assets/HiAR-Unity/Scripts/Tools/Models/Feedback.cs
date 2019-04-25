@@ -76,7 +76,8 @@ namespace Models {
 			var uri = new Tools().Server + endpoint;
 			RestClient.Post<FeedbackResponse>(new RequestHelper {
 				Uri = uri,
-				BodyString = new Tools().MakeJsonStringFromClass<Feedback>(this)
+				//BodyString = new Tools().MakeJsonStringFromClass<Feedback>(this)
+				BodyString = JsonUtility.ToJson(this)
 			}).Then(res => {
 				err = res.error;
 			});

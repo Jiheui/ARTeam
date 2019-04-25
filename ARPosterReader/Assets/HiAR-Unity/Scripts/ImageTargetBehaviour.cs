@@ -23,7 +23,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         timeText = GameObject.Find("Time").GetComponent<Text>();
         addressText = GameObject.Find("Address").GetComponent<Text>();
         linkText = GameObject.Find("Web Link").GetComponent<Text>();
-        addressURL = GameObject.Find("Address URL").GetComponent<Text>();
+        addressURL = GameObject.Find("Address Url").GetComponent<Text>();
         showDetailAction = new Action<object>(showDetail);
 
         if (Application.isPlaying)
@@ -80,17 +80,17 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         poster.GetPoster();
 
         //The action added to Loom.QueueOnMainThread is run on Main Thread.
-        Loom.QueueOnMainThread(showDetailAction, poster.detail);
+        Loom.QueueOnMainThread(showDetailAction, poster);
     }
 
     public void showDetail(object detail)
     {
-        string detailRaw = detail as string;
-        string[] detailList = detailRaw.Split(';');
+        Poster detailPos = detail as Poster;
 
-        timeText.text = detailList[0];
-        addressText.text = detailList[1];
-        linkText.text = detailList[2];
+        timeText.text = detailPos.posdate;
+        addressText.text = detailPos.poslocation;
+        linkText.text = detailPos.poslink;
+        addressURL.text = detailPos.posmap;
     }
 
     public void clearDetail()
@@ -98,10 +98,13 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         timeText.text = "Time";
         addressText.text = "Address";
         linkText.text = "Web Link";
+        addressURL.text = "";
     }
 
     public void OpenMapOnClick()
     {
+        if (addressURL.Equals(""))
+            return;
         bool fail = false;
         AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject ca = up.GetStatic<AndroidJavaObject>("currentActivity");
@@ -121,6 +124,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         if (fail)
         {   //open app in store
             Application.OpenURL("https://google.com");
+
         }
         else
         {

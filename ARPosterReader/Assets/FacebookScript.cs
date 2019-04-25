@@ -35,7 +35,29 @@ public class FacebookScript : MonoBehaviour
     public void FacebookLogin()
     {
         var permissions = new List<string>() { "public_profile", "email", "user_friends" };
-        FB.LogInWithReadPermissions(permissions);
+        FB.LogInWithReadPermissions(permissions,AuthCallback);
+        
+    }
+
+    private void AuthCallback(ILoginResult result)
+    {
+        if (FB.IsLoggedIn)
+        {
+            Debug.Log("Log innnnnnnnnnnnnnnnnnnnnnnnnnn");
+            //Get Facebook Details
+            FB.API("me?fields=name", Facebook.Unity.HttpMethod.GET, GetFacebookData);
+        }
+        else
+        {
+            Debug.Log("User cancelled login");
+        }
+    }
+
+    void GetFacebookData(Facebook.Unity.IGraphResult result)
+    {
+        string fbName = result.ResultDictionary["name"].ToString();
+
+        Debug.Log("fbName: " + fbName);
     }
 
     public void FacebookLogout()
