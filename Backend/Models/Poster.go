@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-11 15:42:37
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-15 10:45:11
+* @Last Modified time: 2019-04-25 21:35:15
  */
 package Models
 
@@ -16,14 +16,14 @@ import (
 )
 
 type Poster struct {
-	KeyGroup     string `json:"keygroup" xorm:"keygroup"`
-	KeyId        string `json:"keyid" xorm:"keyid"`
-	PosTitle      string `json:"postitle" xorm:"postitle"`
-	PosDate      string `json:"posdate" xorm:"posdate"`
-    PosLocation  string `json:"poslocation" xorm:"poslocation"`
-    PosMap       string `json:"posmap" xorm:"posmap"`
-    PosLink      string `json:"poslink" xorm:"poslink"`
-    ResUrl       string `json:"resurl" xorm:"resurl"`
+	KeyGroup    string `json:"keygroup" xorm:"keygroup"`
+	KeyId       string `json:"keyid" xorm:"keyid"`
+	PosTitle    string `json:"postitle" xorm:"postitle"`
+	PosDate     string `json:"posdate" xorm:"posdate"`
+	PosLocation string `json:"poslocation" xorm:"poslocation"`
+	PosMap      string `json:"posmap" xorm:"posmap"`
+	PosLink     string `json:"poslink" xorm:"poslink"`
+	ResUrl      string `json:"resurl" xorm:"resurl"`
 }
 
 type PosterResponse struct {
