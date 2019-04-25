@@ -18,6 +18,7 @@ import (
 type Poster struct {
 	KeyGroup     string `json:"keygroup" xorm:"keygroup"`
 	KeyId        string `json:"keyid" xorm:"keyid"`
+	PosTitle      string `json:"postitle" xorm:"postitle"`
 	PosDate      string `json:"posdate" xorm:"posdate"`
     PosLocation  string `json:"poslocation" xorm:"poslocation"`
     PosMap       string `json:"posmap" xorm:"posmap"`

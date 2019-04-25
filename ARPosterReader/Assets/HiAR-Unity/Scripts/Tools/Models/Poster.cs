@@ -8,6 +8,7 @@ namespace Models {
 	public class Poster {
 		public string keygroup;
 		public string keyid;
+        public string postitle;
 		public string posdate;
         public string poslocation;
         public string posmap;
@@ -36,6 +37,7 @@ namespace Models {
 			using (var reader = new StreamReader(response.GetResponseStream())) {
 				var json = reader.ReadToEnd();
 				var pr = JsonUtility.FromJson<PostersResponse>(json);
+                this.postitle = pr.poster.posdate;
                 this.posdate = pr.poster.posdate;
                 this.poslocation = pr.poster.poslocation;
                 this.posmap = pr.poster.posmap;

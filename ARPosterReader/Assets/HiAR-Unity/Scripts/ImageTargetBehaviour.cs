@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Threading;
 using hiscene;
 using Models;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
 //[RequireComponent(typeof(HiARBaseObjectMovement))]
@@ -100,52 +98,6 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         linkText.text = "Web Link";
         addressURL.text = "";
     }
-
-    public void OpenMapOnClick()
-    {
-        if (addressURL.Equals(""))
-            return;
-        bool fail = false;
-        AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        AndroidJavaObject ca = up.GetStatic<AndroidJavaObject>("currentActivity");
-        AndroidJavaObject packageManager = ca.Call<AndroidJavaObject>("getPackageManager");
-
-        AndroidJavaObject launchIntent = null;
-        try
-        {
-            launchIntent = packageManager.Call<AndroidJavaObject>("getLaunchIntentForPackage", "com.google.android.apps.maps");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.StackTrace);
-            fail = true;
-        }
-
-        if (fail)
-        {   //open app in store
-            Application.OpenURL("https://google.com");
-
-        }
-        else
-        {
-            //open the app
-            //Application.OpenURL("https://goo.gl/maps/sL2Tug3N5oytfJvR7");
-            Application.OpenURL(addressURL.text);
-        }
-
-        up.Dispose();
-        ca.Dispose();
-        packageManager.Dispose();
-        launchIntent.Dispose();
-    }
-
-    public void OpenWebOnClick()
-    {
-        //open the URL
-        Application.OpenURL(linkText.text);
-    }
-
-
 
     public virtual void OnTargetTracked(RecoResult recoResult, Matrix4x4 pose) { }
 
