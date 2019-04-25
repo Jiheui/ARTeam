@@ -12,12 +12,12 @@ public class LoadImage : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		Poster p = new Poster ();
-		p.keygroup = "testgroupZ11";
-		p.keyid = "testidZZ2";
-		p.resurl = "https://k.zol-img.com.cn/sjbbs/7692/a7691515_s.jpg";
-//		p.detail = "13 Apr 2019;The ANU Library;https://www.google.com";
-		p.SavePoster ();
+//		Poster p = new Poster ();
+//		p.keygroup = "testgroupZ11";
+//		p.keyid = "testidZZ2";
+//		p.resurl = "https://k.zol-img.com.cn/sjbbs/7692/a7691515_s.jpg";
+////		p.detail = "13 Apr 2019;The ANU Library;https://www.google.com";
+//		p.SavePoster ();
 
 //		Poster p1 = new Poster ();
 //		p1.keygroup = "testgroupZ1";
@@ -27,11 +27,11 @@ public class LoadImage : MonoBehaviour {
 
 //		StartCoroutine (LoadImageFromUrl ());
 
-		Favourite f_save = new Favourite ();
-		f_save.userid = 11111;
-		f_save.keygroup = "testgroupZ11";
-		f_save.keyid = "testidZZ2";
-		f_save.Like ();
+//		Favourite f_save = new Favourite ();
+//		f_save.userid = 11111;
+//		f_save.keygroup = "testgroupZ11";
+//		f_save.keyid = "testidZZ2";
+//		f_save.Like ();
 
 
 //		img.color = Color.red;

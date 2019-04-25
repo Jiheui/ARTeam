@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ThumbFull : MonoBehaviour {
 
-	public Image img;
+	public RawImage img;
 	public Button close;
 	public Image thumbnail;
 
@@ -21,6 +21,6 @@ public class ThumbFull : MonoBehaviour {
 
 	//This is called when the user clicks on thumbnail of a poster. It enlarges the poster to fullsize.
   void EnlargeImg (){
-		img = thumbnail.GetComponent<Image>();
+		img = thumbnail.GetComponent<RawImage>();
     }
 }
