@@ -43,7 +43,9 @@ namespace Models {
 
 		// Create a new user
 		public string Create() {
-			this.password = MD5Encrypt64 (this.password);
+			if (!String.IsNullOrEmpty (this.password)) {
+				this.password = MD5Encrypt64 (this.password);
+			}
 			if (Regex.IsMatch (this.username, @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*")) {
 				// Do something, like send confirm email
 			}
