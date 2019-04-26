@@ -27,7 +27,9 @@ namespace Models {
 		public bool exist;
 
 		public string Login() {
-			this.password = MD5Encrypt64 (this.password);
+			if (!String.IsNullOrEmpty (this.password)) {
+				this.password = MD5Encrypt64 (this.password);
+			}
 			return Get ("/users/login");
 		}
 
