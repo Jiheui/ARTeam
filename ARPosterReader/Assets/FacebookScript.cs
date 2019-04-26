@@ -46,7 +46,7 @@ public class FacebookScript : MonoBehaviour
         {
             Debug.Log("Log in Success");
             //Get Facebook Details
-            FB.API("me?fields=id", Facebook.Unity.HttpMethod.GET, GetFacebookData);
+            FB.API("me?fields=id,name", Facebook.Unity.HttpMethod.GET, GetFacebookData, new Dictionary<string, string>() { });
         }
         else
         {
@@ -57,10 +57,12 @@ public class FacebookScript : MonoBehaviour
     void GetFacebookData(Facebook.Unity.IGraphResult result)
     {
         string fbId = result.ResultDictionary["id"].ToString();
+        string name = result.ResultDictionary["name"].ToString();
 
         Debug.Log("fbIdddddd: " + fbId);
         User u = new User();
         u.facebook = fbId;
+        u.name = name;
         u.CheckExist();
         if (u.exist)
         {
@@ -68,8 +70,8 @@ public class FacebookScript : MonoBehaviour
         }
         else
         {
-            Debug.Log("The Create return " + u.Create());
-            Debug.Log("The Login return " + u.Login());
+            u.Create();
+            u.Login();
         }
 
         Debug.Log("The User has Loged in :  "+u.authenticated);
