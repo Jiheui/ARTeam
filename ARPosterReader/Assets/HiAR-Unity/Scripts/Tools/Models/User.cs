@@ -23,6 +23,9 @@ namespace Models {
 		[NonSerialized]
 		public bool authenticated;
 
+		[NonSerialized]
+		public bool exist;
+
 		public string Login() {
 			this.password = MD5Encrypt64 (this.password);
 			return Get ("/users/login");
@@ -100,6 +103,9 @@ namespace Models {
 				BodyString = JsonUtility.ToJson(this)
 			}).Then(res => {
 				err = res.error;
+				if(endpoint.Equals("/users/checkExist")){
+					this.exist = res.success;
+				}
 			});
 			return err;
 		}
