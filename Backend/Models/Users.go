@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-31 19:00:29
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-25 23:53:56
+* @Last Modified time: 2019-04-26 23:14:14
  */
 package Models
 
@@ -74,7 +74,7 @@ func (u UserResource) WebService() *restful.WebService {
 		Metadata(restfulspec.KeyOpenAPITags, tags).
 		Reads(User{})) // from the request
 
-	ws.Route(ws.PATCH("/confirm/{confirm-token}").To(u.confirm).
+	ws.Route(ws.PATCH("/confirm/{confirm-token:*}").To(u.confirm).
 		Doc("confirm activation").
 		Metadata(restfulspec.KeyOpenAPITags, tags).
 		Reads(User{})) // from the request
