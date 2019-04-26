@@ -14,10 +14,13 @@ namespace Models {
 		public int id;
 		public string name;
 		public string dob;
+        public string nickname;
+        public string email;
 		public string username;
 		public string password;
 		public string facebook;
 		public string google;
+        public int activated;
 
 
 		[NonSerialized]
@@ -45,9 +48,6 @@ namespace Models {
 		public string Create() {
 			if (!String.IsNullOrEmpty (this.password)) {
 				this.password = MD5Encrypt64 (this.password);
-			}
-			if (Regex.IsMatch (this.username, @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*")) {
-				// Do something, like send confirm email
 			}
 			return Post ("/users");
 		}
@@ -100,7 +100,7 @@ namespace Models {
 
 		private string Post(string endpoint) {
 			var err = "";
-			var uri = new Tools().Server + endpoint;
+			var uri = "http://"+new Tools().Server + endpoint;
 			RestClient.Post<UsersResponse>(new RequestHelper {
 				Uri = uri,
 				//BodyString = new Tools().MakeJsonStringFromClass<User>(this)

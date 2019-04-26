@@ -2,6 +2,7 @@
 using UnityEngine;
 using Facebook.Unity;
 using UnityEngine.UI;
+using Models;
 
 public class FacebookScript : MonoBehaviour
 {
@@ -43,9 +44,9 @@ public class FacebookScript : MonoBehaviour
     {
         if (FB.IsLoggedIn)
         {
-            Debug.Log("Log innnnnnnnnnnnnnnnnnnnnnnnnnn");
+            Debug.Log("Log in Success");
             //Get Facebook Details
-            FB.API("me?fields=name", Facebook.Unity.HttpMethod.GET, GetFacebookData);
+            FB.API("me?fields=id", Facebook.Unity.HttpMethod.GET, GetFacebookData);
         }
         else
         {
@@ -55,9 +56,23 @@ public class FacebookScript : MonoBehaviour
 
     void GetFacebookData(Facebook.Unity.IGraphResult result)
     {
-        string fbName = result.ResultDictionary["name"].ToString();
+        string fbId = result.ResultDictionary["id"].ToString();
 
-        Debug.Log("fbName: " + fbName);
+        Debug.Log("fbIdddddd: " + fbId);
+        User u = new User();
+        u.facebook = fbId;
+        u.CheckExist();
+        if (u.exist)
+        {
+            u.Login();
+        }
+        else
+        {
+            Debug.Log("The Create return " + u.Create());
+            Debug.Log("The Login return " + u.Login());
+        }
+
+        Debug.Log("The User has Loged in :  "+u.authenticated);
     }
 
     public void FacebookLogout()
