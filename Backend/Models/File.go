@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-26 00:22:52
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-26 21:59:27
+* @Last Modified time: 2019-04-26 23:14:02
  */
 
 package Models
@@ -47,7 +47,7 @@ func (f FileResource) WebService() *restful.WebService {
 		Consumes(restful.MIME_OCTET, restful.MIME_XML, restful.MIME_JSON).
 		Produces(restful.MIME_OCTET, restful.MIME_JSON, restful.MIME_XML) // you can specify this per route as well
 
-	ws.Route(ws.GET("/{file-name}").To(f.GetFile)).
+	ws.Route(ws.GET("/{file-name:*}").To(f.GetFile)).
 		Param(ws.PathParameter("file-name", "identifier of the poster").DataType("string").DefaultValue("")).
 		Doc("get file resource")
 
@@ -56,7 +56,7 @@ func (f FileResource) WebService() *restful.WebService {
 		Param(ws.PathParameter("key-id", "identifier of the poster").DataType("string").DefaultValue("")).
 		Doc("get file list")
 
-	ws.Route(ws.POST("/{file-name}").To(f.Store).
+	ws.Route(ws.POST("/{file-name:*}").To(f.Store).
 		Doc("store file")) // from the request
 
 	ws.Route(ws.PATCH("/update").To(f.Update).
