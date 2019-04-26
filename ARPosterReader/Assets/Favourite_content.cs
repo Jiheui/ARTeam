@@ -33,7 +33,8 @@ public class Favourite_content : MonoBehaviour {
 		RawImage imgFirst = this.GetComponentsInChildren<RawImage> ()[0];
 		StartCoroutine (LoadImageFromUrl (urlFirst, imgFirst));
 		Text tFirst = this.GetComponentsInChildren<Text> () [0];
-		tFirst.text = pFirst.keyid;
+        tFirst.name = pFirst.keygroup + "/" + pFirst.keyid;
+        tFirst.text = pFirst.keyid;
 
 
 		for (int i = 1; i < f_get.favourites.Length; i++) {
@@ -53,7 +54,8 @@ public class Favourite_content : MonoBehaviour {
 
 			Text[] texts = posters.GetComponentsInChildren<Text> ();
 			foreach (Text t in texts) {
-				t.text = p1.keyid;
+                t.name = p1.keygroup + '/' + p1.keyid;
+                t.text = p1.keyid;
 			}
 
 //			StartCoroutine (LoadImageFromUrl (url,img));
