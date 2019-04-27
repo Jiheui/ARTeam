@@ -46,11 +46,6 @@ public class Favourite_content : MonoBehaviour {
 			string url = p1.resurl;
 
 			posters = GameObject.Instantiate(originObject, parentTransForm);
-            posters = GameObject.Instantiate(originObject, parentTransForm);
-            posters = GameObject.Instantiate(originObject, parentTransForm);
-            posters = GameObject.Instantiate(originObject, parentTransForm);
-            posters = GameObject.Instantiate(originObject, parentTransForm);
-            posters = GameObject.Instantiate(originObject, parentTransForm);
             RawImage[] imgs = posters.GetComponentsInChildren<RawImage> ();
 			foreach (RawImage img in imgs) {
 //				i.color = Random.ColorHSV ();
