@@ -19,12 +19,7 @@ public class ThumbFull : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
 
     //This is called when the user clicks on thumbnail of a poster. It enlarges the poster to fullsize.
     public void EnlargeImg (GameObject go){
