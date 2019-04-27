@@ -57,7 +57,9 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         }
         for (var i = 0; i < transform.childCount; i++)
         {
+            //transform.GetChild(i).rotation = Quaternion.Euler(-90, 0, 0);
             transform.GetChild(i).gameObject.SetActive(true);
+            
         }
 		targetFound = true;
 
