@@ -37,7 +37,7 @@ public class FacebookScript : MonoBehaviour
     {
         var permissions = new List<string>() { "public_profile", "email", "user_friends" };
         FB.LogInWithReadPermissions(permissions,AuthCallback);
-        
+
     }
 
     private void AuthCallback(ILoginResult result)
@@ -64,6 +64,7 @@ public class FacebookScript : MonoBehaviour
         u.facebook = fbId;
         u.name = name;
         u.CheckExist();
+        Debug.Log("The CheckExist" + u.exist);
         if (u.exist)
         {
             u.Login();
@@ -74,7 +75,10 @@ public class FacebookScript : MonoBehaviour
             u.Login();
         }
 
-        Debug.Log("The User has Loged in :  "+u.authenticated);
+        if (u.authenticated)
+        {
+            storeLoginSessionId.loginId = u.id;
+        }
     }
 
     public void FacebookLogout()

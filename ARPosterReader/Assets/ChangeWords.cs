@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 /**this script is used for "favorite", 
     when first click the button, it changes to red, then add to favourite
@@ -16,15 +14,9 @@ public class ChangeWords : MonoBehaviour {
 
 	public int counter = 0;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public Text keyGroup;
+
+    public Text keyId;
 
 	public void changeText()
 	{

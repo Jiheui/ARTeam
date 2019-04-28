@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Models;
-
+public static class storeLoginSessionId{
+    public static int loginId = -1;
+}
 public class SelfLogin : MonoBehaviour {
 
 

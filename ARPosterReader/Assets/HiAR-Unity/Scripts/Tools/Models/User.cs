@@ -80,6 +80,7 @@ namespace Models {
 				using (var reader = new StreamReader (response.GetResponseStream ())) {
 					var json = reader.ReadToEnd ();
 					var ur = JsonUtility.FromJson<UsersResponse> (json);
+                    this.id = ur.user.id;
 					this.authenticated = ur.success;
 					return ur.error;
 				}

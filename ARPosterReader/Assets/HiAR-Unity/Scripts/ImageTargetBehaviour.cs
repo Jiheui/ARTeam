@@ -14,6 +14,8 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     Text addressText;
     Text linkText;
     Text addressURL;
+    Text keyGroup;
+    Text keyId;
     Action<object> showDetailAction;
 
     private void Start()
@@ -22,6 +24,9 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         addressText = GameObject.Find("Address").GetComponent<Text>();
         linkText = GameObject.Find("Web Link").GetComponent<Text>();
         addressURL = GameObject.Find("Address Url").GetComponent<Text>();
+        keyGroup = GameObject.Find("KeyGroup").GetComponent<Text>();
+        keyId = GameObject.Find("KeyId").GetComponent<Text>();
+
         showDetailAction = new Action<object>(showDetail);
 
         if (Application.isPlaying)
@@ -68,7 +73,6 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
             Poster poster = new Poster();
             poster.keygroup = recoResult.KeyGroup;
             poster.keyid = recoResult.KeyId;
-            poster.GetPoster();
             Thread thread = new Thread(new ParameterizedThreadStart(getPoster));
             thread.Start(poster);
         });
@@ -91,6 +95,15 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         addressText.text = detailPos.poslocation;
         linkText.text = detailPos.poslink;
         addressURL.text = detailPos.posmap;
+        keyGroup.text = detailPos.keygroup;
+        keyId.text = detailPos.keyid;
+
+        
+        GameObject favouriteButton = GameObject.Find("Favourite");
+        if (favouriteButton != null)
+        {
+            favouriteButton.GetComponent<UpdateFavouriteButton>().changeText();
+        }
     }
 
     public void clearDetail()
@@ -99,6 +112,14 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         addressText.text = "Address";
         linkText.text = "Web Link";
         addressURL.text = "";
+        keyGroup.text = "";
+        keyId.text = "";
+
+        GameObject favouriteButton = GameObject.Find("Favourite");
+        if (favouriteButton != null)
+        {
+            favouriteButton.GetComponent<UpdateFavouriteButton>().changeText();
+        }
     }
 
     public virtual void OnTargetTracked(RecoResult recoResult, Matrix4x4 pose) { }
