@@ -2,8 +2,8 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-22 20:38:53
-* @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-23 23:34:18
+* @Last Modified by:   Yutao GE
+* @Last Modified time: 2019-04-27 17:26:53
  */
 package Tools
 
@@ -23,7 +23,7 @@ func SendConfirmLink(email string) {
 	from := "arposter.team@gmail.com"
 	pass := "arposter?t3am"
 	to := email
-	body := "shmily.me/users/confirm/" + email
+	body := "shmily.me:8080/users/confirm/" + email
 
 	msg := "From: " + from + "\n" +
 		"To: " + to + "\n" +

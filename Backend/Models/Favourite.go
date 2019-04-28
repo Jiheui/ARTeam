@@ -2,8 +2,8 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-13 00:06:38
-* @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-24 16:14:53
+* @Last Modified by:   Yutao GE
+* @Last Modified time: 2019-04-28 13:03:57
  */
 package Models
 
@@ -92,7 +92,7 @@ func (f FavouritePosterResource) Delete(request *restful.Request, response *rest
 
 	fs := Favourite{UserId: uid, KeyGroup: keyGroup, KeyId: keyId}
 
-	if _, err := db.Engine.Where("userid = ?", uid).Where("keygroup = ?", keyGroup).Where("keyid", keyId).Delete(fs); err != nil {
+	if _, err := db.Engine.Table("favourite").Where("userid = ?", uid).Where("keygroup = ?", keyGroup).Where("keyid = ?", keyId).Delete(fs); err != nil {
 		response.WriteHeaderAndEntity(http.StatusInternalServerError, FavouriteResponse{Error: err.Error()})
 	} else {
 		response.WriteHeaderAndEntity(http.StatusOK, FavouriteResponse{Success: true})

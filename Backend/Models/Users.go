@@ -2,8 +2,8 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-31 19:00:29
-* @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-27 00:22:30
+* @Last Modified by:   Yutao GE
+* @Last Modified time: 2019-04-28 12:55:48
  */
 package Models
 
@@ -183,7 +183,7 @@ func (u UserResource) login(request *restful.Request, response *restful.Response
 		if err != nil {
 			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
 		} else {
-			response.WriteEntity(UsersResponse{Success: has})
+			response.WriteEntity(UsersResponse{Success: has, User: usr})
 		}
 	} else {
 		response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
