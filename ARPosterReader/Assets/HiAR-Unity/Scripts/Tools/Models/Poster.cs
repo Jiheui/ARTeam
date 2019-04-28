@@ -36,7 +36,7 @@ namespace Models {
 			using (var reader = new StreamReader(response.GetResponseStream())) {
 				var json = reader.ReadToEnd();
 				var pr = JsonUtility.FromJson<PostersResponse>(json);
-                this.postitle = pr.poster.posdate;
+                this.postitle = pr.poster.postitle;
                 this.posdate = pr.poster.posdate;
                 this.poslocation = pr.poster.poslocation;
                 this.posmap = pr.poster.posmap;

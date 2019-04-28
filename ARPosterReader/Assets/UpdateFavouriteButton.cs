@@ -24,13 +24,10 @@ public class UpdateFavouriteButton : MonoBehaviour {
 
     public bool isFavor = false;
 
-    Action<object> changeButtonText;
-
     public void Start()
     {
         // change the favourite button status default set to disable
         favouriteButton.interactable = false;
-        changeButtonText = new Action<object>(changeButtonStatus);
     }
 
     // Update the text on the Button
@@ -62,7 +59,7 @@ public class UpdateFavouriteButton : MonoBehaviour {
         Favourite check = favourite as Favourite;
 
         // Here wait 500 milliseconds to ensure the update has happend in database
-        Thread.Sleep(500);
+        //Thread.Sleep(500);
         check.GetFavourites();
         Favourite[] favorList = check.favourites;
         foreach (Favourite favor in favorList)

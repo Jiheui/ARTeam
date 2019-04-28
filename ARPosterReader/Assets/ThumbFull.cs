@@ -25,7 +25,7 @@ public class ThumbFull : MonoBehaviour {
     public void EnlargeImg (GameObject go){
 
         Favourite f_get = new Favourite();
-        f_get.userid = 11111;
+        f_get.userid = storeLoginSessionId.loginId;
         f_get.GetFavourites();
         string n = go.name;
 
@@ -37,9 +37,9 @@ public class ThumbFull : MonoBehaviour {
             p.keyid = f.keyid;
             p.GetPoster();
 
-            string s2 = p.keygroup + "/" + p.keyid;
+            string s2 = p.keygroup+"/"+p.keyid;
 
-            if (s2 == n)
+            if (s2.Equals(n))
             {
                 string url = p.resurl;
                 RawImage img = this.GetComponentInChildren<RawImage>();
@@ -47,8 +47,8 @@ public class ThumbFull : MonoBehaviour {
 
                 timeText.text = p.posdate;
                 addressText.text = p.poslocation;
-                addressURL.text = p.poslink;
-                linkText.text = "To be added!!!";
+                addressURL.text = p.posmap;
+                linkText.text = p.poslink;
                 return;
             }
         }

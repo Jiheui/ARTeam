@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using hiscene;
 using Models;
@@ -16,7 +18,6 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     Text addressURL;
     Text keyGroup;
     Text keyId;
-    Action<object> showDetailAction;
 
     private void Start()
     {
@@ -26,8 +27,6 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         addressURL = GameObject.Find("Address Url").GetComponent<Text>();
         keyGroup = GameObject.Find("KeyGroup").GetComponent<Text>();
         keyId = GameObject.Find("KeyId").GetComponent<Text>();
-
-        showDetailAction = new Action<object>(showDetail);
 
         if (Application.isPlaying)
         {
@@ -84,7 +83,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         poster.GetPoster();
 
         //The action added to Loom.QueueOnMainThread is run on Main Thread.
-        Loom.QueueOnMainThread(showDetailAction, poster);
+        Loom.QueueOnMainThread(showDetail, poster);
     }
 
     public void showDetail(object detail)

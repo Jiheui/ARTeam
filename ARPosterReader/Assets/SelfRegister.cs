@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Models;
 
@@ -32,8 +30,17 @@ public class SelfRegister : MonoBehaviour {
 			u.username = _email.text;
 			u.dob = _birthday.text;
 			u.name = _name.text;
-			print(u.Create ());
-		}
+            u.Create();
+            u.CheckExist();
+            if (u.authenticated)
+            {
+                storeLoginSessionId.loginId = u.id;
+            }
+            else
+            {
+                Debug.Log("Login Failed");
+            }
+        }
 			
 	}
 
