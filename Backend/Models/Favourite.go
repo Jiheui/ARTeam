@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-13 00:06:38
 * @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-04-28 13:03:57
+* @Last Modified time: 2019-04-28 14:16:07
  */
 package Models
 
@@ -49,7 +49,7 @@ func (f FavouritePosterResource) WebService() *restful.WebService {
 	ws.Route(ws.POST("").To(f.Post).
 		Doc("save favourite poster info")) // from the request
 
-	ws.Route(ws.DELETE("/{user-id}/{key-group}/{key-id}").To(f.Get)).
+	ws.Route(ws.DELETE("/{user-id}/{key-group}/{key-id}").To(f.Delete)).
 		Param(ws.PathParameter("user-id", "identifier of the user").DataType("integer").DefaultValue("0")).
 		Param(ws.PathParameter("key-group", "identifier of the poster").DataType("string").DefaultValue("")).
 		Param(ws.PathParameter("key-id", "identifier of the poster").DataType("string").DefaultValue(""))
