@@ -103,7 +103,8 @@ namespace Models {
 			var uri = "http://" + new Tools().Server + endpoint;
 			var req = HttpWebRequest.Create(uri);
 			req.ContentType = "application/json";
-			req.Method = "POST"; 
+			req.Method = "POST";
+
 			ASCIIEncoding encoding = new ASCIIEncoding ();
 			byte[] bodyData = encoding.GetBytes (JsonUtility.ToJson (this));
 			req.ContentLength = bodyData.Length;
@@ -117,32 +118,35 @@ namespace Models {
 				this.exist = ur.success;
 				return ur.error;
 			}
-			//var err = "";
-			//var uri = "http://"+new Tools().Server + endpoint;
-			//RestClient.Post<UsersResponse>(new RequestHelper {
-		//		Uri = uri,
-		//		//BodyString = new Tools().MakeJsonStringFromClass<User>(this)
-		//		BodyString = JsonUtility.ToJson(this)
-		///	}).Then(res => {
-		//		err = res.error;
-		//		if(endpoint.Equals("/users/checkExist")){
-		//			this.exist = res.success;
-		//		}
-		//	});
-		//	return err;
 		}
 
 		private string Patch(string endpoint) {
-			var err = "";
-			var uri = new Tools().Server + endpoint;
-			RestClient.Patch<UsersResponse>(new RequestHelper {
-				Uri = uri,
-				//BodyString = new Tools().MakeJsonStringFromClass<User>(this)
-				BodyString = JsonUtility.ToJson(this)
-			}).Then(res => {
-				err = res.error;
-			});
-			return err;
+			var uri = "http://" + new Tools().Server + endpoint;
+			var req = HttpWebRequest.Create(uri);
+			req.ContentType = "application/json";
+			req.Method = "PATCH"; 
+
+			ASCIIEncoding encoding = new ASCIIEncoding ();
+			byte[] bodyData = encoding.GetBytes (JsonUtility.ToJson (this));
+			req.ContentLength = bodyData.Length;
+			req.GetRequestStream ().Write (bodyData, 0, bodyData.Length);
+
+			var response = req.GetResponse () as HttpWebResponse;
+
+			using (var reader = new StreamReader (response.GetResponseStream ())) {
+				var json = reader.ReadToEnd ();
+				var ur = JsonUtility.FromJson<UsersResponse> (json);
+				return ur.error;
+			}
+			//var err = "";
+			//var uri = new Tools().Server + endpoint;
+			//RestClient.Patch<UsersResponse>(new RequestHelper {
+			//	Uri = uri,
+			//	BodyString = JsonUtility.ToJson(this)
+			//}).Then(res => {
+		//		err = res.error;
+		//	});
+		//	return err;
 		}
 
 		[Serializable]
