@@ -14,7 +14,12 @@ public class ObserveImageTarget : MonoBehaviour {
 		button = GetComponent<Button>();
 	}
 
-	void Update () {
+    public void UpdateTargetBehaviour()
+    {
+        targetBehaviour = imageTargeter.GetComponent<ImageTargetBehaviour>();
+    }
+
+    void Update () {
 		button.interactable = targetBehaviour.IsTargetFound();
 	}
 }
