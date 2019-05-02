@@ -33,6 +33,12 @@ namespace Models
 			}
 		}
 
+		public string Upload(Stream fileStream){
+			data = ReadFully (fileStream);
+			return Upload ();
+		}
+
+
 		public string GetFileByFilename() {
 			var uri = "http://" + new Tools ().Server + "/files/" + filename;
 			var req = HttpWebRequest.Create (uri);
