@@ -49,7 +49,7 @@ namespace Models
 			var response = req.GetResponse () as HttpWebResponse;
 			
 
-			using (var reader = new StreamReader (response.GetResponseStream ())) {
+			using (Stream reader = response.GetResponseStream ()) {
 				data = ReadFully (reader);
 
 				if (response.StatusCode == HttpStatusCode.OK) {
@@ -78,7 +78,8 @@ namespace Models
 			}
 			catch (Exception ex)
 			{
-				return ex.Message;
+				//return ex.Message;
+				return null;
 			}
 		}
 
