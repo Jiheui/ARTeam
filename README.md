@@ -58,6 +58,16 @@ u6283016 | Yutao GE
 u5847571 | Lachlan John Grainger
 
 ## Stakeholders
+### Unversity Students
+#### What they do / How they Interact
+University students focuses on view the posters for entertainment purpose, they might want to go to the AR exhibition or want to get the digital version of the poster they like. All of these the applicaiton is helpful. And for academic purpose, the informtion get from the application also useful.
+
+#### Expectations
+University students expects to the application would utilise AR technology to display a digital poster which is personalisable to the user and allow for a interactive experience.
+
+#### Improvements
+Feedbacks from the sudents is important which could be used to improve our application.
+
 ### Accenture: supporting development
 
 #### What they do / How they Interact
@@ -70,7 +80,7 @@ Accenture expects to have a proof of concept application developed by the end of
 Accenture will be able to provide extended support to improve existing companies.
 
 
-### Business Partner: wants to display AR Posters
+### Business Partner: display AR Posters
 
 #### What they do / How they Interact
 The business partner is an individual/organisation that is interested in advertising an event or product. They interact with the project through supplying a digital poster design that could be displayed through the application.
