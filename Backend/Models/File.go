@@ -2,8 +2,8 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-26 00:22:52
-* @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-05-02 18:39:19
+* @Last Modified by:   Yutao GE
+* @Last Modified time: 2019-05-02 21:58:49
  */
 
 package Models
@@ -45,7 +45,7 @@ func (f FileResource) WebService() *restful.WebService {
 	ws.
 		Path("/files").
 		Consumes(restful.MIME_OCTET, restful.MIME_XML, restful.MIME_JSON).
-		Produces(restful.MIME_OCTET, restful.MIME_JSON, restful.MIME_XML) // you can specify this per route as well
+		Produces(restful.MIME_OCTET, restful.MIME_XML, restful.MIME_JSON) // you can specify this per route as well
 
 	ws.Route(ws.GET("/{filename}").To(f.GetFile)).
 		Param(ws.PathParameter("filename", "identifier of the poster").DataType("string").DefaultValue("")).

@@ -38,6 +38,11 @@ namespace Models
 			return Upload ();
 		}
 
+		public string Upload(string fileName){
+			data = FileContent(fileName);
+			return Upload ();
+		}
+
 
 		public string GetFileByFilename() {
 			var uri = "http://" + new Tools ().Server + "/files/" + filename;
@@ -80,6 +85,24 @@ namespace Models
 			{
 				//return ex.Message;
 				return null;
+			}
+		}
+
+		private byte[] FileContent(string fileName)
+		{
+			using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+			{
+				try
+				{
+					byte[] buffur = new byte[fs.Length];
+					fs.Read(buffur, 0, (int)fs.Length);
+					return buffur;
+				}
+				catch (Exception ex)
+				{
+					//throw ex;
+					return null;
+				}
 			}
 		}
 
