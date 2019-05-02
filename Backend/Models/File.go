@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-26 00:22:52
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-27 00:33:56
+* @Last Modified time: 2019-05-02 18:39:19
  */
 
 package Models
@@ -21,7 +21,7 @@ import (
 )
 
 type File struct {
-	Id       int    `json:"id" xorm:"id"`
+	Id       int64  `json:"id" xorm:"id"`
 	FileName string `json:"filename" xorm:"filename"`
 	KeyGroup string `json:"keygroup" xorm:"keygroup"`
 	KeyId    string `json:"keyid" xorm:"keyid"`

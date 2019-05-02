@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Proyecto26;
 using System.Net;
 using System.IO;
 using System;
@@ -91,15 +90,6 @@ namespace Models {
 				var fb = JsonUtility.FromJson<FeedbackResponse>(json);
 				return fb.error;
 			}
-			//var err = "";
-			//var uri = new Tools().Server + endpoint;
-			//RestClient.Post<FeedbackResponse>(new RequestHelper {
-			//	Uri = uri,
-			//	BodyString = JsonUtility.ToJson(this)
-			//}).Then(res => {
-		//		err = res.error;
-		//	});
-		//	return err;
 		}
 
 		public string Delete(string endpoint)
