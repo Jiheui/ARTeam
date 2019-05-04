@@ -18,6 +18,8 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     Text addressURL;
     Text keyGroup;
     Text keyId;
+    CameraManager eventManager;
+    ObserveImageTarget zoomBtn;
 
     private void Start()
     {
@@ -27,6 +29,8 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         addressURL = GameObject.Find("Address Url").GetComponent<Text>();
         keyGroup = GameObject.Find("KeyGroup").GetComponent<Text>();
         keyId = GameObject.Find("KeyId").GetComponent<Text>();
+        eventManager = GameObject.Find("EventSystem").GetComponent<CameraManager>();
+        zoomBtn = GameObject.Find("Zoom Button").GetComponent<ObserveImageTarget>();
 
         if (Application.isPlaying)
         {
@@ -66,6 +70,9 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
             
         }
 		targetFound = true;
+        zoomBtn.imageTargeter = this.gameObject;
+        zoomBtn.UpdateTargetBehaviour();
+        eventManager.aimImageTarget = this.gameObject;
 
         // The Method in Loom.Run Async can start a thread. And In the Thread, add the action that can only process on main thread.
         Loom.RunAsync(() => {
@@ -99,7 +106,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
 
         
         GameObject favouriteButton = GameObject.Find("Favourite");
-        if (favouriteButton != null)
+        if (favouriteButton != null && storeLoginSessionId.loginId!=-1)
         {
             favouriteButton.GetComponent<UpdateFavouriteButton>().changeText();
         }

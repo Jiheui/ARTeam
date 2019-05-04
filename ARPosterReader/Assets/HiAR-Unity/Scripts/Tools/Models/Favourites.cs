@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Proyecto26;
 using System.Net;
 using System.IO;
 using System;
@@ -65,15 +64,6 @@ namespace Models {
 				var fr = JsonUtility.FromJson<FavouritesResponse>(json);
 				return fr.error;
 			}
-			//var err = "";
-			//var uri = "http://" + new Tools().Server + endpoint;
-			//RestClient.Post<FavouritesResponse>(new RequestHelper {
-			//	Uri = uri,
-			//	BodyString = JsonUtility.ToJson(this)
-			//}).Then(res => {
-			//	err = res.error;
-			//});
-			//return err;
 		}
 
 		public string Delete(string endpoint)

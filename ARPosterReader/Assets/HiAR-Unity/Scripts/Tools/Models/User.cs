@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.IO;
-using Proyecto26;
 using System;
 using UnityEngine;
 using System.Text;
@@ -138,15 +137,6 @@ namespace Models {
 				var ur = JsonUtility.FromJson<UsersResponse> (json);
 				return ur.error;
 			}
-			//var err = "";
-			//var uri = new Tools().Server + endpoint;
-			//RestClient.Patch<UsersResponse>(new RequestHelper {
-			//	Uri = uri,
-			//	BodyString = JsonUtility.ToJson(this)
-			//}).Then(res => {
-		//		err = res.error;
-		//	});
-		//	return err;
 		}
 
 		[Serializable]
