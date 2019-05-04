@@ -56,7 +56,7 @@ public class Favourite_content : MonoBehaviour {
 			posters = GameObject.Instantiate(originObject, parentTransForm);
             RawImage[] imgs = posters.GetComponentsInChildren<RawImage> ();
 			foreach (RawImage img in imgs) {
-//				i.color = Random.ColorHSV ();
+//				img.color = Random.ColorHSV ();
 				StartCoroutine (LoadImageFromUrl (url,img));
                 Debug.Log(url);
 			}
