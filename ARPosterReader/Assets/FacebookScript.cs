@@ -12,14 +12,18 @@ public class FacebookScript : MonoBehaviour
 
     public void Start()
     {
-        if(storeLoginSessionId.loginId == -1)
+        if (favouriteButton != null)
         {
-            favouriteButton.interactable = false;
+            if (storeLoginSessionId.loginId == -1)
+            {
+                favouriteButton.interactable = false;
+            }
+            else
+            {
+                favouriteButton.interactable = true;
+            }
         }
-        else
-        {
-            favouriteButton.interactable = true;
-        }
+        
     }
 
     private void Awake()
@@ -91,7 +95,11 @@ public class FacebookScript : MonoBehaviour
         if (u.authenticated)
         {
             storeLoginSessionId.loginId = u.id;
-            favouriteButton.interactable = true;
+
+            if (favouriteButton != null)
+            {
+                favouriteButton.interactable = true;
+            }
         }
     }
 

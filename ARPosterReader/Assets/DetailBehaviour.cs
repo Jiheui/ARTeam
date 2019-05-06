@@ -48,7 +48,8 @@ public class DetailBehaviour : MonoBehaviour {
         {
             //open the app
             //Application.OpenURL("https://goo.gl/maps/sL2Tug3N5oytfJvR7");
-            Application.OpenURL(addressURL.text);
+            if(!string.IsNullOrEmpty(addressURL.text))
+                Application.OpenURL(addressURL.text);
         }
 
         up.Dispose();
