@@ -3,6 +3,7 @@ using UnityEngine;
 using Facebook.Unity;
 using UnityEngine.UI;
 using Models;
+using UnityEngine.SceneManagement;
 
 public class FacebookScript : MonoBehaviour
 {
@@ -95,11 +96,13 @@ public class FacebookScript : MonoBehaviour
         if (u.authenticated)
         {
             storeLoginSessionId.loginId = u.id;
+            storeLoginSessionId.name = u.name;
 
             if (favouriteButton != null)
             {
                 favouriteButton.interactable = true;
             }
+            SceneManager.LoadScene("HiARRobot");
         }
     }
 

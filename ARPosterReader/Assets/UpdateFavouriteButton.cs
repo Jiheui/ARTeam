@@ -14,9 +14,11 @@ using UnityEngine.UI;
 **/
 public class UpdateFavouriteButton : MonoBehaviour {
 
-	public Text favouriteText = null;
+	//public Text favouriteText = null;
 
     public Button favouriteButton = null;
+
+    public Image favouriteImage = null;
 
     public Text keyGroup;
 
@@ -24,9 +26,16 @@ public class UpdateFavouriteButton : MonoBehaviour {
 
     public bool isFavor = false;
 
+    public Sprite disable = null;
+
+    public Sprite like = null;
+
+    public Sprite dislike = null;
+
     public void Start()
     {
         // change the favourite button status default set to disable
+        favouriteImage.sprite = disable;
         favouriteButton.interactable = false;
     }
 
@@ -38,7 +47,8 @@ public class UpdateFavouriteButton : MonoBehaviour {
         // disable button if no poster detected
         if (!hasPoster)
         {
-            favouriteText.text = "favourite";
+            //favouriteText.text = "favourite";
+            favouriteImage.sprite = disable;
             favouriteButton.interactable = false;
         }
         else
@@ -81,13 +91,15 @@ public class UpdateFavouriteButton : MonoBehaviour {
 
         if (status)
         {
-            favouriteText.text = "remove";
+            //favouriteText.text = "remove";
+            favouriteImage.sprite = like;
             favouriteButton.interactable = true;
             isFavor = true;
         }
         else
         {
-            favouriteText.text = "favourite";
+            //favouriteText.text = "favourite";
+            favouriteImage.sprite = dislike;
             favouriteButton.interactable = true;
             isFavor = false;
         }

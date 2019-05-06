@@ -66,7 +66,6 @@ namespace MaterialUI
 
         public void Open()
         {
-            Debug.Log("Open Clicked");
             currentPos = thisRectTransform.anchoredPosition;
             currentBackgroundAlpha = backgroundCanvasGroup.alpha;
             currentShadowAlpha = shadowCanvasGroup.alpha;

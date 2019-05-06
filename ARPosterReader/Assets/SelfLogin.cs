@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public static class storeLoginSessionId{
     public static int loginId = -1;
+    public static string name = null;
+    public static string email = "";
 }
 public class SelfLogin : MonoBehaviour {
 
@@ -22,7 +24,17 @@ public class SelfLogin : MonoBehaviour {
         if (u.authenticated)
         {
             storeLoginSessionId.loginId = u.id;
-            SceneManager.LoadScene("MainScene");
+            if (string.IsNullOrEmpty(u.name))
+            {
+                storeLoginSessionId.name = u.username;
+            }
+            else
+            {
+                storeLoginSessionId.name = u.name;
+            }
+            
+            storeLoginSessionId.email = u.email;
+            SceneManager.LoadScene("HiARRobot");
         }
         else
         {
