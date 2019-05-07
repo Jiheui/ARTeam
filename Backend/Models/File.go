@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-26 00:22:52
 * @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-05-02 21:58:49
+* @Last Modified time: 2019-05-08 00:33:08
  */
 
 package Models
@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strings"
 
 	//log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
@@ -51,6 +52,10 @@ func (f FileResource) WebService() *restful.WebService {
 		Param(ws.PathParameter("filename", "identifier of the poster").DataType("string").DefaultValue("")).
 		Doc("get file resource")
 
+	ws.Route(ws.GET("/res/{filename}").To(f.GetFile4Static)).
+		Param(ws.PathParameter("filename", "identifier of the poster").DataType("string").DefaultValue("")).
+		Doc("get file resource")
+
 	ws.Route(ws.GET("/{key-group}/{key-id}").To(f.GetFileListByPoster)).
 		Param(ws.PathParameter("key-group", "identifier of the poster").DataType("string").DefaultValue("")).
 		Param(ws.PathParameter("key-id", "identifier of the poster").DataType("string").DefaultValue("")).
@@ -67,6 +72,20 @@ func (f FileResource) WebService() *restful.WebService {
 
 func (f FileResource) GetFile(request *restful.Request, response *restful.Response) {
 	actual := path.Join(rootDir, request.PathParameter("filename"))
+	http.ServeFile(response.ResponseWriter, request.Request, actual)
+}
+
+func (f FileResource) GetFile4Static(request *restful.Request, response *restful.Response) {
+	fileName := request.PathParameter("filename")
+	filePath := rootDir+"res/"
+
+	if(strings.HasSuffix(fileName, ".js")) {
+		filePath += "js/"
+	} else if(strings.HasSuffix(fileName, ".css")) {
+		filePath += "css/"
+	}
+
+	actual := path.Join(filePath, fileName)
 	http.ServeFile(response.ResponseWriter, request.Request, actual)
 }
 
