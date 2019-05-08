@@ -30,7 +30,7 @@ namespace MaterialUI
         public bool darkenBackground = true;
         public bool tapBackgroundToClose = true;
 
-        private byte state;
+        private byte state=0;
         private float animStartTime;
         private float animDeltaTime;
         public float animationDuration = 0.5f;
@@ -56,6 +56,7 @@ namespace MaterialUI
             minPosition = -maxPosition + 40;
 
             backgroundRectTransform.sizeDelta = new Vector2(Screen.width, backgroundRectTransform.sizeDelta.y);
+            Close();
         }
 
         public void BackgroundTap()

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Console | Login</title>
+	<link rel="stylesheet" href="{{.StaticFilePrefix}}/login.css">
+</head>
+
+<body>
+	<div class="lowin lowin-blue">
+			<img class="lowin-icon" src="{{.StaticFilePrefix}}/arposter.png" alt="logo">
+		<div class="lowin-wrapper">
+			<div class="lowin-box lowin-login">
+				<div class="lowin-box-inner">
+					<form>
+						<p>Sign in to continue</p>
+						<div class="lowin-group">
+							<label>Username or Email <a href="#" class="login-back-link">Sign in?</a></label>
+							 <input type="password" style="display: none;"/>
+							<input type="text" class="lowin-input" placeholder="username or email" autocomplete="new-username">
+						</div>
+						<div class="lowin-group password-group">
+							<label>Password <a href="#" class="forgot-link">Forgot Password?</a></label>
+							<input type="password" name="password" autocomplete="new-password" class="lowin-input">
+						</div>
+						<button class="lowin-btn login-btn">
+							Sign In
+						</button>
+
+						<div class="text-foot">
+							Don't have an account? <a href="" class="register-link">Register</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
