@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-26 00:22:52
 * @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-05-08 00:33:08
+* @Last Modified time: 2019-05-08 14:49:34
  */
 
 package Models
@@ -83,6 +83,11 @@ func (f FileResource) GetFile4Static(request *restful.Request, response *restful
 		filePath += "js/"
 	} else if(strings.HasSuffix(fileName, ".css")) {
 		filePath += "css/"
+	} else if(strings.HasSuffix(fileName, ".eot") || 
+		strings.HasSuffix(fileName, ".svg") || 
+		strings.HasSuffix(fileName, ".ttf") ||
+		strings.HasSuffix(fileName, ".woff")) {
+		filePath += "fonts/"
 	}
 
 	actual := path.Join(filePath, fileName)
