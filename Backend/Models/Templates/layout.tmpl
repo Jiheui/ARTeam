@@ -65,9 +65,9 @@
           </div>
           <!-- Sidebar Navidation Menus--><span class="heading">Console</span>
           <ul class="list-unstyled">
-            <li class="active"><a href="dashboard"> <i class="icon-home"></i>Dashboard </a></li>
-            <li><a href="#"> <i class="fas fa-upload"></i> Upload </a></li>
-            <li><a href="#"> <i class="far fa-folder-open"></i></i> My Posters </a></li>
+            <li class="inactive"><a href="dashboard"> <i class="icon-home"></i>Dashboard </a></li>
+            <li><a href="upload"> <i class="fas fa-upload"></i> Upload </a></li>
+            <li><a href="manage"> <i class="far fa-folder-open"></i></i> My Posters </a></li>
           </ul>
         </nav>
 
@@ -75,6 +75,10 @@
           <!-- main content -->
           {{if eq .PageName "dashboard"}} 
             {{template "dashboard" .}}
+          {{else if eq .PageName "upload"}} 
+            {{template "upload" .}}
+          {{else if eq .PageName "manage"}} 
+            {{template "manage" .}}
           {{end}}
         </div>
       </div>

@@ -2,8 +2,8 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-05-06 22:43:42
-* @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-05-08 18:47:51
+* @Last Modified by:   Yutao Ge
+* @Last Modified time: 2019-05-09 18:48:45
  */
 package Models
 
@@ -17,15 +17,15 @@ import (
 
 type Console struct {
 	StaticFilePrefix string
-	PageName string
+	PageName         string
 
 	// Personal information
-	Username string
-	Password string
+	Username  string
+	Password  string
 	AvatarUrl string
 
 	// Dashboard
-	TotalPosters int
+	TotalPosters   int
 	TotalResources int
 }
 
@@ -43,6 +43,8 @@ func (c *ConsoleResource) WebService() *restful.WebService {
 	ws.Route(ws.GET("/login").To(c.Index))
 
 	ws.Route(ws.GET("/dashboard").To(c.Dashboard))
+	ws.Route(ws.GET("/upload").To(c.Upload))
+	ws.Route(ws.GET("/manage").To(c.Manage))
 
 	return ws
 }
@@ -65,8 +67,40 @@ func (c *ConsoleResource) Dashboard(request *restful.Request, response *restful.
 	p.TotalPosters = 25
 	p.TotalResources = 70
 
-	t, err := template.ParseFiles("Models/Templates/layout.tmpl", 
+	t, err := template.ParseFiles("Models/Templates/layout.tmpl",
 		"Models/Templates/dashboard.tmpl")
+	if err != nil {
+		log.Fatalf("Template gave: %s", err)
+	}
+
+	t.Execute(response.ResponseWriter, p)
+}
+
+// Upload page
+func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Response) {
+	p := NewConsoleWithStaticFilePrefix(request)
+	p.PageName = "upload"
+	p.TotalPosters = 25
+	p.TotalResources = 70
+
+	t, err := template.ParseFiles("Models/Templates/layout.tmpl",
+		"Models/Templates/upload.tmpl")
+	if err != nil {
+		log.Fatalf("Template gave: %s", err)
+	}
+
+	t.Execute(response.ResponseWriter, p)
+}
+
+// Manage page
+func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Response) {
+	p := NewConsoleWithStaticFilePrefix(request)
+	p.PageName = "manage"
+	p.TotalPosters = 25
+	p.TotalResources = 70
+
+	t, err := template.ParseFiles("Models/Templates/layout.tmpl",
+		"Models/Templates/manage.tmpl")
 	if err != nil {
 		log.Fatalf("Template gave: %s", err)
 	}
