@@ -73,6 +73,9 @@
 
         <div class="content-inner">
           <!-- main content -->
+          {{if eq .PageName "dashboard"}} 
+            {{template "dashboard" .}}
+          {{end}}
         </div>
       </div>
     </div>
