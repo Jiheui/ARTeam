@@ -24,6 +24,8 @@ public class ThumbFull : MonoBehaviour {
     //This is called when the user clicks on thumbnail of a poster. It enlarges the poster to fullsize.
     public void EnlargeImg (GameObject go){
 
+        RawImage img = this.GetComponentInChildren<RawImage>();
+        img.texture = new Texture();
         Favourite f_get = new Favourite();
         f_get.userid = storeLoginSessionId.loginId;
         f_get.GetFavourites();
@@ -42,7 +44,6 @@ public class ThumbFull : MonoBehaviour {
             if (s2.Equals(n))
             {
                 string url = p.resurl;
-                RawImage img = this.GetComponentInChildren<RawImage>();
                 StartCoroutine(LoadImageFromUrl(url, img));
 
                 timeText.text = p.posdate;
