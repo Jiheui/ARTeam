@@ -12,15 +12,13 @@ public class Feedback : MonoBehaviour {
 
 	public void AddtoDatabase()
 	{
-//		User u = new User ();
-//		string email = u.email;
-//		int id = u.id;
-//		string username = u.username;
-
+		User u = new User ();
+		string email = u.email;
+		int id = u.id;
+		string username = u.username;
 		string f = _feedback.text;
-		Debug.Log ("hello world" + f);
 
-
+		Feedback feedback = new Feedback(id,f,email,Time);
 
 		// u.SendFeedback();
 	}
