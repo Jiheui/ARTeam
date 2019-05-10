@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Models;
+
+
 
 public class Feedback : MonoBehaviour {
 	public InputField _feedback;
@@ -12,15 +12,15 @@ public class Feedback : MonoBehaviour {
 
 	public void AddtoDatabase()
 	{
-		User u = new User ();
-		string email = u.email;
-		int id = u.id;
-		string username = u.username;
+		
+		string email = storeLoginSessionId.email;
+		int id = storeLoginSessionId.loginId;
+		string username = storeLoginSessionId.name;
 		string f = _feedback.text;
 
-		Feedback feedback = new Feedback(id,f,email,Time);
+		Feedback feedback = new Feedback();
+		feedback.SendFeedback();
 
-		// u.SendFeedback();
 	}
 
 	// Use this for initialization
