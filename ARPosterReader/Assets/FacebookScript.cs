@@ -4,6 +4,7 @@ using Facebook.Unity;
 using UnityEngine.UI;
 using Models;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class FacebookScript : MonoBehaviour
 {
@@ -95,14 +96,38 @@ public class FacebookScript : MonoBehaviour
 
         if (u.authenticated)
         {
+            string path = Application.persistentDataPath + "/User.txt";
+            StreamWriter writer;
+            string uID = u.id.ToString();
             storeLoginSessionId.loginId = u.id;
-            storeLoginSessionId.name = u.name;
-
-            if (favouriteButton != null)
+            if (string.IsNullOrEmpty(u.name))
             {
-                favouriteButton.interactable = true;
+                storeLoginSessionId.name = u.username;
             }
+            else
+            {
+                storeLoginSessionId.name = u.name;
+            }
+
+            storeLoginSessionId.email = u.email;
+
+            if (!File.Exists(path))
+            {
+                writer = File.CreateText(path);
+                writer.Write(uID + "\n");
+                writer.Write(storeLoginSessionId.name + "\n");
+                writer.Close();
+            }
+            else
+            {
+                File.WriteAllText(path, uID + "\n" + storeLoginSessionId.name + "\n");
+            }
+
             SceneManager.LoadScene("HiARRobot");
+        }
+        else
+        {
+            Debug.Log("Login Failed");
         }
     }
 
