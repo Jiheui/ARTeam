@@ -19,7 +19,7 @@ public class Feedback : MonoBehaviour {
 		string f = _feedback.text;
 
 		Feedback feedback = new Feedback();
-		feedback.SendFeedback();
+		//feedback.SendFeedback();
 
 	}
 
