@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-05-06 22:43:42
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-05-09 18:48:45
+* @Last Modified time: 2019-05-12 01:26:24
  */
 package Models
 
@@ -36,8 +36,8 @@ func (c *ConsoleResource) WebService() *restful.WebService {
 	ws := new(restful.WebService)
 	ws.
 		Path("/console").
-		Consumes(restful.MIME_OCTET, restful.MIME_XML, restful.MIME_JSON).
-		Produces(restful.MIME_OCTET, restful.MIME_XML, restful.MIME_JSON)
+		Consumes("multipart/form-data", restful.MIME_OCTET, restful.MIME_XML, restful.MIME_JSON).
+		Produces("multipart/form-data", restful.MIME_OCTET, restful.MIME_XML, restful.MIME_JSON)
 
 	ws.Route(ws.GET("/").To(c.Index))
 	ws.Route(ws.GET("/login").To(c.Index))

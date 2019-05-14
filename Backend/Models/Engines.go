@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-02 19:00:20
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-25 16:23:49
+* @Last Modified time: 2019-05-12 00:29:52
  */
 package Models
 
@@ -17,10 +17,14 @@ import (
 	"github.com/go-xorm/xorm"
 )
 
-var config struct {
+var Config struct {
 	// mysql connection info
 	Username string `json:"username"`
 	Password string `json:"password"`
+
+	// HiAR
+	AppKey string `json:"appkey"`
+	Secret string `json:"secret"`
 }
 
 type DBClient struct {
@@ -32,8 +36,8 @@ var db DBClient
 var err error
 
 func init() {
-	parserJson(&config)
-	db.Engine, err = xorm.NewEngine("mysql", config.Username+":"+config.Password+"@/ARPoster?charset=utf8")
+	parserJson(&Config)
+	db.Engine, err = xorm.NewEngine("mysql", Config.Username+":"+Config.Password+"@/ARPoster?charset=utf8")
 	db.Engine.ShowSQL(true)
 	if err != nil {
 		log.Info(err)
