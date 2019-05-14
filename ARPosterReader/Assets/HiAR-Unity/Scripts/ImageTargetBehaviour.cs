@@ -102,8 +102,9 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         linkText.text = detailPos.poslink;
         addressURL.text = detailPos.posmap;
         keyGroup.text = detailPos.keygroup;
+        keyGroup.name = detailPos.keygroup;
         keyId.text = detailPos.keyid;
-
+        keyId.name = detailPos.keyid;
         
         GameObject favouriteButton = GameObject.Find("Favourite");
         if (favouriteButton != null && storeLoginSessionId.loginId!=-1)
@@ -119,7 +120,9 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         linkText.text = "Web Link";
         addressURL.text = "";
         keyGroup.text = "";
+        keyGroup.name = "";
         keyId.text = "";
+        keyId.name = "";
 
         GameObject favouriteButton = GameObject.Find("Favourite");
         if (favouriteButton != null)
