@@ -3,13 +3,14 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-05-06 22:43:42
 * @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-05-15 15:48:35
+* @Last Modified time: 2019-05-15 17:54:21
  */
 package Models
 
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -17,6 +18,7 @@ import (
 	"net/url"
 	"text/template"
 	"time"
+	"path"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
@@ -131,34 +133,40 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		req := request.Request
 		req.ParseForm()
 
-		file, handler, err := req.FormFile("fileInput")
+		_, fileHeader, err := GetFileFromRequest("fileInput", req)
 		if err != nil {
-			log.Error("FormFile: ", err.Error())
+			log.Error(err)
+			response.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		defer func() {
-			if err := file.Close(); err != nil {
-				log.Error("Close: ", err.Error())
-				return
-			}
-		}()
-
-		fbytes, err := ioutil.ReadAll(file)
-		if err != nil {
-			log.Error("ReadAll: ", err.Error())
-			return
-		}
-
-		response.ResponseWriter.Write(fbytes)
 
 		title := req.Form["title"][0]
 		//filename := handler.Filename
 		location := req.Form["location"][0]
 		datetime := req.Form["datetime"][0]
-		url := req.Form["url"][0]
-		log.Info(title, "\n", location, "\n", datetime, "\n", url)
+		link := req.Form["url"][0]
+		log.Info(title, "\n", location, "\n", datetime, "\n", link)
 
-		createHiARMaterial(title+"_"+time.Now().Format("20060102_150405"), handler)
+		if targetId, err := createHiARMaterial(title+"_"+time.Now().Format("20060102_150405"), fileHeader); err != nil {
+			log.Error(err)
+			response.WriteHeader(http.StatusInternalServerError)
+			return
+		} else {
+			_, fileHeader, err := GetFileFromRequest("thumbnail", req)
+			if err != nil {
+				log.Error(err)
+				response.WriteHeader(http.StatusBadRequest)
+				return
+			}
+
+			uploadThumbnail(targetId, fileHeader)
+			storePublishInformation(targetId, title, datetime, location, link)
+		}
+
+		http.Redirect(response.ResponseWriter, 
+			request.Request,
+			"/console/manage",
+			http.StatusAccepted)
 	}
 }
 
@@ -184,12 +192,8 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 *
 ***/
 
-func NewConsoleWithStaticFilePrefix(request *restful.Request) *Console {
-	host := request.Request.Host
-	return &Console{StaticFilePrefix: "http://" + host + "/files/res"}
-}
 
-func createHiARMaterial(name string, fileheader *multipart.FileHeader) error {
+func createHiARMaterial(name string, fileheader *multipart.FileHeader) (string, error) {
 	upload_url := "https://api.hiar.io/v1/collection/"+Config.CollectionId+"/target"
 
 	body := &bytes.Buffer{}
@@ -197,14 +201,14 @@ func createHiARMaterial(name string, fileheader *multipart.FileHeader) error {
 
 	file, err := fileheader.Open()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	if part, err := writer.CreateFormFile("image", fileheader.Filename); err != nil {
-		return err
+		return "", err
 	} else {
 		if _, err := io.Copy(part, file); err != nil {
-			return err
+			return "", err
 		}
 	}
 
@@ -212,16 +216,45 @@ func createHiARMaterial(name string, fileheader *multipart.FileHeader) error {
 	writer.WriteField("cid", Config.CollectionId)
 
 	if err = writer.Close(); err != nil {
+		return "", err
+	}
+
+	if targetId, err := sendPostWithToken(upload_url, writer, body); err != nil {
+		return "", err
+	} else {
+		go publishCollection()
+		return targetId, err
+	}
+}
+
+func storePublishInformation(keyid, title, datetime, location, link string) {
+	
+}
+
+func uploadThumbnail(targetId string, fileHeader *multipart.FileHeader) error {
+	file, err := fileHeader.Open()
+	if err != nil {
 		return err
 	}
 
-	if err := sendPostWithToken(upload_url, writer, body); err != nil {
-		return err
-	}
+	fileSuffix := path.Ext(path.Base(fileHeader.Filename))
+	log.Info(fileSuffix)
 
-	go publishCollection()
+	fullFilename := Config.KeyGroup+"_"+targetId+fileSuffix
 
-	return err
+	req, err := http.NewRequest("POST", "http://shmily.me:8080/upload/"+fullFilename, file)
+    if err != nil {
+        return err
+    }
+    req.Header.Set("Content-Type", "application/octet-stream")
+
+    client := &http.Client{}
+    res, err := client.Do(req)
+    if err != nil {
+        return err
+    }
+    defer res.Body.Close()
+    return err
 }
 
 func publishCollection() error {
@@ -236,7 +269,8 @@ func publishCollection() error {
 		return err
 	}
 
-	return sendPostWithToken(publish_url, writer, body)
+	_, err = sendPostWithToken(publish_url, writer, body)
+	return err
 }
 
 func keepTokenAlive(token string) {
@@ -270,10 +304,10 @@ func sendSimplePost(url, contentType string, form url.Values) ([]byte, error) {
 	return ioutil.ReadAll(resp.Body)
 }
 
-func sendPostWithToken(url string, writer *multipart.Writer, body *bytes.Buffer) error {
+func sendPostWithToken(url string, writer *multipart.Writer, body *bytes.Buffer) (string, error) {
 	req, err := http.NewRequest("POST", url, body)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	req.Header.Set("Content-Type", writer.FormDataContentType())
@@ -282,17 +316,56 @@ func sendPostWithToken(url string, writer *multipart.Writer, body *bytes.Buffer)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return err
+		return "", err
 	}
+	defer resp.Body.Close()
 
 	rspbody := &bytes.Buffer{}
 	_, err = rspbody.ReadFrom(resp.Body)
 	if err != nil {
-		log.Error(err)
+		return "", err
 	}
-	resp.Body.Close()
 	//log.Println(resp.StatusCode)
 	//log.Println(resp.Header)
 	//log.Println(rspbody)
-	return err
+
+	type HiARResp struct {
+		TargetId string `json:"targetid"`
+		RetCode int `json:"retCode"`
+		Comment string `json:"comment"`
+	}
+	hiresp := &HiARResp{}
+
+	if err := json.Unmarshal(rspbody.Bytes(), hiresp); err != nil {
+		return "", err
+	} else if hiresp.RetCode != 0 {
+		return "", errors.New(hiresp.Comment)
+	} else {
+		return hiresp.TargetId, err
+	}
+}
+
+func NewConsoleWithStaticFilePrefix(request *restful.Request) *Console {
+	host := request.Request.Host
+	return &Console{StaticFilePrefix: "http://" + host + "/files/res"}
+}
+
+func GetFileFromRequest(filename string, req *http.Request) ([]byte, *multipart.FileHeader, error) {
+	file, handler, err := req.FormFile(filename)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Error("Close: ", err.Error())
+			return
+		}
+	}()
+
+	fbytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		log.Error("ReadAll: ", err.Error())
+		return nil, nil, err
+	}
+	return fbytes, handler, err
 }
