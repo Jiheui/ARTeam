@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-05-06 22:43:42
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-05-15 19:21:03
+* @Last Modified time: 2019-05-15 19:56:15
  */
 package Models
 
@@ -161,10 +161,14 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 
 			upload_url := "http://" + req.Host + "/files/upload/"
 			fileSuffix := path.Ext(path.Base(fileHeader.Filename))
-			fullFilename := Config.KeyGroup + "_" + targetId + fileSuffix
-			uploadThumbnail(targetId, upload_url+fullFilename, fileHeader)
+			resURL := upload_url + Config.KeyGroup + "_" + targetId + fileSuffix
+			if err := uploadThumbnail(targetId, resURL, fileHeader); err != nil {
+				log.Error(err)
+				response.WriteHeader(http.StatusBadRequest)
+				return
+			}
 
-			storePublishInformation(targetId, title, datetime, location, link)
+			storePublishInformation(targetId, title, datetime, location, link, "", "")
 		}
 
 		http.Redirect(response.ResponseWriter,
@@ -230,8 +234,18 @@ func createHiARMaterial(name string, fileheader *multipart.FileHeader) (string, 
 	}
 }
 
-func storePublishInformation(keyid, title, datetime, location, link string) {
+func storePublishInformation(keyId, title, datetime, location, link, resURL, hostURL string) {
+	// p := &Poster{
+	// 	KeyGroup:    Config.KeyGroup,
+	// 	KeyId:       keyId,
+	// 	PosTitle:    title,
+	// 	PosDate:     datetime,
+	// 	PosLocation: location,
+	// 	PosLink:     link,
+	// 	ResUrl:      resURL,
+	// }
 
+	//req, err := http.NewRequest("POST", hostURL+"posters", body)
 }
 
 func uploadThumbnail(targetId, url string, fileHeader *multipart.FileHeader) error {
@@ -280,11 +294,11 @@ func keepTokenAlive(token string) {
 			"token": {token},
 		}
 
-		_, err := sendSimplePost(keepalive_url, "application/x-www-form-urlencoded", form)
+		b, err := sendSimplePost(keepalive_url, "application/x-www-form-urlencoded", form)
 		if err != nil {
 			log.Error(err)
 		} else {
-			log.Info("keep HiAR token alive")
+			log.Info("keep HiAR token alive: ", string(b))
 		}
 	}
 }
