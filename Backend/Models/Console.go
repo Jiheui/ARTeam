@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-05-06 22:43:42
 * @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-05-16 00:52:15
+* @Last Modified time: 2019-05-16 02:38:52
  */
 package Models
 
@@ -50,6 +50,7 @@ func (c *ConsoleResource) WebService() *restful.WebService {
 
 	ws.Route(ws.GET("/").To(c.Index))
 	ws.Route(ws.GET("/login").To(c.Index))
+	ws.Route(ws.POST("/login").To(c.Index))
 
 	ws.Route(ws.GET("/dashboard").To(c.Dashboard))
 	ws.Route(ws.GET("/manage").To(c.Manage))
@@ -89,13 +90,17 @@ func init() {
 
 // Login page
 func (c *ConsoleResource) Index(request *restful.Request, response *restful.Response) {
-	p := NewConsoleWithStaticFilePrefix(request)
+	if request.Request.Method == "GET" {
+		p := NewConsoleWithStaticFilePrefix(request)
 
-	t, err := template.ParseFiles("Models/Templates/login.html")
-	if err != nil {
-		log.Fatalf("Template gave: %s", err)
+		t, err := template.ParseFiles("Models/Templates/login.html")
+		if err != nil {
+			log.Fatalf("Template gave: %s", err)
+		}
+		t.Execute(response.ResponseWriter, p)
+	} else {
+
 	}
-	t.Execute(response.ResponseWriter, p)
 }
 
 // Dashboard page
