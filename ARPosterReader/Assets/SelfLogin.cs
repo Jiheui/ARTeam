@@ -16,9 +16,23 @@ public class SelfLogin : MonoBehaviour {
 
 	public InputField _email;
 	public InputField _password;
+    public Button loginButton;
+    public Text warning;
+
+    public void Update()
+    {
+        bool empty = string.IsNullOrEmpty(_email.text) || string.IsNullOrEmpty(_password.text);
+
+        loginButton.interactable = !empty;
+        if (!empty)
+        {
+            warning.text = "";
+        }
+
+    }
 
 
-	public void checkPassword()
+    public void checkPassword()
 	{
 		User u = new User ();
 		u.username = _email.text;
@@ -58,6 +72,8 @@ public class SelfLogin : MonoBehaviour {
         else
         {
             Debug.Log("Login Failed");
+            warning.text = "Login Failed! Please try again";
+            _password.text = "";
         }
 	}
 

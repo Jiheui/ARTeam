@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Models;
-
+using UnityEngine.SceneManagement;
 
 public class SelfRegister : MonoBehaviour {
 
@@ -11,8 +11,28 @@ public class SelfRegister : MonoBehaviour {
 	public InputField _password;
 	public InputField _conform;
 
+    public Text warning;
 
-	public static bool CheckPassword(InputField _password,InputField _conform)
+    public Button registerButton;
+
+    public void Update()
+    {
+        bool empty = string.IsNullOrEmpty(_name.text) ||
+            string.IsNullOrEmpty(_birthday.text) ||
+            string.IsNullOrEmpty(_password.text) ||
+            string.IsNullOrEmpty(_password.text) ||
+            string.IsNullOrEmpty(_conform.text);
+
+        registerButton.interactable = !empty;
+
+        if (!empty)
+        {
+            warning.text = "";
+        }
+    }
+
+
+    public static bool CheckPassword(InputField _password,InputField _conform)
 	{
 		string pw = _password.text;
 		string cf = _conform.text;
@@ -35,11 +55,31 @@ public class SelfRegister : MonoBehaviour {
             if (u.authenticated)
             {
                 storeLoginSessionId.loginId = u.id;
+                SceneManager.LoadScene("MainScene");
+                if (string.IsNullOrEmpty(u.name))
+                {
+                    storeLoginSessionId.name = u.username;
+                }
+                else
+                {
+                    storeLoginSessionId.name = u.name;
+                }
+
+                storeLoginSessionId.email = u.email;
             }
             else
             {
                 Debug.Log("Login Failed");
+                warning.text = "Register Failed";
+                _password.text = "";
+                _conform.text = "";
             }
+        }
+        else
+        {
+            warning.text = "Password not the same";
+            _password.text = "";
+            _conform.text = "";
         }
 			
 	}
@@ -47,11 +87,6 @@ public class SelfRegister : MonoBehaviour {
 		
 	// Use this for initialization
 	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
 		
 	}
 

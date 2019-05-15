@@ -17,8 +17,6 @@ public class ActiveRayCast : MonoBehaviour
     Text keyGroup;
     Text keyId;
 
-    Button b;
-
     // Use this for initialization
     void Start()
     {
@@ -30,23 +28,24 @@ public class ActiveRayCast : MonoBehaviour
     void Update()
     {
         for (int i = 0; i < Input.touchCount; ++i){
-            if (Input.GetTouch(i).phase == TouchPhase.Began){
-        //if (Input.GetMouseButton (0)){
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(i).position);
-            //Ray ray = c.ScreenPointToRay(Input.GetTouch(i).position);
-            if (Physics.Raycast(ray, out hit)){
-                Collider objectHit2 = hit.collider;
-                GameObject g = objectHit2.gameObject;
-                Poster p = new Poster();
-                p.keygroup = keyGroup.name;
-                p.keyid = keyId.name;
-                p.GetPoster();
-                if (p.postitle.Equals("HECS_Poster_Front")){
-                rotatePoster();
+           if (Input.GetTouch(i).phase == TouchPhase.Began){
+            //if (Input.GetMouseButton (0)){
+                RaycastHit hit;
+                //Ray ray = c.ScreenPointToRay(Input.mousePosition);
+                Ray ray = c.ScreenPointToRay(Input.GetTouch(i).position);
+                if (Physics.Raycast(ray, out hit, 100.0f)){
+                    Collider objectHit2 = hit.collider;
+                    GameObject g = objectHit2.gameObject;
+                    Poster p = new Poster();
+                    p.keygroup = keyGroup.name;
+                    p.keyid = keyId.name;
+                    p.GetPoster();
+                    if (p.postitle.Equals("HECS_Poster_Front")){
+                    //if (Poster.name == "Poster"){
+                    rotatePoster();
+                    }
                 }
             }
-        }
         }
     }
 
