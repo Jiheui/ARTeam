@@ -24,17 +24,18 @@ public class ActiveRayCast : MonoBehaviour
     {
         keyGroup = GameObject.Find("KeyGroup").GetComponent<Text>();
         keyId = GameObject.Find("KeyId").GetComponent<Text>();
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Object touched disappears.
-        if (Input.GetMouseButton (0)){
+        for (int i = 0; i < Input.touchCount; ++i){
+            if (Input.GetTouch(i).phase == TouchPhase.Began){
+        //if (Input.GetMouseButton (0)){
             RaycastHit hit;
-            Ray ray = c.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray,out hit,100.0f)){
+            Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(i).position);
+            //Ray ray = c.ScreenPointToRay(Input.GetTouch(i).position);
+            if (Physics.Raycast(ray, out hit)){
                 Collider objectHit2 = hit.collider;
                 GameObject g = objectHit2.gameObject;
                 Poster p = new Poster();
@@ -45,6 +46,7 @@ public class ActiveRayCast : MonoBehaviour
                 rotatePoster();
                 }
             }
+        }
         }
     }
 
