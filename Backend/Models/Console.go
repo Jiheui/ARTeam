@@ -2,8 +2,8 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-05-06 22:43:42
-* @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-05-15 10:31:39
+* @Last Modified by:   Yutao GE
+* @Last Modified time: 2019-05-15 15:48:35
  */
 package Models
 
@@ -62,14 +62,14 @@ var token string
 
 func init() {
 	log.Error(parserJson(&Config))
-	login_url := "https://portal.aryun.com/account/signin"
+	login_url := "https://api.hiar.io/v1/account/signin"
 
 	form := url.Values{
 		"account":  {Config.HiUsername},
 		"password": {Config.HiPassword},
 	}
 
-	body_byte, err := sendPost(login_url, "application/x-www-form-urlencoded", form)
+	body_byte, err := sendSimplePost(login_url, "application/x-www-form-urlencoded", form)
 	if err != nil {
 		panic(err)
 	}
@@ -190,7 +190,7 @@ func NewConsoleWithStaticFilePrefix(request *restful.Request) *Console {
 }
 
 func createHiARMaterial(name string, fileheader *multipart.FileHeader) error {
-	upload_url := "https://portal.aryun.com/api/material/creation"
+	upload_url := "https://api.hiar.io/v1/collection/"+Config.CollectionId+"/target"
 
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
@@ -200,7 +200,7 @@ func createHiARMaterial(name string, fileheader *multipart.FileHeader) error {
 		return err
 	}
 
-	if part, err := writer.CreateFormFile("imgFile", fileheader.Filename); err != nil {
+	if part, err := writer.CreateFormFile("image", fileheader.Filename); err != nil {
 		return err
 	} else {
 		if _, err := io.Copy(part, file); err != nil {
@@ -209,13 +209,69 @@ func createHiARMaterial(name string, fileheader *multipart.FileHeader) error {
 	}
 
 	writer.WriteField("name", name)
-	writer.WriteField("collectionid", Config.CollectionId)
+	writer.WriteField("cid", Config.CollectionId)
 
 	if err = writer.Close(); err != nil {
 		return err
 	}
 
-	req, err := http.NewRequest("POST", upload_url, body)
+	if err := sendPostWithToken(upload_url, writer, body); err != nil {
+		return err
+	}
+
+	go publishCollection()
+
+	return err
+}
+
+func publishCollection() error {
+	publish_url := "https://api.hiar.io/v1/collection/"+Config.CollectionId+"/publish"
+
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+
+	writer.WriteField("cid", Config.CollectionId)
+
+	if err = writer.Close(); err != nil {
+		return err
+	}
+
+	return sendPostWithToken(publish_url, writer, body)
+}
+
+func keepTokenAlive(token string) {
+	for {
+		<-time.After(60 * time.Second)
+		keepalive_url := "https://api.hiar.io/v1/account/keepAlive"
+
+		form := url.Values{
+			"token": {token},
+		}
+
+		_, err := sendSimplePost(keepalive_url, "application/x-www-form-urlencoded", form)
+		if err != nil {
+			log.Error(err)
+		} else {
+			log.Info("keep HiAR token alive")
+		}
+	}
+}
+
+func sendSimplePost(url, contentType string, form url.Values) ([]byte, error) {
+	body := bytes.NewBufferString(form.Encode())
+
+	resp, err := http.Post(url, contentType, body)
+
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	return ioutil.ReadAll(resp.Body)
+}
+
+func sendPostWithToken(url string, writer *multipart.Writer, body *bytes.Buffer) error {
+	req, err := http.NewRequest("POST", url, body)
 	if err != nil {
 		return err
 	}
@@ -232,43 +288,11 @@ func createHiARMaterial(name string, fileheader *multipart.FileHeader) error {
 	rspbody := &bytes.Buffer{}
 	_, err = rspbody.ReadFrom(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
 	}
 	resp.Body.Close()
 	//log.Println(resp.StatusCode)
 	//log.Println(resp.Header)
-	log.Println(rspbody)
-
+	//log.Println(rspbody)
 	return err
-}
-
-func keepTokenAlive(token string) {
-	for {
-		<-time.After(60 * time.Second)
-		keepalive_url := "https://portal.aryun.com/api/account/keepAlive"
-
-		form := url.Values{
-			"token": {token},
-		}
-
-		_, err := sendPost(keepalive_url, "application/x-www-form-urlencoded", form)
-		if err != nil {
-			log.Error(err)
-		} else {
-			log.Info("keep HiAR token alive")
-		}
-	}
-}
-
-func sendPost(url, contentType string, form url.Values) ([]byte, error) {
-	body := bytes.NewBufferString(form.Encode())
-
-	resp, err := http.Post(url, contentType, body)
-
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	return ioutil.ReadAll(resp.Body)
 }
