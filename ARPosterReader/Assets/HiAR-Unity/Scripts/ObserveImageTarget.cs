@@ -11,15 +11,22 @@ public class ObserveImageTarget : MonoBehaviour {
 
 	void Start () {
 		targetBehaviour = imageTargeter.GetComponent<ImageTargetBehaviour>();
-		button = GetComponent<Button>();
+		//button = GetComponent<Button>();
 	}
 
     public void UpdateTargetBehaviour()
     {
+        /*if (imageTargeter == null)
+        {
+            this.gameObject.SetActive(false);
+            return;
+        }*/
         targetBehaviour = imageTargeter.GetComponent<ImageTargetBehaviour>();
+        this.gameObject.SetActive(targetBehaviour.IsTargetFound());
     }
 
     void Update () {
-		button.interactable = targetBehaviour.IsTargetFound();
-	}
+		//button.interactable = targetBehaviour.IsTargetFound();
+        //button.gameObject.SetActive(targetBehaviour.IsTargetFound());
+    }
 }

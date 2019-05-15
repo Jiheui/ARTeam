@@ -35,8 +35,8 @@ public class UpdateFavouriteButton : MonoBehaviour {
     public void Start()
     {
         // change the favourite button status default set to disable
-        favouriteImage.sprite = disable;
-        favouriteButton.interactable = false;
+        //favouriteImage.sprite = disable;
+        //favouriteButton.gameObject.SetActive(false);
     }
 
     // Update the text on the Button
@@ -48,11 +48,18 @@ public class UpdateFavouriteButton : MonoBehaviour {
         if (!hasPoster)
         {
             //favouriteText.text = "favourite";
+            Debug.Log("Exec");
             favouriteImage.sprite = disable;
-            favouriteButton.interactable = false;
+            //favouriteImage.gameObject.SetActive(false);
+            favouriteButton.gameObject.SetActive(false);
+            //favouriteButton.interactable = false;
         }
         else
         {
+            /*if(storeLoginSessionId.loginId == -1)
+            {
+                return;
+            }*/
             // Check poster is in the favourite list
             Loom.RunAsync(() => {
                 Favourite check = new Favourite();
@@ -93,14 +100,16 @@ public class UpdateFavouriteButton : MonoBehaviour {
         {
             //favouriteText.text = "remove";
             favouriteImage.sprite = like;
-            favouriteButton.interactable = true;
+            //favouriteButton.interactable = true;
+            favouriteButton.gameObject.SetActive(true);
             isFavor = true;
         }
         else
         {
             //favouriteText.text = "favourite";
             favouriteImage.sprite = dislike;
-            favouriteButton.interactable = true;
+            //favouriteButton.interactable = true;
+            favouriteButton.gameObject.SetActive(true);
             isFavor = false;
         }
     }

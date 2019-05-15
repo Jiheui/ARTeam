@@ -21,6 +21,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     Text posterTitle;
     CameraManager eventManager;
     ObserveImageTarget zoomBtn;
+    UpdateFavouriteButton favouriteButton;
 
     private void Start()
     {
@@ -33,6 +34,9 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         keyId = GameObject.Find("KeyId").GetComponent<Text>();
         eventManager = GameObject.Find("EventSystem").GetComponent<CameraManager>();
         zoomBtn = GameObject.Find("Zoom Button").GetComponent<ObserveImageTarget>();
+        favouriteButton = GameObject.Find("Favourite").GetComponent<UpdateFavouriteButton>();
+        zoomBtn.gameObject.SetActive(false);
+        favouriteButton.gameObject.SetActive(false);
 
         if (Application.isPlaying)
         {
@@ -108,9 +112,10 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         keyGroup.text = detailPos.keygroup;
         keyId.text = detailPos.keyid;
         
-        GameObject favouriteButton = GameObject.Find("Favourite");
+        //GameObject favouriteButton = GameObject.Find("Favourite");
         if (favouriteButton != null && storeLoginSessionId.loginId!=-1)
         {
+            //favouriteButton.gameObject.SetActive(true);
             favouriteButton.GetComponent<UpdateFavouriteButton>().changeText();
         }
     }
@@ -126,10 +131,12 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         keyGroup.text = "";
         keyGroup.name = "";
 
-        GameObject favouriteButton = GameObject.Find("Favourite");
+        //GameObject favouriteButton = GameObject.Find("Favourite");
         if (favouriteButton != null)
         {
+            //favouriteButton.gameObject.SetActive(true);
             favouriteButton.GetComponent<UpdateFavouriteButton>().changeText();
+            //favouriteButton.gameObject.SetActive(true);
         }
     }
 
@@ -142,7 +149,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
             transform.GetChild(i).gameObject.SetActive(false);
         }
 		targetFound = false;
-
+        zoomBtn.UpdateTargetBehaviour();
         clearDetail();
     }
 
