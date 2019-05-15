@@ -1,8 +1,8 @@
 {{define "upload"}}
 <header class="page-header">
-<div class="container-fluid">
-  <h2 class="no-margin-bottom">Upload</h2>
-</div>
+	<div class="container-fluid">
+	  <h2 class="no-margin-bottom">Upload</h2>
+	</div>
 </header>
 
 <section>
@@ -38,7 +38,9 @@
 			    <div class="form-group row has-danger">
 			      <label class="col-sm-3 form-control-label">Location</label>
 			      <div class="col-sm-9">
-			        <input name="location" required="true" type="text" class="form-control">
+			        <input id="location" name="location" required="true" type="text" class="form-control" onfocusout="addressConvert()">
+
+			        <input id="mapurl" name="mapurl" required="true" type="text" hidden="true" class="form-control">
 			        <div class="invalid-feedback">Please provide location</div>
 			      </div>
 			    </div>
@@ -75,4 +77,12 @@
 		</div>
 	</div>
 </section>
+<script type="text/javascript">
+		function addressConvert()
+		{
+			var address = document.getElementById("location").value;
+			var link = "http://maps.google.com/maps?q=" + encodeURIComponent(address);
+			document.getElementById("mapurl").value = link;
+		}
+	</script>
 {{end}}
