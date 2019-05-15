@@ -2,8 +2,8 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-02 19:00:20
-* @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-05-15 10:24:42
+* @Last Modified by:   Yutao GE
+* @Last Modified time: 2019-05-15 17:23:21
  */
 package Models
 
@@ -26,6 +26,7 @@ var Config struct {
 	HiUsername   string `json:"hiusername"`
 	HiPassword   string `json:"hipassword"`
 	CollectionId string `json:"collectionid"`
+	KeyGroup 	 string `json:"keygroup"`
 }
 
 type DBClient struct {
