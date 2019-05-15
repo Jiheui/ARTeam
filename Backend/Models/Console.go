@@ -2,8 +2,8 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-05-06 22:43:42
-* @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-05-15 17:54:21
+* @Last Modified by:   Yutao Ge
+* @Last Modified time: 2019-05-15 19:12:20
  */
 package Models
 
@@ -16,9 +16,9 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/url"
+	"path"
 	"text/template"
 	"time"
-	"path"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
@@ -159,11 +159,12 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 				return
 			}
 
-			uploadThumbnail(targetId, fileHeader)
+			upload_url := "http://" + req.Host + "/files/upload/"
+			uploadThumbnail(targetId, upload_url, fileHeader)
 			storePublishInformation(targetId, title, datetime, location, link)
 		}
 
-		http.Redirect(response.ResponseWriter, 
+		http.Redirect(response.ResponseWriter,
 			request.Request,
 			"/console/manage",
 			http.StatusAccepted)
@@ -192,9 +193,8 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 *
 ***/
 
-
 func createHiARMaterial(name string, fileheader *multipart.FileHeader) (string, error) {
-	upload_url := "https://api.hiar.io/v1/collection/"+Config.CollectionId+"/target"
+	upload_url := "https://api.hiar.io/v1/collection/" + Config.CollectionId + "/target"
 
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
@@ -228,37 +228,36 @@ func createHiARMaterial(name string, fileheader *multipart.FileHeader) (string, 
 }
 
 func storePublishInformation(keyid, title, datetime, location, link string) {
-	
+
 }
 
-func uploadThumbnail(targetId string, fileHeader *multipart.FileHeader) error {
+func uploadThumbnail(targetId, url string, fileHeader *multipart.FileHeader) error {
 	file, err := fileHeader.Open()
 	if err != nil {
 		return err
 	}
 
 	fileSuffix := path.Ext(path.Base(fileHeader.Filename))
-	log.Info(fileSuffix)
 
-	fullFilename := Config.KeyGroup+"_"+targetId+fileSuffix
+	fullFilename := url + Config.KeyGroup + "_" + targetId + fileSuffix
 
-	req, err := http.NewRequest("POST", "http://shmily.me:8080/upload/"+fullFilename, file)
-    if err != nil {
-        return err
-    }
-    req.Header.Set("Content-Type", "application/octet-stream")
+	req, err := http.NewRequest("POST", fullFilename, file)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/octet-stream")
 
-    client := &http.Client{}
-    res, err := client.Do(req)
-    if err != nil {
-        return err
-    }
-    defer res.Body.Close()
-    return err
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+	return err
 }
 
 func publishCollection() error {
-	publish_url := "https://api.hiar.io/v1/collection/"+Config.CollectionId+"/publish"
+	publish_url := "https://api.hiar.io/v1/collection/" + Config.CollectionId + "/publish"
 
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
@@ -331,8 +330,8 @@ func sendPostWithToken(url string, writer *multipart.Writer, body *bytes.Buffer)
 
 	type HiARResp struct {
 		TargetId string `json:"targetid"`
-		RetCode int `json:"retCode"`
-		Comment string `json:"comment"`
+		RetCode  int    `json:"retCode"`
+		Comment  string `json:"comment"`
 	}
 	hiresp := &HiARResp{}
 
