@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-31 19:00:29
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-05-11 22:51:59
+* @Last Modified time: 2019-05-15 18:19:55
  */
 package Models
 
@@ -174,7 +174,7 @@ func (u *UserResource) createUser(request *restful.Request, response *restful.Re
 // GET http://localhost:8080/users/login
 //
 func (u UserResource) login(request *restful.Request, response *restful.Response) {
-	var sess *sessions.Session
+	//var sess *sessions.Session
 	usr := User{}
 	err := request.ReadEntity(&usr)
 	has := false
@@ -182,31 +182,31 @@ func (u UserResource) login(request *restful.Request, response *restful.Response
 	if err == nil {
 		if usr.Facebook != "" {
 			has, err = db.Engine.Table("user").Where("facebook = ?", usr.Facebook).Get(&usr)
-			sess, _ = Store.Get(request.Request, "facebook:"+usr.Facebook)
-			sess.Values["type"] = "facebook"
-			sess.Values["facebook"] = usr.Facebook
+			//sess, _ = Store.Get(request.Request, "facebook:"+usr.Facebook)
+			//sess.Values["type"] = "facebook"
+			//sess.Values["facebook"] = usr.Facebook
 		} else if usr.Google != "" {
 			has, err = db.Engine.Table("user").Where("google = ?", usr.Google).Get(&usr)
-			sess, _ = Store.Get(request.Request, "google:"+usr.Google)
-			sess.Values["type"] = "google"
-			sess.Values["facebook"] = usr.Google
+			//sess, _ = Store.Get(request.Request, "google:"+usr.Google)
+			//sess.Values["type"] = "google"
+			//sess.Values["facebook"] = usr.Google
 		} else if usr.Email != "" {
 			has, err = db.Engine.Table("user").Where("email = ?", usr.Email).And("password = ?", usr.Password).Get(&usr)
-			sess, _ = Store.Get(request.Request, "email:"+usr.Email)
-			sess.Values["type"] = "email"
-			sess.Values["email"] = usr.Email
-			sess.Values["password"] = usr.Password
+			//sess, _ = Store.Get(request.Request, "email:"+usr.Email)
+			//sess.Values["type"] = "email"
+			//sess.Values["email"] = usr.Email
+			//sess.Values["password"] = usr.Password
 		} else {
 			has, err = db.Engine.Table("user").Where("username = ?", usr.Username).And("password = ?", usr.Password).Get(&usr)
-			sess, _ = Store.Get(request.Request, "username:"+usr.Username)
-			sess.Values["type"] = "username"
-			sess.Values["username"] = usr.Username
-			sess.Values["password"] = usr.Password
+			//sess, _ = Store.Get(request.Request, "username:"+usr.Username)
+			//sess.Values["type"] = "username"
+			//sess.Values["username"] = usr.Username
+			//sess.Values["password"] = usr.Password
 		}
 		if err != nil {
 			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
 		} else {
-			sess.Save(request.Request, response.ResponseWriter)
+			//sess.Save(request.Request, response.ResponseWriter)
 			response.WriteEntity(UsersResponse{Success: has, User: usr})
 		}
 	} else {
