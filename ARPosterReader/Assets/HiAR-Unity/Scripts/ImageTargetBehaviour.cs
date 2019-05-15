@@ -18,11 +18,13 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     Text addressURL;
     Text keyGroup;
     Text keyId;
+    Text posterTitle;
     CameraManager eventManager;
     ObserveImageTarget zoomBtn;
 
     private void Start()
     {
+        posterTitle = GameObject.Find("PosterTitle").GetComponent<Text>();
         timeText = GameObject.Find("Time").GetComponent<Text>();
         addressText = GameObject.Find("Address").GetComponent<Text>();
         linkText = GameObject.Find("Web Link").GetComponent<Text>();
@@ -97,6 +99,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     {
         Poster detailPos = detail as Poster;
 
+        posterTitle.text = detailPos.postitle;
         timeText.text = detailPos.posdate;
         addressText.text = detailPos.poslocation;
         linkText.text = detailPos.poslink;
@@ -115,6 +118,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
 
     public void clearDetail()
     {
+        posterTitle.text = "Title";
         timeText.text = "Time";
         addressText.text = "Address";
         linkText.text = "Web Link";

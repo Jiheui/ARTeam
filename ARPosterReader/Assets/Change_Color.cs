@@ -26,7 +26,7 @@ public class Change_Color : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
         coutdown -= Time.deltaTime;
         if(coutdown <= 0)
@@ -34,7 +34,7 @@ public class Change_Color : MonoBehaviour {
             Debug.Log("Get In");
             if (i == 0)
             {
-                this.material.SetColor("_Color", Color.green);
+                this.material.SetColor("_Color", Color.blue);
             }
             else if (i == 1)
             {
