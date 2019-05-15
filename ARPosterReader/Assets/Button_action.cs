@@ -11,16 +11,11 @@ using UnityEngine.UI;
     Date: 26/04/2019
 **/
 public class Button_action : MonoBehaviour {
-    public Sprite spr;
 
-    void Start()
-    {
-        this.gameObject.SetActive (false);
-    }
+    public Image img;
 
-    //Image type only
-    public void ShowPhoto(){
-        Image img = this.GetComponentInChildren<Image>();
+    public void ShowPhoto(Sprite spr){
+        img.sprite = new Sprite();
         img.sprite = spr;
     }
 
