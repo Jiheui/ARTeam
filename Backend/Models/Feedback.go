@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-17 19:05:19
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-24 16:08:33
+* @Last Modified time: 2019-05-15 19:54:42
  */
 package Models
 
@@ -24,7 +24,7 @@ type Feedback struct {
 	UserId   int    `json:"userid" xorm:"userid"`
 	Username string `json:"username" xorm:"username"`
 
-	IsDeleted bool `json:"-" xorm:"isdeleted"`
+	IsDeleted int `json:"-" xorm:"isdeleted"`
 }
 
 type FeedbackResponse struct {
