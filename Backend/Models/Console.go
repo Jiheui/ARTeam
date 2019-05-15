@@ -2,8 +2,8 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-05-06 22:43:42
-* @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-05-15 19:56:15
+* @Last Modified by:   Yutao GE
+* @Last Modified time: 2019-05-16 00:52:15
  */
 package Models
 
@@ -144,6 +144,7 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		//filename := handler.Filename
 		location := req.Form["location"][0]
 		datetime := req.Form["datetime"][0]
+		mapurl := req.Form["mapurl"][0]
 		link := req.Form["url"][0]
 		log.Info(title, "\n", location, "\n", datetime, "\n", link)
 
@@ -168,12 +169,18 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 				return
 			}
 
-			storePublishInformation(targetId, title, datetime, location, link, "", "")
+			hostURL := "http://" + req.Host + "/posters"
+			resURL = "http://" + req.Host + "/files/" + Config.KeyGroup + "_" + targetId + fileSuffix
+			if err := storePublishInformation(targetId, title, datetime, location, mapurl, link, resURL, hostURL); err != nil {
+				log.Error(err)
+				response.WriteHeader(http.StatusBadRequest)
+				return
+			}
 		}
 
 		http.Redirect(response.ResponseWriter,
 			request.Request,
-			"/console/manage",
+			req.Host+"/console/manage",
 			http.StatusAccepted)
 	}
 }
@@ -234,18 +241,46 @@ func createHiARMaterial(name string, fileheader *multipart.FileHeader) (string, 
 	}
 }
 
-func storePublishInformation(keyId, title, datetime, location, link, resURL, hostURL string) {
-	// p := &Poster{
-	// 	KeyGroup:    Config.KeyGroup,
-	// 	KeyId:       keyId,
-	// 	PosTitle:    title,
-	// 	PosDate:     datetime,
-	// 	PosLocation: location,
-	// 	PosLink:     link,
-	// 	ResUrl:      resURL,
-	// }
+func storePublishInformation(keyId, title, datetime, location, mapurl, link, resURL, hostURL string) error {
+	p := &Poster{
+		KeyGroup:    Config.KeyGroup,
+		KeyId:       keyId,
+		PosTitle:    title,
+		PosDate:     datetime,
+		PosLocation: location,
+		PosMap: 	 mapurl,
+		PosLink:     link,
+		ResUrl:      resURL,
+	}
 
-	//req, err := http.NewRequest("POST", hostURL+"posters", body)
+	b, err := json.Marshal(p)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+	body := &bytes.Buffer{}
+	body.WriteString(string(b))
+	log.Info(1)
+
+	req, err := http.NewRequest("POST", hostURL, body)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+
+	log.Info(2)
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+
+	log.Info(3)
+	defer res.Body.Close()
+	return err
 }
 
 func uploadThumbnail(targetId, url string, fileHeader *multipart.FileHeader) error {
