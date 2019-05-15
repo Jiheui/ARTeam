@@ -10,38 +10,43 @@ Date: 20/04/2019
 **/
 public class ActiveRayCast : MonoBehaviour
 {
-    public Camera c;
 
-    public GameObject Poster;
-
-    Text Title;
-
-    Button b;
+    GameObject Poster;
 
     // Use this for initialization
     void Start()
     {
-        Title = GameObject.Find("PosterTitle").GetComponent<Text>();
+        //Title = GameObject.Find("PosterTitle").GetComponent<Text>();
         //Poster = GameObject.Find("HECS_Poster").GetComponent<GameObject>();
+        Poster = transform.parent.transform.GetChild(1).gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
         //for (int i = 0; i < Input.touchCount; ++i){
-            //if (Input.GetTouch(i).phase == TouchPhase.Began){
-        if (Input.GetMouseButton (0)){
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //Ray ray = c.ScreenPointToRay(Input.GetTouch(i).position);
-            if (Physics.Raycast(ray, out hit)){
-                Collider objectHit2 = hit.collider;
-                GameObject g = objectHit2.gameObject;
-                if (Title.name.Equals("HECS_Poster_Front")){
-                rotatePoster();
+        //Debug.Log("Start Ray Cast");
+        //if (Input.GetTouch(i).phase == TouchPhase.Began){
+        if (Input.touchCount == 1)
+        {
+            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                //if (Input.GetMouseButton (0)){
+                RaycastHit hit;
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                //Ray ray = c.ScreenPointToRay(Input.GetTouch(i).position);
+                if (Physics.Raycast(ray, out hit))
+                {
+                    //Debug.Log("Start Ray Cast");
+                    Collider objectHit2 = hit.collider;
+                    GameObject g = objectHit2.gameObject;
+                    //if (Title.name.Equals("HECS_Poster_Front")){
+                    rotatePoster();
+                    //}
                 }
+                //}
             }
-        //}
         }
     }
 
@@ -55,7 +60,7 @@ public class ActiveRayCast : MonoBehaviour
     void rotatePoster(){
         Transform tr = Poster.transform;
         tr.Rotate(0, 0, 180);
-        tr.Translate(-7,3,0);
+        //tr.Translate(-7,3,0);
 
     }
 }
