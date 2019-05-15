@@ -100,14 +100,13 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         Poster detailPos = detail as Poster;
 
         posterTitle.text = detailPos.postitle;
+        posterTitle.name = detailPos.postitle;
         timeText.text = detailPos.posdate;
         addressText.text = detailPos.poslocation;
         linkText.text = detailPos.poslink;
         addressURL.text = detailPos.posmap;
         keyGroup.text = detailPos.keygroup;
-        keyGroup.name = detailPos.keygroup;
         keyId.text = detailPos.keyid;
-        keyId.name = detailPos.keyid;
         
         GameObject favouriteButton = GameObject.Find("Favourite");
         if (favouriteButton != null && storeLoginSessionId.loginId!=-1)
@@ -119,14 +118,13 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     public void clearDetail()
     {
         posterTitle.text = "Title";
+        posterTitle.name = "";
         timeText.text = "Time";
         addressText.text = "Address";
         linkText.text = "Web Link";
         addressURL.text = "";
         keyGroup.text = "";
         keyGroup.name = "";
-        keyId.text = "";
-        keyId.name = "";
 
         GameObject favouriteButton = GameObject.Find("Favourite");
         if (favouriteButton != null)
