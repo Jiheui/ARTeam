@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-05-06 22:43:42
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-05-15 19:12:20
+* @Last Modified time: 2019-05-15 19:21:03
  */
 package Models
 
@@ -160,7 +160,10 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 			}
 
 			upload_url := "http://" + req.Host + "/files/upload/"
-			uploadThumbnail(targetId, upload_url, fileHeader)
+			fileSuffix := path.Ext(path.Base(fileHeader.Filename))
+			fullFilename := Config.KeyGroup + "_" + targetId + fileSuffix
+			uploadThumbnail(targetId, upload_url+fullFilename, fileHeader)
+
 			storePublishInformation(targetId, title, datetime, location, link)
 		}
 
@@ -237,11 +240,7 @@ func uploadThumbnail(targetId, url string, fileHeader *multipart.FileHeader) err
 		return err
 	}
 
-	fileSuffix := path.Ext(path.Base(fileHeader.Filename))
-
-	fullFilename := url + Config.KeyGroup + "_" + targetId + fileSuffix
-
-	req, err := http.NewRequest("POST", fullFilename, file)
+	req, err := http.NewRequest("POST", url, file)
 	if err != nil {
 		return err
 	}
