@@ -2,19 +2,21 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-05-06 22:43:42
-* @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-05-15 00:31:09
+* @Last Modified by:   Yutao Ge
+* @Last Modified time: 2019-05-15 10:31:39
  */
 package Models
 
 import (
-	"net/http"
 	"bytes"
 	"encoding/json"
+	"io"
+	"io/ioutil"
+	"mime/multipart"
+	"net/http"
 	"net/url"
-    "io/ioutil"
-    "time"
 	"text/template"
+	"time"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
@@ -63,15 +65,15 @@ func init() {
 	login_url := "https://portal.aryun.com/account/signin"
 
 	form := url.Values{
-		"account": {Config.HiUsername},
-		"password":  {Config.HiPassword},
+		"account":  {Config.HiUsername},
+		"password": {Config.HiPassword},
 	}
 
 	body_byte, err := sendPost(login_url, "application/x-www-form-urlencoded", form)
 	if err != nil {
 		panic(err)
 	}
-	
+
 	type HiARLoginResp struct {
 		Token string `json:"token"`
 	}
@@ -112,7 +114,7 @@ func (c *ConsoleResource) Dashboard(request *restful.Request, response *restful.
 
 // Upload page
 func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Response) {
-	if(request.Request.Method == "GET") {
+	if request.Request.Method == "GET" {
 		p := NewConsoleWithStaticFilePrefix(request)
 		p.PageName = "upload"
 		p.TotalPosters = 25
@@ -130,31 +132,33 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		req.ParseForm()
 
 		file, handler, err := req.FormFile("fileInput")
-	    if err != nil {
-	        log.Error("FormFile: ", err.Error())
-	        return
-	    }
-	    defer func() {
-	        if err := file.Close(); err != nil {
-	            log.Error("Close: ", err.Error())
-	            return
-	        }
-	    }()
+		if err != nil {
+			log.Error("FormFile: ", err.Error())
+			return
+		}
+		defer func() {
+			if err := file.Close(); err != nil {
+				log.Error("Close: ", err.Error())
+				return
+			}
+		}()
 
-	    fbytes, err := ioutil.ReadAll(file)
-	    if err != nil {
-	        log.Error("ReadAll: ", err.Error())
-	        return
-	    }
+		fbytes, err := ioutil.ReadAll(file)
+		if err != nil {
+			log.Error("ReadAll: ", err.Error())
+			return
+		}
 
-	    response.ResponseWriter.Write(fbytes)
+		response.ResponseWriter.Write(fbytes)
 
-	    title := req.Form["title"][0]
-	    filename := handler.Filename
-	    location := req.Form["location"][0]
-	    datetime := req.Form["datetime"][0]
-	    url := req.Form["url"][0]
-	    log.Info(title, "\n", location, "\n", datetime, "\n", url)
+		title := req.Form["title"][0]
+		//filename := handler.Filename
+		location := req.Form["location"][0]
+		datetime := req.Form["datetime"][0]
+		url := req.Form["url"][0]
+		log.Info(title, "\n", location, "\n", datetime, "\n", url)
+
+		createHiARMaterial(title+"_"+time.Now().Format("20060102_150405"), handler)
 	}
 }
 
@@ -176,7 +180,7 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 
 /*
 *
-*	Tools		
+*	Tools
 *
 ***/
 
@@ -185,14 +189,57 @@ func NewConsoleWithStaticFilePrefix(request *restful.Request) *Console {
 	return &Console{StaticFilePrefix: "http://" + host + "/files/res"}
 }
 
-func createHiARMaterial(name string, fileheader *multipart.FileHeader) {
+func createHiARMaterial(name string, fileheader *multipart.FileHeader) error {
 	upload_url := "https://portal.aryun.com/api/material/creation"
 
-	form := url.Values{
-		"name":name,
-		"collectionid":Config.CollectionId,
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+
+	file, err := fileheader.Open()
+	if err != nil {
+		return err
 	}
 
+	if part, err := writer.CreateFormFile("imgFile", fileheader.Filename); err != nil {
+		return err
+	} else {
+		if _, err := io.Copy(part, file); err != nil {
+			return err
+		}
+	}
+
+	writer.WriteField("name", name)
+	writer.WriteField("collectionid", Config.CollectionId)
+
+	if err = writer.Close(); err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest("POST", upload_url, body)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+	req.Header.Set("token", token)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+
+	rspbody := &bytes.Buffer{}
+	_, err = rspbody.ReadFrom(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	resp.Body.Close()
+	//log.Println(resp.StatusCode)
+	//log.Println(resp.Header)
+	log.Println(rspbody)
+
+	return err
 }
 
 func keepTokenAlive(token string) {
@@ -222,6 +269,6 @@ func sendPost(url, contentType string, form url.Values) ([]byte, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	
+
 	return ioutil.ReadAll(resp.Body)
 }
