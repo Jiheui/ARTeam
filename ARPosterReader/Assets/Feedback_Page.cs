@@ -22,7 +22,8 @@ public class Feedback_Page : MonoBehaviour {
 
 		// Debug.Log (f);    
 		Feedback feedback = new Feedback();
-		feedback.userid = 666;
+		feedback.userid = id;
+		//feedback.userid = 666;
 		feedback.username = storeLoginSessionId.name;
 		feedback.email = storeLoginSessionId.email;
 		feedback.content = f;
