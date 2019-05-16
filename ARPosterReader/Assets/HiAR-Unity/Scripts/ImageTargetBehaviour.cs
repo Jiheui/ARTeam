@@ -153,7 +153,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
             transform.GetChild(i).gameObject.SetActive(false);
         }
 		targetFound = false;
-        zoomBtn.imageTargeter = null;
+        //zoomBtn.imageTargeter = null;
         zoomBtn.UpdateTargetBehaviour();
         clearDetail();
     }
