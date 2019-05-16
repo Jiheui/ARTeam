@@ -77,8 +77,5 @@ public class SelfLogin : MonoBehaviour {
         }
 	}
 
-	public void saveUserInFile(int userID){
-		
-	}
 
 }
