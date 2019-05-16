@@ -2,13 +2,16 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-05-06 22:43:42
-* @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-05-16 02:38:52
+* @Last Modified by:   Yutao Ge
+* @Last Modified time: 2019-05-16 16:08:39
  */
 package Models
 
 import (
 	"bytes"
+	"crypto/md5"
+	"encoding/base64"
+	"encoding/gob"
 	"encoding/json"
 	"errors"
 	"io"
@@ -17,6 +20,7 @@ import (
 	"net/http"
 	"net/url"
 	"path"
+	"regexp"
 	"text/template"
 	"time"
 
@@ -45,18 +49,19 @@ func (c *ConsoleResource) WebService() *restful.WebService {
 	ws := new(restful.WebService)
 	ws.
 		Path("/console").
-		Consumes("multipart/form-data", restful.MIME_OCTET, restful.MIME_XML, restful.MIME_JSON).
-		Produces("multipart/form-data", restful.MIME_OCTET, restful.MIME_XML, restful.MIME_JSON)
+		Consumes("application/x-www-form-urlencoded", "multipart/form-data", restful.MIME_OCTET, restful.MIME_XML, restful.MIME_JSON).
+		Produces("application/x-www-form-urlencoded", "multipart/form-data", restful.MIME_OCTET, restful.MIME_XML, restful.MIME_JSON)
 
 	ws.Route(ws.GET("/").To(c.Index))
+	ws.Route(ws.POST("/").To(c.Index))
 	ws.Route(ws.GET("/login").To(c.Index))
 	ws.Route(ws.POST("/login").To(c.Index))
 
-	ws.Route(ws.GET("/dashboard").To(c.Dashboard))
-	ws.Route(ws.GET("/manage").To(c.Manage))
+	ws.Route(ws.GET("/dashboard").Filter(basicAuthenticate).To(c.Dashboard))
+	ws.Route(ws.GET("/manage").Filter(basicAuthenticate).To(c.Manage))
 
-	ws.Route(ws.GET("/upload").To(c.Upload))
-	ws.Route(ws.POST("/upload").To(c.Upload))
+	ws.Route(ws.GET("/upload").Filter(basicAuthenticate).To(c.Upload))
+	ws.Route(ws.POST("/upload").Filter(basicAuthenticate).To(c.Upload))
 
 	return ws
 }
@@ -64,6 +69,7 @@ func (c *ConsoleResource) WebService() *restful.WebService {
 var token string
 
 func init() {
+	gob.Register(&User{})
 	log.Error(parserJson(&Config))
 	login_url := "https://api.hiar.io/v1/account/signin"
 
@@ -88,6 +94,12 @@ func init() {
 	go keepTokenAlive(token)
 }
 
+/*
+*
+*	Routers
+*
+***/
+
 // Login page
 func (c *ConsoleResource) Index(request *restful.Request, response *restful.Response) {
 	if request.Request.Method == "GET" {
@@ -99,7 +111,37 @@ func (c *ConsoleResource) Index(request *restful.Request, response *restful.Resp
 		}
 		t.Execute(response.ResponseWriter, p)
 	} else {
+		req := request.Request
+		req.ParseForm()
 
+		username := req.Form["username"][0]
+		rawPassword := req.Form["password"][0]
+		password := encodePassword(rawPassword)
+		hostURL := "http://" + req.Host + "/users/login"
+
+		if usr, err := sendLoginInfo(username, password, hostURL); err != nil {
+			log.Error(err)
+			response.WriteHeader(http.StatusBadRequest)
+			return
+		} else {
+			session, err := Store.Get(request.Request, "ARPosterCookie")
+			if err != nil {
+				log.Error(err)
+				response.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+
+			usr.Password = ""
+			log.Info(usr)
+			session.Values["authenticated"] = true
+			session.Values["userdata"] = usr
+			log.Info(session.Save(req, response.ResponseWriter))
+
+			http.Redirect(response.ResponseWriter,
+				req,
+				"/console/dashboard",
+				303)
+		}
 	}
 }
 
@@ -151,7 +193,7 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		datetime := req.Form["datetime"][0]
 		mapurl := req.Form["mapurl"][0]
 		link := req.Form["url"][0]
-		log.Info(title, "\n", location, "\n", datetime, "\n", link)
+		//log.Info(title, "\n", location, "\n", datetime, "\n", link)
 
 		if targetId, err := createHiARMaterial(title+"_"+time.Now().Format("20060102_150405"), fileHeader); err != nil {
 			log.Error(err)
@@ -185,8 +227,8 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 
 		http.Redirect(response.ResponseWriter,
 			request.Request,
-			req.Host+"/console/manage",
-			http.StatusAccepted)
+			"/console/manage",
+			http.StatusTemporaryRedirect)
 	}
 }
 
@@ -253,37 +295,31 @@ func storePublishInformation(keyId, title, datetime, location, mapurl, link, res
 		PosTitle:    title,
 		PosDate:     datetime,
 		PosLocation: location,
-		PosMap: 	 mapurl,
+		PosMap:      mapurl,
 		PosLink:     link,
 		ResUrl:      resURL,
 	}
 
 	b, err := json.Marshal(p)
 	if err != nil {
-		log.Error(err)
 		return err
 	}
 	body := &bytes.Buffer{}
 	body.WriteString(string(b))
-	log.Info(1)
 
 	req, err := http.NewRequest("POST", hostURL, body)
 	if err != nil {
-		log.Error(err)
 		return err
 	}
 
-	log.Info(2)
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
-		log.Error(err)
 		return err
 	}
 
-	log.Info(3)
 	defer res.Body.Close()
 	return err
 }
@@ -323,6 +359,65 @@ func publishCollection() error {
 
 	_, err = sendPostWithToken(publish_url, writer, body)
 	return err
+}
+
+func sendLoginInfo(username, password, hostURL string) (*User, error) {
+	usr := &User{}
+	if isEmail(username) {
+		usr.Email = username
+	} else {
+		usr.Username = username
+	}
+	usr.Password = password
+
+	b, err := json.Marshal(usr)
+	if err != nil {
+		return nil, err
+	}
+	body := &bytes.Buffer{}
+	body.WriteString(string(b))
+
+	req, err := http.NewRequest("POST", hostURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	rbytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	ur := &UsersResponse{}
+	if err := json.Unmarshal(rbytes, ur); err != nil {
+		return nil, err
+	}
+
+	if ur.Success {
+		return &ur.User, nil
+	} else {
+		return nil, errors.New("login failed: " + username + " " + password)
+	}
+}
+
+func basicAuthenticate(req *restful.Request, resp *restful.Response, chain *restful.FilterChain) {
+	session, _ := Store.Get(req.Request, "ARPosterCookie")
+
+	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+		log.Info(ok, auth)
+		http.Redirect(resp.ResponseWriter, req.Request, "/console/login", http.StatusTemporaryRedirect)
+		return
+	}
+
+	chain.ProcessFilter(req, resp)
 }
 
 func keepTokenAlive(token string) {
@@ -420,4 +515,15 @@ func GetFileFromRequest(filename string, req *http.Request) ([]byte, *multipart.
 		return nil, nil, err
 	}
 	return fbytes, handler, err
+}
+
+func isEmail(username string) bool {
+	re := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+	return re.MatchString(username)
+}
+
+func encodePassword(text string) string {
+	hasher := md5.New()
+	hasher.Write([]byte(text))
+	return base64.StdEncoding.EncodeToString(hasher.Sum(nil))
 }
