@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-05-06 22:43:42
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-05-16 15:54:05
+* @Last Modified time: 2019-05-16 16:08:39
  */
 package Models
 
@@ -53,6 +53,7 @@ func (c *ConsoleResource) WebService() *restful.WebService {
 		Produces("application/x-www-form-urlencoded", "multipart/form-data", restful.MIME_OCTET, restful.MIME_XML, restful.MIME_JSON)
 
 	ws.Route(ws.GET("/").To(c.Index))
+	ws.Route(ws.POST("/").To(c.Index))
 	ws.Route(ws.GET("/login").To(c.Index))
 	ws.Route(ws.POST("/login").To(c.Index))
 
