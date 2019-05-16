@@ -48,11 +48,11 @@ public class UpdateFavouriteButton : MonoBehaviour {
         if (!hasPoster)
         {
             //favouriteText.text = "favourite";
-            Debug.Log("Exec");
             favouriteImage.sprite = disable;
             //favouriteImage.gameObject.SetActive(false);
             //favouriteButton.gameObject.SetActive(false);
             favouriteButton.interactable = false;
+            favouriteImage.color = new Color(255, 255, 255, 0);
         }
         else
         {
@@ -96,11 +96,15 @@ public class UpdateFavouriteButton : MonoBehaviour {
     {
         bool status = (bool)stobj;
 
+
+        Debug.Log("Exec");
+
         if (status)
         {
             //favouriteText.text = "remove";
             favouriteImage.sprite = like;
             favouriteButton.interactable = true;
+            favouriteImage.color = new Color(255, 255, 255, 255);
             //favouriteButton.gameObject.SetActive(true);
             isFavor = true;
         }
@@ -109,6 +113,7 @@ public class UpdateFavouriteButton : MonoBehaviour {
             //favouriteText.text = "favourite";
             favouriteImage.sprite = dislike;
             favouriteButton.interactable = true;
+            favouriteImage.color = new Color(255, 255, 255, 255);
             //favouriteButton.gameObject.SetActive(true);
             isFavor = false;
         }

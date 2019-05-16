@@ -22,6 +22,8 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     CameraManager eventManager;
     ObserveImageTarget zoomBtn;
     UpdateFavouriteButton favouriteButton;
+    Image favImage;
+    Image ZoomImage;
 
     private void Start()
     {
@@ -38,6 +40,12 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         zoomBtn.gameObject.GetComponent<Button>().interactable = false;
         favouriteButton.gameObject.GetComponent<Button>().interactable = false;
         //zoomBtn.gameObject.SetActive(false);
+        favImage = favouriteButton.transform.GetChild(0).gameObject.GetComponent<Image>();
+        favImage.color = new Color32(255, 255, 225, 0);
+
+        ZoomImage = zoomBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
+        ZoomImage.color = new Color32(255, 255, 225, 0);
+
         //favouriteButton.gameObject.SetActive(false);
 
         if (Application.isPlaying)
