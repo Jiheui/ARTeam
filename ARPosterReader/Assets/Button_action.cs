@@ -1,6 +1,7 @@
 using Models;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /**this script is used to show image, 
@@ -14,9 +15,20 @@ public class Button_action : MonoBehaviour {
 
     public Image img;
 
-    public void ShowPhoto(Sprite spr){
-        img.sprite = new Sprite();
-        img.sprite = spr;
+    public Sprite OrangeS, PurpleS, BlueS;
+
+    public void ShowPhoto(){
+
+        string name = EventSystem.current.currentSelectedGameObject.name;
+        if (name == "Orange"){
+            img.sprite = OrangeS;
+        }
+        if (name == "Purple"){
+            img.sprite = PurpleS;
+        }
+        if (name == "Blue"){
+            img.sprite = BlueS;
+        }
     }
 
 }
