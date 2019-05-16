@@ -17,11 +17,11 @@ public class ObserveImageTarget : MonoBehaviour {
 
     public void UpdateTargetBehaviour()
     {
-        /*if (imageTargeter == null)
+        if (imageTargeter == null)
         {
-            this.gameObject.SetActive(false);
+            buttonImage.color = new Color32(255, 255, 225, 0);
             return;
-        }*/
+        }
         targetBehaviour = imageTargeter.GetComponent<ImageTargetBehaviour>();
         this.gameObject.GetComponent<Button>().interactable = targetBehaviour.IsTargetFound();
         if (targetBehaviour.IsTargetFound())
