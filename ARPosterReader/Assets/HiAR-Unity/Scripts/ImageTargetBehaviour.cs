@@ -35,8 +35,10 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         eventManager = GameObject.Find("EventSystem").GetComponent<CameraManager>();
         zoomBtn = GameObject.Find("Zoom Button").GetComponent<ObserveImageTarget>();
         favouriteButton = GameObject.Find("Favourite").GetComponent<UpdateFavouriteButton>();
-        zoomBtn.gameObject.SetActive(false);
-        favouriteButton.gameObject.SetActive(false);
+        zoomBtn.gameObject.GetComponent<Button>().interactable = false;
+        favouriteButton.gameObject.GetComponent<Button>().interactable = false;
+        //zoomBtn.gameObject.SetActive(false);
+        //favouriteButton.gameObject.SetActive(false);
 
         if (Application.isPlaying)
         {
@@ -112,7 +114,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         keyGroup.text = detailPos.keygroup;
         keyId.text = detailPos.keyid;
         
-        //GameObject favouriteButton = GameObject.Find("Favourite");
+        GameObject favouriteButton = GameObject.Find("Favourite");
         if (favouriteButton != null && storeLoginSessionId.loginId!=-1)
         {
             //favouriteButton.gameObject.SetActive(true);
@@ -131,7 +133,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         keyGroup.text = "";
         keyGroup.name = "";
 
-        //GameObject favouriteButton = GameObject.Find("Favourite");
+        GameObject favouriteButton = GameObject.Find("Favourite");
         if (favouriteButton != null)
         {
             //favouriteButton.gameObject.SetActive(true);

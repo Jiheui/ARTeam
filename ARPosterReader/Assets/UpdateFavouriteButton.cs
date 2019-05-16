@@ -51,8 +51,8 @@ public class UpdateFavouriteButton : MonoBehaviour {
             Debug.Log("Exec");
             favouriteImage.sprite = disable;
             //favouriteImage.gameObject.SetActive(false);
-            favouriteButton.gameObject.SetActive(false);
-            //favouriteButton.interactable = false;
+            //favouriteButton.gameObject.SetActive(false);
+            favouriteButton.interactable = false;
         }
         else
         {
@@ -100,16 +100,16 @@ public class UpdateFavouriteButton : MonoBehaviour {
         {
             //favouriteText.text = "remove";
             favouriteImage.sprite = like;
-            //favouriteButton.interactable = true;
-            favouriteButton.gameObject.SetActive(true);
+            favouriteButton.interactable = true;
+            //favouriteButton.gameObject.SetActive(true);
             isFavor = true;
         }
         else
         {
             //favouriteText.text = "favourite";
             favouriteImage.sprite = dislike;
-            //favouriteButton.interactable = true;
-            favouriteButton.gameObject.SetActive(true);
+            favouriteButton.interactable = true;
+            //favouriteButton.gameObject.SetActive(true);
             isFavor = false;
         }
     }
