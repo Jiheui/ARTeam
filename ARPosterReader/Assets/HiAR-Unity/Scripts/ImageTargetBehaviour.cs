@@ -25,7 +25,7 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     Image favImage;
     Image ZoomImage;
 
-    private void Start()
+    public void Start()
     {
         posterTitle = GameObject.Find("PosterTitle").GetComponent<Text>();
         timeText = GameObject.Find("Time").GetComponent<Text>();
@@ -39,14 +39,12 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         favouriteButton = GameObject.Find("Favourite").GetComponent<UpdateFavouriteButton>();
         zoomBtn.gameObject.GetComponent<Button>().interactable = false;
         favouriteButton.gameObject.GetComponent<Button>().interactable = false;
-        //zoomBtn.gameObject.SetActive(false);
+
         favImage = favouriteButton.transform.GetChild(0).gameObject.GetComponent<Image>();
         favImage.color = new Color32(255, 255, 225, 0);
 
         ZoomImage = zoomBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
         ZoomImage.color = new Color32(255, 255, 225, 0);
-
-        //favouriteButton.gameObject.SetActive(false);
 
         if (Application.isPlaying)
         {
@@ -114,7 +112,6 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         Poster detailPos = detail as Poster;
 
         posterTitle.text = detailPos.postitle;
-        posterTitle.name = detailPos.postitle;
         timeText.text = detailPos.posdate;
         addressText.text = detailPos.poslocation;
         linkText.text = detailPos.poslink;
@@ -125,7 +122,6 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
         GameObject favouriteButton = GameObject.Find("Favourite");
         if (favouriteButton != null && storeLoginSessionId.loginId!=-1)
         {
-            //favouriteButton.gameObject.SetActive(true);
             favouriteButton.GetComponent<UpdateFavouriteButton>().changeText();
         }
     }
@@ -133,13 +129,11 @@ public class ImageTargetBehaviour : ImageTarget, ITrackableEventHandler, ILoadBu
     public void clearDetail()
     {
         posterTitle.text = "Title";
-        posterTitle.name = "";
         timeText.text = "Time";
         addressText.text = "Address";
         linkText.text = "Web Link";
         addressURL.text = "";
         keyGroup.text = "";
-        keyGroup.name = "";
 
         GameObject favouriteButton = GameObject.Find("Favourite");
         if (favouriteButton != null)
