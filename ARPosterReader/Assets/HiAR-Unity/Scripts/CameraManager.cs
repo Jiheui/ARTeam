@@ -105,8 +105,8 @@ public class CameraManager : MonoBehaviour {
             if (zoomCamera.orthographicSize < 0) {
 				zoomCamera.orthographicSize = 0.1f;
 			}
-			else if (zoomCamera.orthographicSize > 20) {
-				zoomCamera.orthographicSize = 20;
+			else if (zoomCamera.orthographicSize > 40) {
+				zoomCamera.orthographicSize = 40;
 			}
 		}
 	}
