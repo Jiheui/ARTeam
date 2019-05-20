@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using Models;
 using UnityEngine.SceneManagement;
+using UnityEditor;
+
 
 public class SelfRegister : MonoBehaviour {
 
@@ -41,10 +43,34 @@ public class SelfRegister : MonoBehaviour {
 	}
 
 
+	[MenuItem("Test/DisplayDialog")]
 	public void AddtoDatabase()
 	{
+		
 		if (CheckPassword (_password, _conform)) 
 		{
+			/*
+			 * This part check the complex password
+			 */
+			if ((_password.text.Length) <= 7) {
+//				bool yesWasClicked = EditorUtility.DisplayDialog("Title", "Content", "I Got it");
+//				Debug.Log("yesWasClicked="+yesWasClicked);
+
+				warning.text = "Password need to have more than 7 letters";
+				_password.text = "";
+				_conform.text = "";
+			}
+
+			if (_password.text.Contains (_name.text)) {
+//				bool yesWasClicked = EditorUtility.DisplayDialog("Title", "Content", "I Got it");
+//				Debug.Log("yesWasClicked="+yesWasClicked);	
+
+				warning.text = "Password should not contain your username";
+				_password.text = "";
+				_conform.text = "";
+			}
+				
+			
 			User u = new User ();
 			u.password = _password.text;
 			u.username = _email.text;
