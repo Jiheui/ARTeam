@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using Models;
 using UnityEngine.SceneManagement;
+using System.Text.RegularExpressions;
 
 
 public class SelfRegister : MonoBehaviour {
@@ -49,15 +50,15 @@ public class SelfRegister : MonoBehaviour {
 			/*
 			 * This part check the complex password
 			 */
-			if ((_password.text.Length) <= 7) {
-//				bool yesWasClicked = EditorUtility.DisplayDialog("Title", "Content", "I Got it");
-//				Debug.Log("yesWasClicked="+yesWasClicked);
-
-				warning.text = "Password need to have more than 7 letters";
-				_password.text = "";
-				_conform.text = "";
-                return;
-			}
+//			if ((_password.text.Length) <= 7) {
+////				bool yesWasClicked = EditorUtility.DisplayDialog("Title", "Content", "I Got it");
+////				Debug.Log("yesWasClicked="+yesWasClicked);
+//
+//				warning.text = "Password need to have more than 7 letters";
+//				_password.text = "";
+//				_conform.text = "";
+//                return;
+//			}
 
 			if (_password.text.Contains (_name.text)) {
 //				bool yesWasClicked = EditorUtility.DisplayDialog("Title", "Content", "I Got it");
@@ -68,7 +69,24 @@ public class SelfRegister : MonoBehaviour {
 				_conform.text = "";
                 return;
 			}
-				
+			//complex
+			string aPatter = @"(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}";
+			//medium
+			string bPatter = @"(?=.*[0-9])(?=.*[a-zA-Z]).{8,30}";
+
+			Regex comlex = new Regex (aPatter);
+			Regex medium = new Regex (bPatter);
+
+			if (comlex.IsMatch(_password.text)) {
+				Debug.Log ("Complex password");
+			} else if (medium.IsMatch(_password.text)) {
+				Debug.Log ("Medium password");
+			}else{
+				warning.text = "Password reqires to contain both number and alphabet";
+				Debug.Log ("Password reqires to contain both number and alphabet. Special characters only can be picked from ?,=,.,*. " +
+					" Length is 8-30.");
+				return;
+			}
 			
 			User u = new User ();
 			u.password = _password.text;
