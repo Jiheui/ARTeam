@@ -3,7 +3,7 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-31 19:00:29
 * @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-05-16 02:01:15
+* @Last Modified time: 2019-05-28 01:13:31
  */
 package Models
 
@@ -205,16 +205,17 @@ func (u UserResource) checkExist(request *restful.Request, response *restful.Res
 	usr := User{}
 	err := request.ReadEntity(&usr)
 	has := false
+	tmp := User{}
 
 	if err == nil {
 		if usr.Facebook != "" {
-			has, err = db.Engine.Table("user").Where("facebook = ?", usr.Facebook).Get(&usr)
+			has, err = db.Engine.Table("user").Where("facebook = ?", usr.Facebook).Get(&tmp)
 		} else if usr.Google != "" {
-			has, err = db.Engine.Table("user").Where("google = ?", usr.Google).Get(&usr)
+			has, err = db.Engine.Table("user").Where("google = ?", usr.Google).Get(&tmp)
 		} else if usr.Email != "" {
-			has, err = db.Engine.Table("user").Where("email = ?", usr.Email).Get(&usr)
+			has, err = db.Engine.Table("user").Where("email = ?", usr.Email).Get(&tmp)
 		} else {
-			has, err = db.Engine.Table("user").Where("username = ?", usr.Username).Get(&usr)
+			has, err = db.Engine.Table("user").Where("username = ?", usr.Username).Get(&tmp)
 		}
 		if err != nil {
 			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
