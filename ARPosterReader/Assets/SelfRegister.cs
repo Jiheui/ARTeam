@@ -13,28 +13,28 @@ public class SelfRegister : MonoBehaviour {
 	public InputField _password;
 	public InputField _conform;
 
-    public Text warning;
+	public Text warning;
 
-    public Button registerButton;
+	public Button registerButton;
 
-    public void Update()
-    {
-        bool empty = string.IsNullOrEmpty(_name.text) ||
-            string.IsNullOrEmpty(_birthday.text) ||
-            string.IsNullOrEmpty(_password.text) ||
-            string.IsNullOrEmpty(_password.text) ||
-            string.IsNullOrEmpty(_conform.text);
+	public void Update()
+	{
+		bool empty = string.IsNullOrEmpty(_name.text) ||
+			string.IsNullOrEmpty(_birthday.text) ||
+			string.IsNullOrEmpty(_password.text) ||
+			string.IsNullOrEmpty(_password.text) ||
+			string.IsNullOrEmpty(_conform.text);
 
-        registerButton.interactable = !empty;
+		registerButton.interactable = !empty;
 
-        if (!empty)
-        {
-            warning.text = "";
-        }
-    }
+		if (!empty)
+		{
+			warning.text = "";
+		}
+	}
 
 
-    public static bool CheckPassword(InputField _password,InputField _conform)
+	public static bool CheckPassword(InputField _password,InputField _conform)
 	{
 		string pw = _password.text;
 		string cf = _conform.text;
@@ -44,30 +44,30 @@ public class SelfRegister : MonoBehaviour {
 
 	public void AddtoDatabase()
 	{
-		
+
 		if (CheckPassword (_password, _conform)) 
 		{
 			/*
 			 * This part check the complex password
 			 */
-//			if ((_password.text.Length) <= 7) {
-////				bool yesWasClicked = EditorUtility.DisplayDialog("Title", "Content", "I Got it");
-////				Debug.Log("yesWasClicked="+yesWasClicked);
-//
-//				warning.text = "Password need to have more than 7 letters";
-//				_password.text = "";
-//				_conform.text = "";
-//                return;
-//			}
+			//			if ((_password.text.Length) <= 7) {
+			////				bool yesWasClicked = EditorUtility.DisplayDialog("Title", "Content", "I Got it");
+			////				Debug.Log("yesWasClicked="+yesWasClicked);
+			//
+			//				warning.text = "Password need to have more than 7 letters";
+			//				_password.text = "";
+			//				_conform.text = "";
+			//                return;
+			//			}
 
 			if (_password.text.Contains (_name.text)) {
-//				bool yesWasClicked = EditorUtility.DisplayDialog("Title", "Content", "I Got it");
-//				Debug.Log("yesWasClicked="+yesWasClicked);	
+				//				bool yesWasClicked = EditorUtility.DisplayDialog("Title", "Content", "I Got it");
+				//				Debug.Log("yesWasClicked="+yesWasClicked);	
 
 				warning.text = "Password should not contain your username";
 				_password.text = "";
 				_conform.text = "";
-                return;
+				return;
 			}
 			//complex
 			string aPatter = @"(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}";
@@ -84,47 +84,56 @@ public class SelfRegister : MonoBehaviour {
 			}else{
 				warning.text = "Password reqires to contain both number and alphabet";
 				Debug.Log ("Password reqires to contain both number and alphabet. Special characters only can be choosed from ?,=,.,*. " +
+				warning.text = "Password requires to contain both number and alphabet";
 					" Length is 8-30.");
 				return;
 			}
-			
+
 			User u = new User ();
 			u.password = _password.text;
 			u.username = _email.text;
 			u.dob = _birthday.text;
 			u.name = _name.text;
-            u.Create();
-            u.CheckExist();
-            if (u.authenticated)
-            {
-                storeLoginSessionId.loginId = u.id;
-                SceneManager.LoadScene("MainScene");
-                if (string.IsNullOrEmpty(u.name))
-                {
-                    storeLoginSessionId.name = u.username;
-                }
-                else
-                {
-                    storeLoginSessionId.name = u.name;
-                }
+			u.CheckExist();
+			if (u.exist)
+			{
+				Debug.Log("Username already exists");
+				warning.text = "Username already exists";
+			} 
+			else
+			{
+				u.Create();
+				if (u.authenticated)
+				{
+					storeLoginSessionId.loginId = u.id;
+					SceneManager.LoadScene("MainScene");
+					if (string.IsNullOrEmpty(u.name))
+					{
+						storeLoginSessionId.name = u.username;
+					}
+					else
+					{
+						storeLoginSessionId.name = u.name;
+					}
 
-                storeLoginSessionId.email = u.email;
-            }
-            else
-            {
-                Debug.Log("Login Failed");
-                warning.text = "Register Failed";
-                _password.text = "";
-                _conform.text = "";
-            }
-        }
-        else
-        {
-            warning.text = "Password not the same";
-            _password.text = "";
-            _conform.text = "";
-        }
-			
+					storeLoginSessionId.email = u.email;
+				}
+				else
+				{
+					Debug.Log("Login Failed");
+					warning.text = "Register Failed";
+					_password.text = "";
+					_conform.text = "";
+				}
+			}
+		}
+		else
+		{
+			warning.text = "Password not the same";
+			_password.text = "";
+			_conform.text = "";
+		}
+
 	}
 
 }
