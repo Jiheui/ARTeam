@@ -118,7 +118,7 @@ All the corresponding code are on GitHub, in the folder named "ARPostReader"
 ### Scheduling, Deliverables
 Please see the table of Deliverable Schedule above
 
-## Constraints
+## Constraints:
 - Reliability - Poster recognition problem due to external factors (e.g. lightning, paper material,etc).
 - Time - Each students have set amount of workload.
 - Budget - $300 limitation set by techLauncher.
