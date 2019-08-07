@@ -84,7 +84,6 @@ public class SelfRegister : MonoBehaviour {
 			}else{
 				warning.text = "Password reqires to contain both number and alphabet";
 				Debug.Log ("Password reqires to contain both number and alphabet. Special characters only can be choosed from ?,=,.,*. " +
-				warning.text = "Password requires to contain both number and alphabet";
 					" Length is 8-30.");
 				return;
 			}
