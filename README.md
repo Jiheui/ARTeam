@@ -135,6 +135,12 @@ Please see the table of Deliverable Schedule above
 - Workload risks:  time arrangement, four course simultaneously
 - Equipment risks: suddenly shortage of electricity or Internet
 
+## Risk Mitigation:
+- Technological risk: We will do research, find other platform which supports the technology we use.
+- People risk: We will research, learn and question expertise who can help us.
+- Workload risk: Members can equally divide their workload as they go along during the duration of project.
+- Equipment risk: Can ask other members to do the task instead, or go to somewhere else where electricity or internet is available.
+
 ## Potential Costs:
 - Phone, Android Studio for Business 
 - Apple platforms has potential publishing cost
