@@ -101,7 +101,7 @@ All the corresponding code are on GitHub, in the folder named "ARPostReader"
 ## Milestones, Scheduling, Deliverables 
 
 ### Milestones
--Decide on the new features of application development.
+- Decide on the new features of application development.
 - Do customer research.
 - Application can be personalised for users.
 - Update posters.
