@@ -122,10 +122,13 @@ Please see the table of Deliverable Schedule above
 - Budget: $300 limitation set by techLauncher.
 
 ## Resources: 
-- ANU library
+- Github
+- Navicat for Mysql
+- Adobe Illustrator
 - Unity platform
+- Unity Asset Store
 - MySQL
-- HiAR 
+- Euforia (The New AR SDK)
 
 ## Risks:
 - Technological risks: our selection of technology could not work in some platforms
