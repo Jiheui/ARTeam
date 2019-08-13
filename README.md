@@ -5,13 +5,15 @@ Accenture is an experienced firm which provides professional strategy, technolog
 
 Traditional printed posters/pamphlets waste natural resources and are difficult to update when information becomes outdated. As a result, they are usually expensive, inefficient, unattractive and environmentally impactful. However, digital posters with AR technology can help to solve these problems and give clients a new and engaging reading experience.
 
-#### B. Objectives
-The objective of this project is to further develop the mobile phone-based application for AR poster viewing to solve the problems of traditional posters.
 
-In addition, through this project, we want to gain experience in real-world business methodologies, issue analysing and application development.
+#### B. Objectives
+The objective of this project is to further develop the mobile phone-based application for AR poster viewing to solve the problems of traditional posters of physical limits, as we want to obtain more information about the poster and modify the poster to latest one, not the unchanged and limited one. Last semester, all the initial features has been built, and achieved good output.
+
+In addition, for this semester, through this project, we want to gain further experience in real-world business methodologies, issue analysing and application development to make the application more attractive, intelligent and user-friendly.
+
 
 #### C. Scope of Work
-In the next three months, we will research about the issues, customer research, analyse clients’ requirements, design the project, develop further features on top of the developed application, internal and external testing. The final application would contain the main functions of poster scanning, poster viewing, poster saving, sharing and updating, and data analysing.
+In the next three months, throughout the project, we will research on better UI , faster response(through new server), more intelligent (through machine learning), more user-friendly (through the overall improvement of user experience), internal and external testing (fix possible bugs). The final application would contain the main functions of poster viewing through scanning the physical poster, but also viewing a poster in diverse way, poster saving, sharing and updating, and recommendation posters through favorite
 
 #### D. Deliverable Schedule
 | WEEK   | DAY       | TODO
@@ -23,7 +25,7 @@ In the next three months, we will research about the issues, customer research, 
 |        |           | Review and discuss with client about the statement of work and sign it.
 |        | Wednesday | Prepare for audit 1 
 | Week4  | Monday    | Reflect on feedback from audit 1
-|        | Thursday  | Try to finish the acceptance criteria
+|        | Thursday  | Finish Statement of Work.
 | Week5  | Monday    | Discuss with clients the part we have already finished and get the possible feedbacks from them.
 |        | Thursday  | Prepare for next week's audit
 | Week6  | Monday  | Make sure each interface should have all the essential elements with some basic functions work & Client review & Test (Client)
@@ -99,19 +101,15 @@ All the corresponding code are on GitHub, in the folder named "ARPostReader"
 ## Milestones, Scheduling, Deliverables 
 
 ### Milestones
-- Decide on the direction of application development.
+-Decide on the new features of application development.
 - Do customer research.
 - Application can be personalised for users.
-- Can update posters.
-- Finish the user story and extract the MVP inside.
+- Update posters.
 - Design all the possible functions of our application.
-- Successfully run the Demo on Unity.
-- Complete the essential development tasks.
-- Test the essential funcitons.
-- Attempt to add the high level functions.
-- Attempt to use Machine Learning Algorithms in the application.
+- More tests on the essential functions.
+- Attempt to use Machine Learning Algorithms for recommendation.
 - Test the whole application.
-- Document all the functions.
+- Document all the new functions.
 - Improvement on code quality.
 - Improvement on user interface.
 
