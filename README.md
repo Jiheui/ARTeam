@@ -117,9 +117,9 @@ All the corresponding code are on GitHub, in the folder named "ARPostReader"
 Please see the table of Deliverable Schedule above
 
 ## Constraints:
-- Reliability - Poster recognition problem due to external factors (e.g. lightning, paper material,etc).
-- Time - Each students have set amount of workload.
-- Budget - $300 limitation set by techLauncher.
+- Reliability: Poster recognition problem due to external factors (e.g. lightning, paper material,etc).
+- Workload: time arrangement, four course simultaneously, each students have set amount of workload per week.
+- Budget: $300 limitation set by techLauncher.
 
 ## Resources: 
 - ANU library
@@ -130,14 +130,7 @@ Please see the table of Deliverable Schedule above
 ## Risks:
 - Technological risks: our selection of technology could not work in some platforms
 - People risk: not having the expertise to deliver the product
-- Workload risks:  time arrangement, four course simultaneously
 - Equipment risks: suddenly shortage of electricity or Internet
-
-## Risk Mitigation:
-- Technological risk: We will do research, find other platform which supports the technology we use.
-- People risk: We will research, learn and question expertise who can help us.
-- Workload risk: Members can equally divide their workload as they go along during the duration of project.
-- Equipment risk: Can ask other members to do the task instead, or go to somewhere else where electricity or internet is available.
 
 ## Potential Costs:
 - Phone, Android Studio for Business 
@@ -172,5 +165,5 @@ For the convenience of users, user can create their own account, upload and favo
 User interface was also developed in reasonable manner. Thus, users can easily recognize their functionality.
 
 ### What to do now :
-The AR Poster Reader team should aim to improve on user interface and provide further features that will differentiate the application to traditional paper poster. The team should work on customer research, user testing, update function, data analysis and personalisation. Thus, the application can attract more customers.
+The AR Poster Reader team should aim to improve on user interface and provide further features that will differentiate the application to traditional paper poster. The team should work on customer research, user testing, update function, and personalisation. Thus, the application can attract more customers.
 
