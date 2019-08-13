@@ -7,9 +7,12 @@ Traditional printed posters/pamphlets waste natural resources and are difficult 
 
 
 #### B. Objectives
-The objective of this project is to further develop the mobile phone-based application for AR poster viewing to solve the problems of traditional posters of physical limits, as we want to obtain more information about the poster and modify the poster to latest one, not the unchanged and limited one. Last semester, all the initial features has been built, and achieved good output.
+The objective of this project is to further develop the mobile phone-based application for AR poster viewing to solve the problems of traditional posters of physical limits. As we want to obtain more information about the poster and modify the poster to latest one, not the unchanged and limited one. Last semester, all the initial features has been built, and achieved good output.
 
-In addition, for this semester, through this project, we want to gain further experience in real-world business methodologies, issue analysing and application development to make the application more attractive, intelligent and user-friendly.
+In addition, for this semester, through this project, we want to gain further experience in real-world business methodologies, issue analysing and application development to make the application more attractive, intelligent and user-friendly. 
+
+The following are detailed goal of our team this semester. For more attractive, this involves more engagement of users, which means they can become both poster providers and consumers. For intelligent, the system would apply machine learning algorithms to recommend the posters based on the favourite one of users. For user-friendly, better user interface would be developed to make the application look nicer, and more realistic AR models would be built this semester.
+
 
 
 #### C. Scope of Work
