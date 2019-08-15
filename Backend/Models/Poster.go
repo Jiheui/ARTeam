@@ -3,7 +3,10 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-11 15:42:37
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-04-25 21:35:15
+* @Last Modified time: 2019-08-11 22:04:45
+*
+* @Description: This file is created for store & get poster information
+*
  */
 package Models
 

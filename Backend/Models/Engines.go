@@ -2,14 +2,16 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-02 19:00:20
-* @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-05-15 17:23:21
+* @Last Modified by:   Yutao Ge
+* @Last Modified time: 2019-08-15 20:55:59
+*
+* @Description: This file is created for MySQL connection
+*
  */
 package Models
 
 import (
-	"encoding/json"
-	"os"
+	"../Tools"
 	"sync"
 
 	log "github.com/Sirupsen/logrus"
@@ -17,16 +19,9 @@ import (
 	"github.com/go-xorm/xorm"
 )
 
-var Config struct {
-	// mysql connection info
+var MysqlConfig struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
-
-	// HiAR
-	HiUsername   string `json:"hiusername"`
-	HiPassword   string `json:"hipassword"`
-	CollectionId string `json:"collectionid"`
-	KeyGroup 	 string `json:"keygroup"`
 }
 
 type DBClient struct {
@@ -38,8 +33,8 @@ var db DBClient
 var err error
 
 func init() {
-	parserJson(&Config)
-	db.Engine, err = xorm.NewEngine("mysql", Config.Username+":"+Config.Password+"@/ARPoster?charset=utf8")
+	Tools.ParserConfig(&MysqlConfig)
+	db.Engine, err = xorm.NewEngine("mysql", MysqlConfig.Username+":"+MysqlConfig.Password+"@/ARPoster?charset=utf8")
 	db.Engine.ShowSQL(true)
 	if err != nil {
 		log.Info(err)
@@ -59,19 +54,4 @@ func (d *DBClient) WLock() {
 
 func (d *DBClient) WUnlock() {
 	d.Lock.Unlock()
-}
-
-func parserJson(_struct interface{}) error {
-	path := "/var/arposter/config.json"
-	file, err := os.OpenFile(path, os.O_RDONLY, 0666)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	decoder := json.NewDecoder(file)
-	if err := decoder.Decode(&_struct); err != nil {
-		return err
-	}
-	return nil
 }

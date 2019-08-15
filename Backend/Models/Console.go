@@ -3,24 +3,20 @@
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-05-06 22:43:42
 * @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-05-16 16:08:39
+* @Last Modified time: 2019-08-15 20:56:31
  */
 package Models
 
 import (
+	"../Tools"
 	"bytes"
-	"crypto/md5"
-	"encoding/base64"
 	"encoding/gob"
 	"encoding/json"
 	"errors"
-	"io"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/url"
-	"path"
-	"regexp"
 	"text/template"
 	"time"
 
@@ -70,28 +66,6 @@ var token string
 
 func init() {
 	gob.Register(&User{})
-	log.Error(parserJson(&Config))
-	login_url := "https://api.hiar.io/v1/account/signin"
-
-	form := url.Values{
-		"account":  {Config.HiUsername},
-		"password": {Config.HiPassword},
-	}
-
-	body_byte, err := sendSimplePost(login_url, "application/x-www-form-urlencoded", form)
-	if err != nil {
-		panic(err)
-	}
-
-	type HiARLoginResp struct {
-		Token string `json:"token"`
-	}
-	hiresp := &HiARLoginResp{}
-
-	log.Error(json.Unmarshal(body_byte, hiresp))
-	token = hiresp.Token
-
-	go keepTokenAlive(token)
 }
 
 /*
@@ -116,7 +90,7 @@ func (c *ConsoleResource) Index(request *restful.Request, response *restful.Resp
 
 		username := req.Form["username"][0]
 		rawPassword := req.Form["password"][0]
-		password := encodePassword(rawPassword)
+		password := Tools.EncodePassword(rawPassword)
 		hostURL := "http://" + req.Host + "/users/login"
 
 		if usr, err := sendLoginInfo(username, password, hostURL); err != nil {
@@ -163,73 +137,73 @@ func (c *ConsoleResource) Dashboard(request *restful.Request, response *restful.
 
 // Upload page
 func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Response) {
-	if request.Request.Method == "GET" {
-		p := NewConsoleWithStaticFilePrefix(request)
-		p.PageName = "upload"
-		p.TotalPosters = 25
-		p.TotalResources = 70
+	// if request.Request.Method == "GET" {
+	// 	p := NewConsoleWithStaticFilePrefix(request)
+	// 	p.PageName = "upload"
+	// 	p.TotalPosters = 25
+	// 	p.TotalResources = 70
 
-		t, err := template.ParseFiles("Models/Templates/layout.tmpl",
-			"Models/Templates/upload.tmpl")
-		if err != nil {
-			log.Fatalf("Template gave: %s", err)
-		}
+	// 	t, err := template.ParseFiles("Models/Templates/layout.tmpl",
+	// 		"Models/Templates/upload.tmpl")
+	// 	if err != nil {
+	// 		log.Fatalf("Template gave: %s", err)
+	// 	}
 
-		t.Execute(response.ResponseWriter, p)
-	} else {
-		req := request.Request
-		req.ParseForm()
+	// 	t.Execute(response.ResponseWriter, p)
+	// } else {
+	// 	req := request.Request
+	// 	req.ParseForm()
 
-		_, fileHeader, err := GetFileFromRequest("fileInput", req)
-		if err != nil {
-			log.Error(err)
-			response.WriteHeader(http.StatusBadRequest)
-			return
-		}
+	// 	_, fileHeader, err := GetFileFromRequest("fileInput", req)
+	// 	if err != nil {
+	// 		log.Error(err)
+	// 		response.WriteHeader(http.StatusBadRequest)
+	// 		return
+	// 	}
 
-		title := req.Form["title"][0]
-		//filename := handler.Filename
-		location := req.Form["location"][0]
-		datetime := req.Form["datetime"][0]
-		mapurl := req.Form["mapurl"][0]
-		link := req.Form["url"][0]
-		//log.Info(title, "\n", location, "\n", datetime, "\n", link)
+	// 	title := req.Form["title"][0]
+	// 	//filename := handler.Filename
+	// 	location := req.Form["location"][0]
+	// 	datetime := req.Form["datetime"][0]
+	// 	mapurl := req.Form["mapurl"][0]
+	// 	link := req.Form["url"][0]
+	//log.Info(title, "\n", location, "\n", datetime, "\n", link)
 
-		if targetId, err := createHiARMaterial(title+"_"+time.Now().Format("20060102_150405"), fileHeader); err != nil {
-			log.Error(err)
-			response.WriteHeader(http.StatusInternalServerError)
-			return
-		} else {
-			_, fileHeader, err := GetFileFromRequest("thumbnail", req)
-			if err != nil {
-				log.Error(err)
-				response.WriteHeader(http.StatusBadRequest)
-				return
-			}
+	// if targetId, err := createHiARMaterial(title+"_"+time.Now().Format("20060102_150405"), fileHeader); err != nil {
+	// 	log.Error(err)
+	// 	response.WriteHeader(http.StatusInternalServerError)
+	// 	return
+	// } else {
+	// 	_, fileHeader, err := GetFileFromRequest("thumbnail", req)
+	// 	if err != nil {
+	// 		log.Error(err)
+	// 		response.WriteHeader(http.StatusBadRequest)
+	// 		return
+	// 	}
 
-			upload_url := "http://" + req.Host + "/files/upload/"
-			fileSuffix := path.Ext(path.Base(fileHeader.Filename))
-			resURL := upload_url + Config.KeyGroup + "_" + targetId + fileSuffix
-			if err := uploadThumbnail(targetId, resURL, fileHeader); err != nil {
-				log.Error(err)
-				response.WriteHeader(http.StatusBadRequest)
-				return
-			}
+	// 	upload_url := "http://" + req.Host + "/files/upload/"
+	// 	fileSuffix := path.Ext(path.Base(fileHeader.Filename))
+	// 	resURL := upload_url + Config.KeyGroup + "_" + targetId + fileSuffix
+	// 	if err := uploadThumbnail(targetId, resURL, fileHeader); err != nil {
+	// 		log.Error(err)
+	// 		response.WriteHeader(http.StatusBadRequest)
+	// 		return
+	// 	}
 
-			hostURL := "http://" + req.Host + "/posters"
-			resURL = "http://" + req.Host + "/files/" + Config.KeyGroup + "_" + targetId + fileSuffix
-			if err := storePublishInformation(targetId, title, datetime, location, mapurl, link, resURL, hostURL); err != nil {
-				log.Error(err)
-				response.WriteHeader(http.StatusBadRequest)
-				return
-			}
-		}
+	// 	hostURL := "http://" + req.Host + "/posters"
+	// 	resURL = "http://" + req.Host + "/files/" + Config.KeyGroup + "_" + targetId + fileSuffix
+	// 	if err := storePublishInformation(targetId, title, datetime, location, mapurl, link, resURL, hostURL); err != nil {
+	// 		log.Error(err)
+	// 		response.WriteHeader(http.StatusBadRequest)
+	// 		return
+	// 	}
+	// }
 
-		http.Redirect(response.ResponseWriter,
-			request.Request,
-			"/console/manage",
-			http.StatusTemporaryRedirect)
-	}
+	// 	http.Redirect(response.ResponseWriter,
+	// 		request.Request,
+	// 		"/console/manage",
+	// 		http.StatusTemporaryRedirect)
+	// }
 }
 
 // Manage page
@@ -253,77 +227,6 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 *	Tools
 *
 ***/
-
-func createHiARMaterial(name string, fileheader *multipart.FileHeader) (string, error) {
-	upload_url := "https://api.hiar.io/v1/collection/" + Config.CollectionId + "/target"
-
-	body := &bytes.Buffer{}
-	writer := multipart.NewWriter(body)
-
-	file, err := fileheader.Open()
-	if err != nil {
-		return "", err
-	}
-
-	if part, err := writer.CreateFormFile("image", fileheader.Filename); err != nil {
-		return "", err
-	} else {
-		if _, err := io.Copy(part, file); err != nil {
-			return "", err
-		}
-	}
-
-	writer.WriteField("name", name)
-	writer.WriteField("cid", Config.CollectionId)
-
-	if err = writer.Close(); err != nil {
-		return "", err
-	}
-
-	if targetId, err := sendPostWithToken(upload_url, writer, body); err != nil {
-		return "", err
-	} else {
-		go publishCollection()
-		return targetId, err
-	}
-}
-
-func storePublishInformation(keyId, title, datetime, location, mapurl, link, resURL, hostURL string) error {
-	p := &Poster{
-		KeyGroup:    Config.KeyGroup,
-		KeyId:       keyId,
-		PosTitle:    title,
-		PosDate:     datetime,
-		PosLocation: location,
-		PosMap:      mapurl,
-		PosLink:     link,
-		ResUrl:      resURL,
-	}
-
-	b, err := json.Marshal(p)
-	if err != nil {
-		return err
-	}
-	body := &bytes.Buffer{}
-	body.WriteString(string(b))
-
-	req, err := http.NewRequest("POST", hostURL, body)
-	if err != nil {
-		return err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	res, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-
-	defer res.Body.Close()
-	return err
-}
-
 func uploadThumbnail(targetId, url string, fileHeader *multipart.FileHeader) error {
 	file, err := fileHeader.Open()
 	if err != nil {
@@ -345,25 +248,9 @@ func uploadThumbnail(targetId, url string, fileHeader *multipart.FileHeader) err
 	return err
 }
 
-func publishCollection() error {
-	publish_url := "https://api.hiar.io/v1/collection/" + Config.CollectionId + "/publish"
-
-	body := &bytes.Buffer{}
-	writer := multipart.NewWriter(body)
-
-	writer.WriteField("cid", Config.CollectionId)
-
-	if err = writer.Close(); err != nil {
-		return err
-	}
-
-	_, err = sendPostWithToken(publish_url, writer, body)
-	return err
-}
-
 func sendLoginInfo(username, password, hostURL string) (*User, error) {
 	usr := &User{}
-	if isEmail(username) {
+	if Tools.CheckEmail(username) {
 		usr.Email = username
 	} else {
 		usr.Username = username
@@ -515,15 +402,4 @@ func GetFileFromRequest(filename string, req *http.Request) ([]byte, *multipart.
 		return nil, nil, err
 	}
 	return fbytes, handler, err
-}
-
-func isEmail(username string) bool {
-	re := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
-	return re.MatchString(username)
-}
-
-func encodePassword(text string) string {
-	hasher := md5.New()
-	hasher.Write([]byte(text))
-	return base64.StdEncoding.EncodeToString(hasher.Sum(nil))
 }

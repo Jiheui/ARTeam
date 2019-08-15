@@ -2,8 +2,11 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-04-13 00:06:38
-* @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-04-28 14:16:07
+* @Last Modified by:   Yutao Ge
+* @Last Modified time: 2019-08-11 22:01:46
+*
+* @Description: This file is created "favourite poster" function
+*
  */
 package Models
 
