@@ -1,14 +1,14 @@
 /*
-* @Author: Yutao Ge
-* @E-mail: u6283016@anu.edu.au
-* @Date:   2019-05-06 22:43:42
-* @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-08-15 20:56:31
+ * @Author: Yutao Ge
+ * @Date: 2019-05-06 22:43:42
+ * @Email: chris.dfo.only@gmail.com
+ * @Last Modified by: Yutao Ge
+ * @Last Modified time: 2019-08-16 01:08:15
+ * @Description:
  */
 package Models
 
 import (
-	"../Tools"
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
@@ -18,7 +18,8 @@ import (
 	"net/http"
 	"net/url"
 	"text/template"
-	"time"
+
+	"../Tools"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
@@ -74,10 +75,10 @@ func init() {
 *
 ***/
 
-// Login page
+// Index used as login page
 func (c *ConsoleResource) Index(request *restful.Request, response *restful.Response) {
 	if request.Request.Method == "GET" {
-		p := NewConsoleWithStaticFilePrefix(request)
+		p := newConsoleWithStaticFilePrefix(request)
 
 		t, err := template.ParseFiles("Models/Templates/login.html")
 		if err != nil {
@@ -121,7 +122,7 @@ func (c *ConsoleResource) Index(request *restful.Request, response *restful.Resp
 
 // Dashboard page
 func (c *ConsoleResource) Dashboard(request *restful.Request, response *restful.Response) {
-	p := NewConsoleWithStaticFilePrefix(request)
+	p := newConsoleWithStaticFilePrefix(request)
 	p.PageName = "dashboard"
 	p.TotalPosters = 25
 	p.TotalResources = 70
@@ -137,38 +138,47 @@ func (c *ConsoleResource) Dashboard(request *restful.Request, response *restful.
 
 // Upload page
 func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Response) {
-	// if request.Request.Method == "GET" {
-	// 	p := NewConsoleWithStaticFilePrefix(request)
-	// 	p.PageName = "upload"
-	// 	p.TotalPosters = 25
-	// 	p.TotalResources = 70
+	if request.Request.Method == "GET" {
+		p := newConsoleWithStaticFilePrefix(request)
+		p.PageName = "upload"
+		p.TotalPosters = 25
+		p.TotalResources = 70
 
-	// 	t, err := template.ParseFiles("Models/Templates/layout.tmpl",
-	// 		"Models/Templates/upload.tmpl")
-	// 	if err != nil {
-	// 		log.Fatalf("Template gave: %s", err)
-	// 	}
+		t, err := template.ParseFiles("Models/Templates/layout.tmpl",
+			"Models/Templates/upload.tmpl")
+		if err != nil {
+			log.Fatalf("Template gave: %s", err)
+		}
 
-	// 	t.Execute(response.ResponseWriter, p)
-	// } else {
-	// 	req := request.Request
-	// 	req.ParseForm()
+		t.Execute(response.ResponseWriter, p)
+	} else {
+		req := request.Request
+		req.ParseForm()
 
-	// 	_, fileHeader, err := GetFileFromRequest("fileInput", req)
-	// 	if err != nil {
-	// 		log.Error(err)
-	// 		response.WriteHeader(http.StatusBadRequest)
-	// 		return
-	// 	}
+		_, fileHeader, err := getFileFromRequest("fileInput", req)
+		if err != nil {
+			log.Error(err)
+			response.WriteHeader(http.StatusBadRequest)
+			return
+		}
 
-	// 	title := req.Form["title"][0]
-	// 	//filename := handler.Filename
-	// 	location := req.Form["location"][0]
-	// 	datetime := req.Form["datetime"][0]
-	// 	mapurl := req.Form["mapurl"][0]
-	// 	link := req.Form["url"][0]
-	//log.Info(title, "\n", location, "\n", datetime, "\n", link)
+		if _, err := fileHeader.Open(); err != nil {
+			log.Error(err)
+			response.WriteHeader(http.StatusBadRequest)
+			return
+		} else {
+			//vu := Tools.NewVuforiaManager()
 
+		}
+
+		//title := req.Form["title"][0]
+		//filename := handler.Filename
+		//location := req.Form["location"][0]
+		//datetime := req.Form["datetime"][0]
+		//mapurl := req.Form["mapurl"][0]
+		//link := req.Form["url"][0]
+	}
+	// else {
 	// if targetId, err := createHiARMaterial(title+"_"+time.Now().Format("20060102_150405"), fileHeader); err != nil {
 	// 	log.Error(err)
 	// 	response.WriteHeader(http.StatusInternalServerError)
@@ -208,7 +218,7 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 
 // Manage page
 func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Response) {
-	p := NewConsoleWithStaticFilePrefix(request)
+	p := newConsoleWithStaticFilePrefix(request)
 	p.PageName = "manage"
 	p.TotalPosters = 25
 	p.TotalResources = 70
@@ -295,36 +305,6 @@ func sendLoginInfo(username, password, hostURL string) (*User, error) {
 	}
 }
 
-func basicAuthenticate(req *restful.Request, resp *restful.Response, chain *restful.FilterChain) {
-	session, _ := Store.Get(req.Request, "ARPosterCookie")
-
-	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-		log.Info(ok, auth)
-		http.Redirect(resp.ResponseWriter, req.Request, "/console/login", http.StatusTemporaryRedirect)
-		return
-	}
-
-	chain.ProcessFilter(req, resp)
-}
-
-func keepTokenAlive(token string) {
-	for {
-		<-time.After(60 * time.Second)
-		keepalive_url := "https://api.hiar.io/v1/account/keepAlive"
-
-		form := url.Values{
-			"token": {token},
-		}
-
-		b, err := sendSimplePost(keepalive_url, "application/x-www-form-urlencoded", form)
-		if err != nil {
-			log.Error(err)
-		} else {
-			log.Info("keep HiAR token alive: ", string(b))
-		}
-	}
-}
-
 func sendSimplePost(url, contentType string, form url.Values) ([]byte, error) {
 	body := bytes.NewBufferString(form.Encode())
 
@@ -338,53 +318,22 @@ func sendSimplePost(url, contentType string, form url.Values) ([]byte, error) {
 	return ioutil.ReadAll(resp.Body)
 }
 
-func sendPostWithToken(url string, writer *multipart.Writer, body *bytes.Buffer) (string, error) {
-	req, err := http.NewRequest("POST", url, body)
-	if err != nil {
-		return "", err
+func basicAuthenticate(req *restful.Request, resp *restful.Response, chain *restful.FilterChain) {
+	session, _ := Store.Get(req.Request, "ARPosterCookie")
+	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+		log.Info(ok, auth)
+		http.Redirect(resp.ResponseWriter, req.Request, "/console/login", http.StatusTemporaryRedirect)
+		return
 	}
-
-	req.Header.Set("Content-Type", writer.FormDataContentType())
-	req.Header.Set("token", token)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-
-	rspbody := &bytes.Buffer{}
-	_, err = rspbody.ReadFrom(resp.Body)
-	if err != nil {
-		return "", err
-	}
-	//log.Println(resp.StatusCode)
-	//log.Println(resp.Header)
-	//log.Println(rspbody)
-
-	type HiARResp struct {
-		TargetId string `json:"targetid"`
-		RetCode  int    `json:"retCode"`
-		Comment  string `json:"comment"`
-	}
-	hiresp := &HiARResp{}
-
-	if err := json.Unmarshal(rspbody.Bytes(), hiresp); err != nil {
-		return "", err
-	} else if hiresp.RetCode != 0 {
-		return "", errors.New(hiresp.Comment)
-	} else {
-		return hiresp.TargetId, err
-	}
+	chain.ProcessFilter(req, resp)
 }
 
-func NewConsoleWithStaticFilePrefix(request *restful.Request) *Console {
+func newConsoleWithStaticFilePrefix(request *restful.Request) *Console {
 	host := request.Request.Host
 	return &Console{StaticFilePrefix: "http://" + host + "/files/res"}
 }
 
-func GetFileFromRequest(filename string, req *http.Request) ([]byte, *multipart.FileHeader, error) {
+func getFileFromRequest(filename string, req *http.Request) ([]byte, *multipart.FileHeader, error) {
 	file, handler, err := req.FormFile(filename)
 	if err != nil {
 		return nil, nil, err

@@ -1,12 +1,10 @@
 /*
-* @Author: Yutao Ge
-* @E-mail: u6283016@anu.edu.au
-* @Date:   2019-04-11 15:42:37
-* @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-08-11 22:04:45
-*
-* @Description: This file is created for store & get poster information
-*
+ * @Author: Yutao Ge
+ * @Date: 2019-04-11 15:42:37
+ * @Email: chris.dfo.only@gmail.com
+ * @Last Modified by: Yutao Ge
+ * @Last Modified time: 2019-08-16 01:08:02
+ * @Description: This file is created for store & get poster information
  */
 package Models
 

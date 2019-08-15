@@ -1,9 +1,10 @@
 /*
-* @Author: Yutao Ge
-* @E-mail: u6283016@anu.edu.au
-* @Date:   2019-04-26 00:22:52
-* @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-05-08 14:49:34
+ * @Author: Yutao Ge
+ * @Date: 2019-04-26 00:22:52
+ * @Email: chris.dfo.only@gmail.com
+ * @Last Modified by: Yutao Ge
+ * @Last Modified time: 2019-08-16 01:08:04
+ * @Description:
  */
 
 package Models
@@ -77,16 +78,16 @@ func (f FileResource) GetFile(request *restful.Request, response *restful.Respon
 
 func (f FileResource) GetFile4Static(request *restful.Request, response *restful.Response) {
 	fileName := request.PathParameter("filename")
-	filePath := rootDir+"res/"
+	filePath := rootDir + "res/"
 
-	if(strings.HasSuffix(fileName, ".js")) {
+	if strings.HasSuffix(fileName, ".js") {
 		filePath += "js/"
-	} else if(strings.HasSuffix(fileName, ".css")) {
+	} else if strings.HasSuffix(fileName, ".css") {
 		filePath += "css/"
-	} else if(strings.HasSuffix(fileName, ".eot") || 
-		strings.HasSuffix(fileName, ".svg") || 
+	} else if strings.HasSuffix(fileName, ".eot") ||
+		strings.HasSuffix(fileName, ".svg") ||
 		strings.HasSuffix(fileName, ".ttf") ||
-		strings.HasSuffix(fileName, ".woff")) {
+		strings.HasSuffix(fileName, ".woff") {
 		filePath += "fonts/"
 	}
 

@@ -1,18 +1,17 @@
 /*
-* @Author: Yutao Ge
-* @E-mail: u6283016@anu.edu.au
-* @Date:   2019-04-02 19:00:20
-* @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-08-15 20:55:59
-*
-* @Description: This file is created for MySQL connection
-*
+ * @Author: Yutao Ge
+ * @Date: 2019-05-06 22:43:42
+ * @Email: chris.dfo.only@gmail.com
+ * @Last Modified by: Yutao Ge
+ * @Last Modified time: 2019-08-16 01:08:13
+ * @Description: This file is created for MySQL connection
  */
 package Models
 
 import (
-	"../Tools"
 	"sync"
+
+	"../Tools"
 
 	log "github.com/Sirupsen/logrus"
 	_ "github.com/go-sql-driver/mysql"

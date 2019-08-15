@@ -1,16 +1,15 @@
 /*
-* @Author: Yutao Ge
-* @E-mail: u6283016@anu.edu.au
-* @Date:   2019-08-11 21:42:07
-* @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-08-15 20:48:31
-*
-* @Description: This file is created for backend to connect to Vuforia server via REST api.
-*
-* @About Vuforia: Vuforia Engine is a software platform for creating Augmented Reality apps.
-*				Developers can easily add advanced computer vision functionality to any application,
-*				allowing it to recognize images and objects, and interact with spaces in the real world.
-*				link: https://developer.vuforia.com/
+ * @Author: Yutao Ge
+ * @Date: 2019-08-11 21:42:07
+ * @Email: chris.dfo.only@gmail.com
+ * @Last Modified by: Yutao Ge
+ * @Last Modified time: 2019-08-16 01:07:58
+ * @Description:  This file is created for backend to connect to Vuforia server via REST api.
+ *
+ * @About Vuforia: Vuforia Engine is a software platform for creating Augmented Reality apps.
+ *				Developers can easily add advanced computer vision functionality to any application,
+ *				allowing it to recognize images and objects, and interact with spaces in the real world.
+ *				link: https://developer.vuforia.com/
  */
 package Tools
 
@@ -88,4 +87,8 @@ func (v *VuforiaManger) Copy() VuforiaManger {
 		Url: v.Url,
 	}
 	return tmp
+}
+
+func NewVuforiaManager() VuforiaManger {
+	return vuMaster.Copy()
 }

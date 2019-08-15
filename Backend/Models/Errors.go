@@ -1,12 +1,10 @@
 /*
-* @Author: Yutao Ge
-* @E-mail: u6283016@anu.edu.au
-* @Date:   2019-04-03 19:11:14
-* @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-08-11 22:01:04
-*
-* @Description: This file contains error types
-*
+ * @Author: Yutao Ge
+ * @Date: 2019-04-03 19:11:14
+ * @Email: chris.dfo.only@gmail.com
+ * @Last Modified by: Yutao Ge
+ * @Last Modified time: 2019-08-16 01:08:11
+ * @Description: This file contains error types
  */
 package Models
 
