@@ -3,7 +3,7 @@
  * @Date: 2019-08-11 21:42:07
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-16 01:07:58
+ * @Last Modified time: 2019-08-16 22:47:48
  * @Description:  This file is created for backend to connect to Vuforia server via REST api.
  *
  * @About Vuforia: Vuforia Engine is a software platform for creating Augmented Reality apps.
@@ -25,21 +25,21 @@ type VuforiaConfig struct {
 
 type VuforiaManger struct {
 	config    VuforiaConfig
-	signature string
+	Signature string
 
 	TargetId string
 	Url      string
 }
 
-var vuMaster VuforiaManger
+var VuMaster VuforiaManger
 
 var (
 	VuforiaPostTargetRequestPath = "https://vws.vuforia.com/targets"
 )
 
 func init() {
-	ParserConfig(&vuMaster.config)
-	vuMaster.Url = "https://vws.vuforia.com"
+	ParserConfig(&VuMaster.config)
+	VuMaster.Url = "https://vws.vuforia.com"
 }
 
 // Post a new vuforia target
@@ -61,7 +61,7 @@ func (v *VuforiaManger) setHeaders(req *http.Request, httpVerb, contentMD5, cont
 	v.signatureBuilder(httpVerb, contentMD5, contentType, date, requestPath)
 	req.Header.Set("Date", date)
 	req.Header.Set("Content-Type", contentType)
-	req.Header.Set("Authorization", "VWS "+v.config.ServerAccessKey+":"+v.signature)
+	req.Header.Set("Authorization", "VWS "+v.config.ServerAccessKey+":"+v.Signature)
 	return nil
 }
 
@@ -74,7 +74,7 @@ func (v *VuforiaManger) signatureBuilder(HttpVerb, ContentMD5, ContentType, Date
 		Date + "\n" +
 		RequestPath
 
-	v.signature = EncodeBase64(HMAC_SHA1(v.config.ServerSecretKey, stringToSign))
+	v.Signature = EncodeBase64(HMAC_SHA1(v.config.ServerSecretKey, stringToSign))
 }
 
 // Create a new Vuforia manager
@@ -90,5 +90,5 @@ func (v *VuforiaManger) Copy() VuforiaManger {
 }
 
 func NewVuforiaManager() VuforiaManger {
-	return vuMaster.Copy()
+	return VuMaster.Copy()
 }

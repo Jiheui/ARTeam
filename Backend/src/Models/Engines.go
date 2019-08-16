@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-16 01:08:13
+ * @Last Modified time: 2019-08-16 22:45:51
  * @Description: This file is created for MySQL connection
  */
 package Models
@@ -11,7 +11,7 @@ package Models
 import (
 	"sync"
 
-	"../Tools"
+	"Tools"
 
 	log "github.com/Sirupsen/logrus"
 	_ "github.com/go-sql-driver/mysql"

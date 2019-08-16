@@ -3,7 +3,7 @@
  * @Date: 2019-03-31 19:00:29
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-16 01:08:00
+ * @Last Modified time: 2019-08-16 22:45:56
  * @Description: This file is created for user related functions
  */
 package Models
@@ -12,7 +12,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"../Tools"
+	"Tools"
 
 	//log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"

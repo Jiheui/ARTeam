@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-16 01:08:15
+ * @Last Modified time: 2019-08-16 22:54:41
  * @Description:
  */
 package Models
@@ -19,7 +19,7 @@ import (
 	"net/url"
 	"text/template"
 
-	"../Tools"
+	"Tools"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
@@ -167,8 +167,8 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 			response.WriteHeader(http.StatusBadRequest)
 			return
 		} else {
-			//vu := Tools.NewVuforiaManager()
-
+			vu := Tools.NewVuforiaManager()
+			log.Println(vu.Signature)
 		}
 
 		//title := req.Form["title"][0]
