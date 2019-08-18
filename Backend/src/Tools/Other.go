@@ -3,7 +3,7 @@
  * @Date: 2019-08-11 21:50:37
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-16 01:07:56
+ * @Last Modified time: 2019-08-19 03:26:29
  * @Description: This file contains serveral some tools different usage
  */
 package Tools
@@ -35,6 +35,11 @@ func EncodeBase64(input string) string {
 	return string(b)
 }
 
+// Base64 Encoding
+func EncodeBase64FromBytes(b []byte) string {
+	return base64.StdEncoding.EncodeToString(b)
+}
+
 // Base64 Decoding
 func DecodeBase64(message string) (string, error) {
 	base64Text := make([]byte, base64.StdEncoding.DecodedLen(len(message)))
@@ -43,10 +48,10 @@ func DecodeBase64(message string) (string, error) {
 }
 
 // HMAC-SHA1 encoding
-func HMAC_SHA1(input, key string) string {
+func HMAC_SHA1(input, key string) []byte {
 	h := hmac.New(sha1.New, []byte(key))
 	h.Write([]byte(input))
-	return fmt.Sprintf("%x", h.Sum(nil))
+	return h.Sum(nil)
 }
 
 // MD5, from string

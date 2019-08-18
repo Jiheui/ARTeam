@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-16 22:54:41
+ * @Last Modified time: 2019-08-19 04:03:19
  * @Description:
  */
 package Models
@@ -21,6 +21,7 @@ import (
 
 	"Tools"
 
+	"github.com/Fox-0390/Vuforia-Web-Services/vuforia"
 	log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
 )
@@ -155,20 +156,22 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		req := request.Request
 		req.ParseForm()
 
-		_, fileHeader, err := getFileFromRequest("fileInput", req)
+		f, _, err := getFileFromRequest("fileInput", req)
 		if err != nil {
 			log.Error(err)
 			response.WriteHeader(http.StatusBadRequest)
 			return
-		}
-
-		if _, err := fileHeader.Open(); err != nil {
-			log.Error(err)
-			response.WriteHeader(http.StatusBadRequest)
-			return
 		} else {
-			vu := Tools.NewVuforiaManager()
-			log.Println(vu.Signature)
+			image := Tools.EncodeImageFromBytes(f)
+			vu := &vuforia.VuforiaClient{}
+			vu.AccessKey = "abddb8ad8e77bd03b2316f6ce4996706b0043611"
+			vu.SecretKey = "fc1d7a087f7e4254a1c662842647fac5b277cc4b"
+			vu.Host = "https://vws.vuforia.com"
+			if _, ok, err := vu.AddItem("test", 32.0, image, true, Tools.EncodeBase64("test")); err != nil {
+				log.Error(err)
+			} else if !ok {
+				log.Error("sad")
+			}
 		}
 
 		//title := req.Form["title"][0]
