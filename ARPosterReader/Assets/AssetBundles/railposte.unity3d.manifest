@@ -1,0 +1,48 @@
+ManifestFileVersion: 0
+CRC: 1626565424
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 60b4277d624ba9f4adeb9c8239ffe0a6
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 2fba0379fd7708a2dda0235e3bfdd12f
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9deeae23adebb91409bf7ecdba63e7e7, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+Assets:
+- Assets/HiAR-Unity/Prefabs/Rail Poster 1.prefab
+Dependencies: []

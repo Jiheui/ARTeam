@@ -1,0 +1,36 @@
+ManifestFileVersion: 0
+CRC: 2062571273
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3d39bded198fd0e36b7fab04305d0fdc
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 3bc7852de6dae676587f006b4cf264a6
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 801f7960d79bbc946997d8b20bbec37d, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/HiAR-Unity/Prefabs/HecMesh.prefab
+Dependencies: []

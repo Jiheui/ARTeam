@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 1229213429
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: railposte.unity3d
+      Dependencies: {}
+    Info_1:
+      Name: hecs poster.unity3d
+      Dependencies: {}
+    Info_2:
+      Name: hec_mesh.unity3d
+      Dependencies: {}
+    Info_3:
+      Name: showcaseposter.unity3d
+      Dependencies: {}
