@@ -1,22 +1,24 @@
 /*
-* @Author: Yutao Ge
-* @E-mail: u6283016@anu.edu.au
-* @Date:   2019-04-22 20:38:53
-* @Last Modified by:   Yutao GE
-* @Last Modified time: 2019-04-27 17:26:53
+ * @Author: Yutao Ge
+ * @Date: 2019-04-22 20:38:53
+ * @Email: chris.dfo.only@gmail.com
+ * @Last Modified by: Yutao Ge
+ * @Last Modified time: 2019-08-16 01:07:53
+ * @Description: This file is created for handling email
  */
 package Tools
 
 import (
 	"net/smtp"
 	"regexp"
+
 	//"strings"
 
 	log "github.com/Sirupsen/logrus"
 )
 
 func SendConfirmLink(email string) {
-	if !checkEmail(email) {
+	if !CheckEmail(email) {
 		return
 	}
 
@@ -40,9 +42,7 @@ func SendConfirmLink(email string) {
 	}
 }
 
-func checkEmail(email string) (b bool) {
-	if m, _ := regexp.MatchString("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+", email); !m {
-		return false
-	}
-	return true
+func CheckEmail(email string) (b bool) {
+	re := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+	return re.MatchString(email)
 }

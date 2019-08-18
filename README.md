@@ -5,13 +5,18 @@ Accenture is an experienced firm which provides professional strategy, technolog
 
 Traditional printed posters/pamphlets waste natural resources and are difficult to update when information becomes outdated. As a result, they are usually expensive, inefficient, unattractive and environmentally impactful. However, digital posters with AR technology can help to solve these problems and give clients a new and engaging reading experience.
 
-#### B. Objectives
-The objective of this project is to further develop the mobile phone-based application for AR poster viewing to solve the problems of traditional posters.
 
-In addition, through this project, we want to gain experience in real-world business methodologies, issue analysing and application development.
+#### B. Objectives
+The objective of this project is to further develop the mobile phone-based application for AR poster viewing to solve the problems of traditional posters of physical limits. As we want to obtain more information about the poster and modify the poster to latest one, not the unchanged and limited one. Last semester, all the initial features has been built, and achieved good output.
+
+In addition, for this semester, through this project, we want to gain further experience in real-world business methodologies, issue analysing and application development to make the application more attractive, intelligent and user-friendly. 
+
+The following are detailed goal of our team this semester. For more attractive, this involves more engagement of users, which means they can become both poster providers and consumers. For intelligent, the system would apply machine learning algorithms to recommend the posters based on the favourite one of users. For user-friendly, better user interface would be developed to make the application look nicer, and more realistic AR models would be built this semester.
+
+
 
 #### C. Scope of Work
-In the next three months, we will research about the issues, customer research, analyse clients’ requirements, design the project, develop further features on top of the developed application, internal and external testing. The final application would contain the main functions of poster scanning, poster viewing, poster saving, sharing and updating, and data analysing.
+In the next three months, throughout the project, we will research on better UI , faster response(through new server), more intelligent (through machine learning), more user-friendly (through the overall improvement of user experience), internal and external testing (fix possible bugs). The final application would contain the main functions of poster viewing through scanning the physical poster, but also viewing a poster in diverse way, poster saving, sharing and updating, and recommendation posters through favorite
 
 #### D. Deliverable Schedule
 | WEEK   | DAY       | TODO
@@ -23,7 +28,7 @@ In the next three months, we will research about the issues, customer research, 
 |        |           | Review and discuss with client about the statement of work and sign it.
 |        | Wednesday | Prepare for audit 1 
 | Week4  | Monday    | Reflect on feedback from audit 1
-|        | Thursday  | Try to finish the acceptance criteria
+|        | Thursday  | Finish Statement of Work.
 | Week5  | Monday    | Discuss with clients the part we have already finished and get the possible feedbacks from them.
 |        | Thursday  | Prepare for next week's audit
 | Week6  | Monday  | Make sure each interface should have all the essential elements with some basic functions work & Client review & Test (Client)
@@ -99,19 +104,15 @@ All the corresponding code are on GitHub, in the folder named "ARPostReader"
 ## Milestones, Scheduling, Deliverables 
 
 ### Milestones
-- Decide on the direction of application development.
+- Decide on the new features of application development.
 - Do customer research.
 - Application can be personalised for users.
-- Can update posters.
-- Finish the user story and extract the MVP inside.
+- Update posters.
 - Design all the possible functions of our application.
-- Successfully run the Demo on Unity.
-- Complete the essential development tasks.
-- Test the essential funcitons.
-- Attempt to add the high level functions.
-- Attempt to use Machine Learning Algorithms in the application.
+- More tests on the essential functions.
+- Attempt to use Machine Learning Algorithms for recommendation.
 - Test the whole application.
-- Document all the functions.
+- Document all the new functions.
 - Improvement on code quality.
 - Improvement on user interface.
 
@@ -119,20 +120,22 @@ All the corresponding code are on GitHub, in the folder named "ARPostReader"
 Please see the table of Deliverable Schedule above
 
 ## Constraints:
-- Reliability - Poster recognition problem due to external factors (e.g. lightning, paper material,etc).
-- Time - Each students have set amount of workload.
-- Budget - $300 limitation set by techLauncher.
+- Reliability: Poster recognition problem due to external factors (e.g. lightning, paper material,etc).
+- Workload: time arrangement, four course simultaneously, each students have set amount of workload per week.
+- Budget: $300 limitation set by techLauncher.
 
 ## Resources: 
-- ANU library
+- Github
+- Navicat for Mysql
+- Adobe Illustrator
 - Unity platform
+- Unity Asset Store
 - MySQL
-- HiAR 
+- Euforia (The New AR SDK)
 
 ## Risks:
 - Technological risks: our selection of technology could not work in some platforms
 - People risk: not having the expertise to deliver the product
-- Workload risks:  time arrangement, four course simultaneously
 - Equipment risks: suddenly shortage of electricity or Internet
 
 ## Potential Costs:
@@ -168,5 +171,5 @@ For the convenience of users, user can create their own account, upload and favo
 User interface was also developed in reasonable manner. Thus, users can easily recognize their functionality.
 
 ### What to do now :
-The AR Poster Reader team should aim to improve on user interface and provide further features that will differentiate the application to traditional paper poster. The team should work on customer research, user testing, update function, data analysis and personalisation. Thus, the application can attract more customers.
+The AR Poster Reader team should aim to improve on user interface and provide further features that will differentiate the application to traditional paper poster. The team should work on customer research, user testing, update function, and personalisation. Thus, the application can attract more customers.
 
