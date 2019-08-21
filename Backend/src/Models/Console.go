@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-19 04:03:19
+ * @Last Modified time: 2019-08-22 03:17:31
  * @Description:
  */
 package Models
@@ -21,7 +21,6 @@ import (
 
 	"Tools"
 
-	"github.com/Fox-0390/Vuforia-Web-Services/vuforia"
 	log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
 )
@@ -154,7 +153,13 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		t.Execute(response.ResponseWriter, p)
 	} else {
 		req := request.Request
-		req.ParseForm()
+		req.ParseMultipartForm(1048576000)
+
+		//title := req.Form["title"][0]
+		//location := req.Form["location"][0]
+		//datetime := req.Form["datetime"][0]
+		//mapurl := req.Form["mapurl"][0]
+		//link := req.Form["url"][0]
 
 		f, _, err := getFileFromRequest("fileInput", req)
 		if err != nil {
@@ -163,36 +168,16 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 			return
 		} else {
 			image := Tools.EncodeImageFromBytes(f)
-			vu := &vuforia.VuforiaClient{}
-			vu.AccessKey = "abddb8ad8e77bd03b2316f6ce4996706b0043611"
-			vu.SecretKey = "fc1d7a087f7e4254a1c662842647fac5b277cc4b"
-			vu.Host = "https://vws.vuforia.com"
-			if _, ok, err := vu.AddItem("test", 32.0, image, true, Tools.EncodeBase64("test")); err != nil {
+			vu := Tools.NewVuforiaManager()
+			if targetId, ok, err := vu.AddItem("t2", 32.0, image, true, Tools.EncodeBase64("test")); err != nil {
 				log.Error(err)
 			} else if !ok {
 				log.Error("sad")
+			} else {
+				log.Println(targetId)
 			}
 		}
-
-		//title := req.Form["title"][0]
-		//filename := handler.Filename
-		//location := req.Form["location"][0]
-		//datetime := req.Form["datetime"][0]
-		//mapurl := req.Form["mapurl"][0]
-		//link := req.Form["url"][0]
 	}
-	// else {
-	// if targetId, err := createHiARMaterial(title+"_"+time.Now().Format("20060102_150405"), fileHeader); err != nil {
-	// 	log.Error(err)
-	// 	response.WriteHeader(http.StatusInternalServerError)
-	// 	return
-	// } else {
-	// 	_, fileHeader, err := GetFileFromRequest("thumbnail", req)
-	// 	if err != nil {
-	// 		log.Error(err)
-	// 		response.WriteHeader(http.StatusBadRequest)
-	// 		return
-	// 	}
 
 	// 	upload_url := "http://" + req.Host + "/files/upload/"
 	// 	fileSuffix := path.Ext(path.Base(fileHeader.Filename))
