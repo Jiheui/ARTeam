@@ -2,16 +2,16 @@
 * @Author: Yutao Ge
 * @E-mail: u6283016@anu.edu.au
 * @Date:   2019-03-28 18:52:31
-* @Last Modified by:   Yutao Ge
-* @Last Modified time: 2019-08-15 20:57:29
- */
+ * @Last Modified by: Yutao Ge
+ * @Last Modified time: 2019-08-19 00:56:39
+*/
 package main
 
 import (
 	"log"
 	"net/http"
 
-	model "./Models"
+	model "Models"
 
 	"github.com/emicklei/go-restful"
 )
