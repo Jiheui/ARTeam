@@ -4,7 +4,6 @@
 [Bb]uild/
 [Bb]uilds/
 Assets/AssetStoreTools*
-Plugins/
 
 # Visual Studio cache directory
 .vs/
@@ -36,6 +35,5 @@ sysinfo.txt
 *.unitypackage
 
 .DS_Store
-ARPosterReader/Assets/FacebookSDK/Plugins.meta
 Backend/.vscode/settings.json
 Backend/pkg/darwin_amd64/Tools.a
