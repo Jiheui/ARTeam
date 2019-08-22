@@ -3,7 +3,7 @@
  * @Date: 2019-04-11 15:42:37
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-16 01:08:02
+ * @Last Modified time: 2019-08-22 03:15:59
  * @Description: This file is created for store & get poster information
  */
 package Models
@@ -17,8 +17,7 @@ import (
 )
 
 type Poster struct {
-	KeyGroup    string `json:"keygroup" xorm:"keygroup"`
-	KeyId       string `json:"keyid" xorm:"keyid"`
+	TargetId    string `json:"targetid" xorm:"targetid"`
 	PosTitle    string `json:"postitle" xorm:"postitle"`
 	PosDate     string `json:"posdate" xorm:"posdate"`
 	PosLocation string `json:"poslocation" xorm:"poslocation"`
@@ -45,9 +44,8 @@ func (p PosterResource) WebService() *restful.WebService {
 		Consumes(restful.MIME_XML, restful.MIME_JSON).
 		Produces(restful.MIME_JSON, restful.MIME_XML) // you can specify this per route as well
 
-	ws.Route(ws.GET("/{KeyGroup}/{KeyId}").To(p.Get)).
-		Param(ws.PathParameter("KeyGroup", "identifier of the poster").DataType("string").DefaultValue("")).
-		Param(ws.PathParameter("KeyId", "identifier of the poster").DataType("string").DefaultValue("")).
+	ws.Route(ws.GET("/{target-id}").To(p.Get)).
+		Param(ws.PathParameter("target-id", "identifier of the poster").DataType("string").DefaultValue("")).
 		Doc("get poster key info")
 
 	ws.Route(ws.POST("").To(p.Post).
@@ -58,11 +56,9 @@ func (p PosterResource) WebService() *restful.WebService {
 
 func (p PosterResource) Get(request *restful.Request, response *restful.Response) {
 	poster := Poster{}
+	targetId := request.PathParameter("target-id")
 
-	keyGroup := request.PathParameter("KeyGroup")
-	keyId := request.PathParameter("KeyId")
-
-	if has, err := db.Engine.Table("poster").Where("keygroup = ?", keyGroup).And("keyid = ?", keyId).Get(&poster); err != nil {
+	if has, err := db.Engine.Table("poster").Where("targetid = ?", targetId).Get(&poster); err != nil {
 		response.WriteHeaderAndEntity(http.StatusInternalServerError, PosterResponse{Error: err.Error()})
 	} else {
 		response.WriteHeaderAndEntity(http.StatusOK, PosterResponse{Poster: poster, IsExist: has})
