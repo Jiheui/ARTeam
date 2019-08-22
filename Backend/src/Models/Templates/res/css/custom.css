@@ -5,3 +5,17 @@
     border-bottom: 1px dashed #eee;
     margin: 30px 0;
 }
+
+#icon_i {
+    width: 20px;
+    height: 20px;
+    position: relative;
+}
+
+#icon_i ion-icon{
+    position: absolute;
+    top: 6px;
+    width: 17px;
+    height: 17px;
+    color: darkgray;
+}
