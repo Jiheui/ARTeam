@@ -37,3 +37,6 @@ sysinfo.txt
 .DS_Store
 Backend/.vscode/settings.json
 Backend/pkg/darwin_amd64/Tools.a
+Backend/.idea/Backend.iml
+Backend/.idea/modules.xml
+Backend/.idea/workspace.xml
