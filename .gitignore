@@ -37,3 +37,4 @@ sysinfo.txt
 .DS_Store
 Backend/.vscode/settings.json
 Backend/pkg/darwin_amd64/Tools.a
+ARPosterReader/QCAR/ts8
