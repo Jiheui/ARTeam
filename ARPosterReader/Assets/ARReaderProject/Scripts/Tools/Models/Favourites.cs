@@ -8,8 +8,7 @@ namespace Models {
 	[Serializable]
 	public class Favourite {
 		public int userid;
-		public string keygroup;
-		public string keyid;
+		public string targetid;
 		public string time;
 
 		[NonSerialized]
@@ -68,7 +67,7 @@ namespace Models {
 
 		public string Delete(string endpoint)
 		{
-			var uri = "http://" + new Tools().Server + endpoint + "/" + userid + "/" + keygroup + "/" + keyid;
+			var uri = "http://" + new Tools().Server + endpoint + "/" + userid + "/" + targetid;
 			var req = HttpWebRequest.Create(uri);
 
 			req.ContentType = "application/json";

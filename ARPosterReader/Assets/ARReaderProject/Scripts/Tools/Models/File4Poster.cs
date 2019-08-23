@@ -9,8 +9,7 @@ namespace Models
 	public class File4Poster
 	{
 		public long id;
-		public string keygroup;
-		public string keyid;
+        public string targetid;
 		public string filename;
 		[NonSerialized]
 		public byte[] data;

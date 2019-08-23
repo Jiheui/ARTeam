@@ -8,8 +8,7 @@ using System.Text;
 namespace Models {
 	[Serializable]
 	public class Poster {
-		public string keygroup;
-		public string keyid;
+        public string targetid;
         public string postitle;
 		public string posdate;
         public string poslocation;
@@ -27,7 +26,7 @@ namespace Models {
 
 		public string Get(string endpoint)
 		{
-			var uri = "http://" + new Tools().Server + endpoint + "/" + keygroup + "/" + keyid;
+			var uri = "http://" + new Tools().Server + endpoint + "/" + targetid;
 			var req = HttpWebRequest.Create(uri);
 
 			req.ContentType = "application/json";

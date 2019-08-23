@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-23 14:52:06
+ * @Last Modified time: 2019-08-23 16:27:32
  * @Description:
  */
 package Models
@@ -222,16 +222,14 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 				return
 			}
 		}
-	}
 
-	// 	hostURL := "http://" + req.Host + "/posters"
-	// 	resURL = "http://" + req.Host + "/files/" + Config.KeyGroup + "_" + targetId + fileSuffix
-	// 	if err := storePublishInformation(targetId, title, datetime, location, mapurl, link, resURL, hostURL); err != nil {
-	// 		log.Error(err)
-	// 		response.WriteHeader(http.StatusBadRequest)
-	// 		return
-	// 	}
-	// }
+		hostURL := "http://" + req.Host + "/posters"
+		if err := storePublishInformation(new_poster_info, hostURL); err != nil {
+			log.Error(err)
+			response.WriteHeader(http.StatusBadRequest)
+			return
+		}
+	}
 
 	// 	http.Redirect(response.ResponseWriter,
 	// 		request.Request,
@@ -261,6 +259,31 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 *	Tools
 *
 ***/
+func storePublishInformation(p *Poster, hostURL string) error {
+	b, err := json.Marshal(p)
+	if err != nil {
+		return err
+	}
+	body := &bytes.Buffer{}
+	body.WriteString(string(b))
+
+	req, err := http.NewRequest("POST", hostURL, body)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+
+	defer res.Body.Close()
+	return err
+}
+
 func uploadPosterFile(targetId, url string, fileHeader *multipart.FileHeader) error {
 	file, err := fileHeader.Open()
 	if err != nil {
