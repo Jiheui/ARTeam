@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-23 13:52:43
+ * @Last Modified time: 2019-08-23 14:52:06
  * @Description:
  */
 package Models
@@ -186,11 +186,13 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		upload_url := "http://" + req.Host + "/files/upload/"
 		file_url_prefix := "http://" + req.Host + "/files/"
 		fileSuffix := path.Ext(path.Base(thumbnail.Filename))
-		new_poster_info.Thumbnail = file_url_prefix + "thumbnail_" + usr.Username + "_" + new_poster_info.PosTitle +
-			"_" + time.Now().Format("Mon-02-Jan-2006-15-04") + fileSuffix
+
+		thumbnail_filename := "thumbnail_" + usr.Username + "_" + new_poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04") + fileSuffix
+		new_poster_info.Thumbnail = file_url_prefix + thumbnail_filename
+
 		fileSuffix = path.Ext(path.Base(posterModel.Filename))
-		new_poster_info.Model = file_url_prefix + "model_" + usr.Username + "_" + new_poster_info.PosTitle +
-			"_" + time.Now().Format("Mon-02-Jan-2006-15-04") + fileSuffix
+		model_filename := "model_" + usr.Username + "_" + new_poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04") + fileSuffix
+		new_poster_info.Model = file_url_prefix + model_filename
 
 		metaDataBytes, err := json.Marshal(new_poster_info)
 		if err != nil {
@@ -208,13 +210,13 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		} else {
 			new_poster_info.TargetId = targetId
 
-			if err := uploadPosterFile(targetId, upload_url+new_poster_info.Thumbnail, thumbnail); err != nil {
+			if err := uploadPosterFile(targetId, upload_url+thumbnail_filename, thumbnail); err != nil {
 				log.Error(err)
 				response.WriteHeader(http.StatusBadRequest)
 				return
 			}
 
-			if err := uploadPosterFile(new_poster_info.TargetId, upload_url+new_poster_info.Model, posterModel); err != nil {
+			if err := uploadPosterFile(new_poster_info.TargetId, upload_url+model_filename, posterModel); err != nil {
 				log.Error(err)
 				response.WriteHeader(http.StatusBadRequest)
 				return
