@@ -10,8 +10,7 @@ public class Like_Button : MonoBehaviour {
 
 	public Sprite red_heart;
 	public Sprite white_heart;
-    public string keyGroup;
-    public string keyId;
+    public string targetid;
 
 	public void unlikePoster(){
 		if (gameObject.GetComponent<Image> ().sprite == red_heart) {
@@ -43,7 +42,7 @@ public class Like_Button : MonoBehaviour {
         Favourite[] favorList = check.favourites;
         foreach (Favourite favor in favorList)
         {
-            if (favor.keygroup.Equals(keyGroup) && favor.keyid.Equals(keyId))
+            if (favor.targetid.Equals(targetid))
             {
                 Loom.QueueOnMainThread(changeButtonStatus, true);
                 return;
@@ -73,8 +72,7 @@ public class Like_Button : MonoBehaviour {
     {
         Favourite favourite = new Favourite();
         favourite.userid = storeLoginSessionId.loginId;
-        favourite.keygroup = keyGroup;
-        favourite.keyid = keyId;
+        favourite.targetid = targetid;
 
         if (isFavor)
         {

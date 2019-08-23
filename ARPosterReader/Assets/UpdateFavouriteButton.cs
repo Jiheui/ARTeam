@@ -42,7 +42,7 @@ public class UpdateFavouriteButton : MonoBehaviour {
     // Update the text on the Button
     public void changeText()
 	{
-        bool hasPoster = !(string.IsNullOrEmpty(keyGroup.text) || string.IsNullOrEmpty(keyId.text));
+        bool hasPoster = !(string.IsNullOrEmpty(keyId.text));
 
         // disable button if no poster detected
         if (!hasPoster)
@@ -81,7 +81,7 @@ public class UpdateFavouriteButton : MonoBehaviour {
         Favourite[] favorList = check.favourites;
         foreach (Favourite favor in favorList)
         {
-            if (favor.keygroup.Equals(keyGroup.text) && favor.keyid.Equals(keyId.text))
+            if (favor.targetid.Equals(keyId.text))
             {
                 Loom.QueueOnMainThread(changeButtonStatus, true);
                 return;
@@ -127,8 +127,7 @@ public class UpdateFavouriteButton : MonoBehaviour {
         {
             Favourite favourite = new Favourite();
             favourite.userid = storeLoginSessionId.loginId;
-            favourite.keygroup = keyGroup.text;
-            favourite.keyid = keyId.text;
+            favourite.targetid = keyId.text;
 
             if (isFavor)
             {

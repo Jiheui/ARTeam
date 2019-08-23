@@ -35,11 +35,10 @@ public class ThumbFull : MonoBehaviour {
         {
             Poster p = new Poster();
             Favourite f = f_get.favourites[i];
-            p.keygroup = f.keygroup;
-            p.keyid = f.keyid;
+            p.targetid = f.targetid;
             p.GetPoster();
 
-            string s2 = p.keygroup+"/"+p.keyid;
+            string s2 = p.targetid;
 
             if (s2.Equals(n))
             {

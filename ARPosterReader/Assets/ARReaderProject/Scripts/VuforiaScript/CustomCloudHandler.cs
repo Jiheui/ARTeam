@@ -2,6 +2,7 @@
 using UnityEngine;
 using Vuforia;
 using UnityEngine.Networking;
+using Models;
 
 public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
 {
@@ -51,7 +52,6 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         
         StartCoroutine(DownloadAndCache(targetSearchResult,newImageTarget));
 
-
         Debug.Log("Finished");
 
     }
@@ -65,10 +65,20 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
 
         // do something with the target metadata
         string mTargetMetadata = cloudRecoSearchResult.MetaData;
+        string mTargetId = cloudRecoSearchResult.UniqueTargetId;
+        Debug.Log("The result id is " + mTargetId);
 
-        Debug.Log(mTargetMetadata);
+        Poster p = new Poster();
+        p.targetid = mTargetId;
+        p.GetPoster();
 
-        using (UnityWebRequest www = UnityWebRequestAssetBundle.GetAssetBundle(mTargetMetadata))
+        string assetUrl = p.model;
+
+        ImageTargetObject.GetComponent<CustomImageTargetBehaviour>().setPoster(p);
+
+        Debug.Log("The asset url is " + assetUrl);
+
+        using (UnityWebRequest www = UnityWebRequestAssetBundle.GetAssetBundle(assetUrl))
         {
             yield return www.SendWebRequest();
             if (www.isNetworkError || www.isHttpError)
@@ -80,7 +90,8 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
                 // Get downloaded asset bundle
                 AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(www);
                 mBundleInstance = Instantiate(bundle.LoadAsset(bundle.GetAllAssetNames()[0])) as GameObject;
-                mBundleInstance.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                mBundleInstance.transform.localPosition = new Vector3(0, 0, +200);
+                mBundleInstance.transform.localScale = new Vector3(10f, 10f, 10f);
                 mBundleInstance.transform.parent = ImageTargetObject.transform;
                 
                 //mBundleInstance.transform.localPosition = new Vector3(0.0f, 0.15f, 0.0f);

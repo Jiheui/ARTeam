@@ -10,33 +10,29 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
 {
     private bool targetFound = false;
 
-    Text timeText;
-    Text addressText;
-    Text linkText;
-    Text addressURL;
-    Text keyGroup;
-    Text keyId;
-    Text posterTitle;
-    CameraManager eventManager;
-    ObserveImageTarget zoomBtn;
-    UpdateFavouriteButton favouriteButton;
+    public Text timeText;
+    public Text addressText;
+    public Text linkText;
+    public Text addressURL;
+    public Text keyId;
+    public Text posterTitle;
+    public CameraManager eventManager;
+    public ObserveImageTarget zoomBtn;
+    public UpdateFavouriteButton favouriteButton;
     UnityEngine.UI.Image favImage;
     UnityEngine.UI.Image ZoomImage;
+
+    Poster poster;
+
+    public void setPoster(Poster p)
+    {
+        poster = p;
+    }
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
-        posterTitle = GameObject.Find("PosterTitle").GetComponent<Text>();
-        timeText = GameObject.Find("Time").GetComponent<Text>();
-        addressText = GameObject.Find("Address").GetComponent<Text>();
-        linkText = GameObject.Find("Web Link").GetComponent<Text>();
-        addressURL = GameObject.Find("Address Url").GetComponent<Text>();
-        keyGroup = GameObject.Find("KeyGroup").GetComponent<Text>();
-        keyId = GameObject.Find("KeyId").GetComponent<Text>();
-        eventManager = GameObject.Find("EventSystem").GetComponent<CameraManager>();
-        zoomBtn = GameObject.Find("Zoom Button").GetComponent<ObserveImageTarget>();
-        favouriteButton = GameObject.Find("Favourite").GetComponent<UpdateFavouriteButton>();
         zoomBtn.GetComponent<Button>().interactable = false;
         favouriteButton.gameObject.GetComponent<Button>().interactable = false;
 
@@ -56,13 +52,14 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         eventManager.aimImageTarget = this.gameObject;
 
         // The Method in Loom.Run Async can start a thread. And In the Thread, add the action that can only process on main thread.
-        Loom.RunAsync(() => {
-            Poster poster = new Poster();
-            //poster.keygroup = recoResult.KeyGroup;
-            //poster.keyid = recoResult.KeyId;
-            Thread thread = new Thread(new ParameterizedThreadStart(getPoster));
-            thread.Start(poster);
-        });
+        if (poster != null)
+        {
+            Loom.RunAsync(() => {
+                Thread thread = new Thread(new ParameterizedThreadStart(getPoster));
+                thread.Start(poster);
+            });
+        }
+        
 
     }
 
@@ -81,7 +78,6 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
     public void getPoster(object obj)
     {
         Poster poster = obj as Poster;
-        poster.GetPoster();
 
         //The action added to Loom.QueueOnMainThread is run on Main Thread.
         Loom.QueueOnMainThread(showDetail, poster);
@@ -96,8 +92,7 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         addressText.text = detailPos.poslocation;
         linkText.text = detailPos.poslink;
         addressURL.text = detailPos.posmap;
-        keyGroup.text = detailPos.keygroup;
-        keyId.text = detailPos.keyid;
+        keyId.text = detailPos.targetid;
 
         GameObject favouriteButton = GameObject.Find("Favourite");
         if (favouriteButton != null && storeLoginSessionId.loginId != -1)
@@ -113,7 +108,6 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         addressText.text = "Address";
         linkText.text = "Web Link";
         addressURL.text = "";
-        keyGroup.text = "";
 
         GameObject favouriteButton = GameObject.Find("Favourite");
         if (favouriteButton != null)

@@ -36,25 +36,22 @@ public class Favourite_content : MonoBehaviour {
 		Favourite firstone = f_get.favourites [0];
 
 		Poster pFirst = new Poster ();
-		pFirst.keygroup = firstone.keygroup;
-		pFirst.keyid = firstone.keyid;
+		pFirst.targetid = firstone.targetid;
         Like_Button heart = originObject.transform.GetChild(1).GetComponent<Like_Button>();
-        heart.keyGroup = pFirst.keygroup;
-        heart.keyId = pFirst.keyid;
+        heart.targetid = pFirst.targetid;
         pFirst.GetPoster ();
 		string urlFirst = pFirst.resurl;
 		RawImage imgFirst = this.GetComponentsInChildren<RawImage> ()[0];
 		StartCoroutine (LoadImageFromUrl (urlFirst, imgFirst));
 		Text tFirst = this.GetComponentsInChildren<Text> () [0];
-        tFirst.name = pFirst.keygroup + "/" + pFirst.keyid;
+        tFirst.name = pFirst.targetid;
         tFirst.text = pFirst.postitle;
 
 
 		for (int i = 1; i < f_get.favourites.Length; i++) {
 
 			Poster p1 = new Poster ();
-			p1.keygroup = f_get.favourites[i].keygroup;
-			p1.keyid = f_get.favourites[i].keyid;
+			p1.targetid = f_get.favourites[i].targetid;
 			p1.GetPoster ();
 			string url = p1.resurl;
 
@@ -68,7 +65,7 @@ public class Favourite_content : MonoBehaviour {
 
 			Text[] texts = posters.GetComponentsInChildren<Text> ();
 			foreach (Text t in texts) {
-                t.name = p1.keygroup + '/' + p1.keyid;
+                t.name = p1.targetid;
                 t.text = p1.postitle;
 			}
 

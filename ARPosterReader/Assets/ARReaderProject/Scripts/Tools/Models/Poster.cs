@@ -15,6 +15,8 @@ namespace Models {
         public string posmap;
         public string poslink;
 		public string resurl;
+        public string model;
+        public string thumbnail;
 
 		public string GetPoster() {
 			return Get("/posters");
@@ -43,6 +45,8 @@ namespace Models {
                 this.posmap = pr.poster.posmap;
                 this.poslink = pr.poster.poslink;
                 this.resurl = pr.poster.resurl;
+                this.model = pr.poster.model;
+                this.thumbnail = pr.poster.thumbnail;
 				return pr.error;
 			}
 		}

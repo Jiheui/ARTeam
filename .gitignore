@@ -40,4 +40,5 @@ Backend/pkg/darwin_amd64/Tools.a
 Backend/.idea/Backend.iml
 Backend/.idea/modules.xml
 Backend/.idea/workspace.xml
-ARPosterReader/QCAR/ts8
+ARPosterReader/QCAR/*
+ARPosterReader/Assets/FacebookSDK/Plugins/*
