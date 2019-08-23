@@ -3,7 +3,7 @@
  * @Date: 2019-04-26 00:22:52
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-23 13:56:17
+ * @Last Modified time: 2019-08-23 14:18:46
  * @Description:
  */
 
@@ -58,7 +58,7 @@ func (f FileResource) WebService() *restful.WebService {
 		Param(ws.PathParameter("filename", "identifier of the poster").DataType("string").DefaultValue("")).
 		Doc("get file resource")
 
-	ws.Route(ws.GET("/{target-id}").To(f.GetFileListByPoster)).
+	ws.Route(ws.GET("/posterfiles/{target-id}").To(f.GetFileListByPoster)).
 		Param(ws.PathParameter("target-id", "identifier of the poster").DataType("string").DefaultValue("")).
 		Doc("get file list")
 
