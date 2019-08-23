@@ -3,7 +3,7 @@
  * @Date: 2019-04-26 00:22:52
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-16 01:08:04
+ * @Last Modified time: 2019-08-23 13:56:17
  * @Description:
  */
 
@@ -12,6 +12,7 @@ package Models
 import (
 	//"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path"
@@ -57,9 +58,8 @@ func (f FileResource) WebService() *restful.WebService {
 		Param(ws.PathParameter("filename", "identifier of the poster").DataType("string").DefaultValue("")).
 		Doc("get file resource")
 
-	ws.Route(ws.GET("/{key-group}/{key-id}").To(f.GetFileListByPoster)).
-		Param(ws.PathParameter("key-group", "identifier of the poster").DataType("string").DefaultValue("")).
-		Param(ws.PathParameter("key-id", "identifier of the poster").DataType("string").DefaultValue("")).
+	ws.Route(ws.GET("/{target-id}").To(f.GetFileListByPoster)).
+		Param(ws.PathParameter("target-id", "identifier of the poster").DataType("string").DefaultValue("")).
 		Doc("get file list")
 
 	ws.Route(ws.POST("/upload/{filename}").To(f.Store).
@@ -74,6 +74,7 @@ func (f FileResource) WebService() *restful.WebService {
 func (f FileResource) GetFile(request *restful.Request, response *restful.Response) {
 	actual := path.Join(rootDir, request.PathParameter("filename"))
 	http.ServeFile(response.ResponseWriter, request.Request, actual)
+	log.Println(111)
 }
 
 func (f FileResource) GetFile4Static(request *restful.Request, response *restful.Response) {

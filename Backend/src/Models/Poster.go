@@ -3,7 +3,7 @@
  * @Date: 2019-04-11 15:42:37
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-22 03:15:59
+ * @Last Modified time: 2019-08-22 22:43:53
  * @Description: This file is created for store & get poster information
  */
 package Models
@@ -24,6 +24,8 @@ type Poster struct {
 	PosMap      string `json:"posmap" xorm:"posmap"`
 	PosLink     string `json:"poslink" xorm:"poslink"`
 	ResUrl      string `json:"resurl" xorm:"resurl"`
+	Model       string `json:"model" xorm:"model"`
+	Thumbnail   string `json:"thumbnail" xorm:"thumbnail"`
 }
 
 type PosterResponse struct {

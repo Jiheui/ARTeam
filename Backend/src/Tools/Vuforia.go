@@ -3,7 +3,7 @@
  * @Date: 2019-08-11 21:42:07
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-22 03:00:57
+ * @Last Modified time: 2019-08-22 03:19:36
  * @Description:  This file is created for backend to connect to Vuforia server via REST api.
  *
  * @About Vuforia: Vuforia Engine is a software platform for creating Augmented Reality apps.
@@ -49,8 +49,4 @@ func NewVuforiaManager() *VuforiaManger {
 
 func (v *VuforiaManger) AddItem(name string, width float32, image string, activeFlag bool, metabase64 string) (targetId string, isSuccess bool, err error) {
 	return v.client.AddItem(name, width, image, activeFlag, metabase64)
-}
-
-func (v *VuforiaManger) GetAccessKey() string {
-	return v.client.AccessKey
 }
