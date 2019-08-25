@@ -20,8 +20,6 @@ public class UpdateFavouriteButton : MonoBehaviour {
 
     public Image favouriteImage = null;
 
-    public Text keyGroup;
-
     public Text keyId;
 
     public bool isFavor = false;
@@ -35,8 +33,8 @@ public class UpdateFavouriteButton : MonoBehaviour {
     public void Start()
     {
         // change the favourite button status default set to disable
-        //favouriteImage.sprite = disable;
-        //favouriteButton.gameObject.SetActive(false);
+        favouriteImage.sprite = disable;
+        favouriteButton.gameObject.SetActive(false);
     }
 
     // Update the text on the Button
@@ -49,8 +47,8 @@ public class UpdateFavouriteButton : MonoBehaviour {
         {
             //favouriteText.text = "favourite";
             favouriteImage.sprite = disable;
-            //favouriteImage.gameObject.SetActive(false);
-            //favouriteButton.gameObject.SetActive(false);
+            favouriteImage.gameObject.SetActive(false);
+            favouriteButton.gameObject.SetActive(false);
             favouriteButton.interactable = false;
             favouriteImage.color = new Color(255, 255, 255, 0);
         }
@@ -105,7 +103,7 @@ public class UpdateFavouriteButton : MonoBehaviour {
             favouriteImage.sprite = like;
             favouriteButton.interactable = true;
             favouriteImage.color = new Color(255, 255, 255, 255);
-            //favouriteButton.gameObject.SetActive(true);
+            favouriteButton.gameObject.SetActive(true);
             isFavor = true;
         }
         else
@@ -114,7 +112,7 @@ public class UpdateFavouriteButton : MonoBehaviour {
             favouriteImage.sprite = dislike;
             favouriteButton.interactable = true;
             favouriteImage.color = new Color(255, 255, 255, 255);
-            //favouriteButton.gameObject.SetActive(true);
+            favouriteButton.gameObject.SetActive(true);
             isFavor = false;
         }
     }
@@ -122,7 +120,7 @@ public class UpdateFavouriteButton : MonoBehaviour {
     // When button click send the like or dislike request
     public void updateCurPosterFavourite()
     {
-        bool hasPoster = !(string.IsNullOrEmpty(keyGroup.text) || string.IsNullOrEmpty(keyId.text));
+        bool hasPoster = !(string.IsNullOrEmpty(keyId.text));
         if (hasPoster)
         {
             Favourite favourite = new Favourite();

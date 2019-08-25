@@ -95,7 +95,7 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
                 mBundleInstance.transform.parent = ImageTargetObject.transform;
                 
                 //mBundleInstance.transform.localPosition = new Vector3(0.0f, 0.15f, 0.0f);
-                mBundleInstance.transform.gameObject.SetActive(true);
+                //mBundleInstance.transform.gameObject.SetActive(true);
             }
         }
     }

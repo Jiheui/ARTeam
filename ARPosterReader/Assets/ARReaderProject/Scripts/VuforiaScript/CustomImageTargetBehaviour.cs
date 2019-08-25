@@ -1,10 +1,7 @@
 ﻿using Models;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
-using Vuforia;
 
 public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
 {
@@ -19,8 +16,8 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
     public CameraManager eventManager;
     public ObserveImageTarget zoomBtn;
     public UpdateFavouriteButton favouriteButton;
-    UnityEngine.UI.Image favImage;
-    UnityEngine.UI.Image ZoomImage;
+    Image favImage;
+    Image ZoomImage;
 
     Poster poster;
 
@@ -36,10 +33,10 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         zoomBtn.GetComponent<Button>().interactable = false;
         favouriteButton.gameObject.GetComponent<Button>().interactable = false;
 
-        favImage = favouriteButton.transform.GetChild(0).gameObject.GetComponent<UnityEngine.UI.Image>();
+        favImage = favouriteButton.transform.GetChild(0).gameObject.GetComponent<Image>();
         favImage.color = new Color32(255, 255, 225, 0);
 
-        ZoomImage = zoomBtn.transform.GetChild(0).gameObject.GetComponent<UnityEngine.UI.Image>();
+        ZoomImage = zoomBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
         ZoomImage.color = new Color32(255, 255, 225, 0);
     }
 
@@ -59,20 +56,27 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
                 thread.Start(poster);
             });
         }
-        
-
     }
 
     protected override void OnTrackingLost()
     {
+        Debug.Log("Enter Tracking Lost");
         base.OnTrackingLost();
         targetFound = false;
-        //zoomBtn.imageTargeter = null;
-        //zoomBtn.UpdateTargetBehaviour();
+        zoomBtn.imageTargeter = null;
+        zoomBtn.UpdateTargetBehaviour();
         clearDetail();
+        Debug.Log("The count is : " + transform.childCount);
+        for (var i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.SetActive(false);
+        }
     }
 
-
+    public bool IsTargetFound()
+    {
+        return targetFound;
+    }
 
 
     public void getPoster(object obj)
@@ -93,11 +97,10 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         linkText.text = detailPos.poslink;
         addressURL.text = detailPos.posmap;
         keyId.text = detailPos.targetid;
-
-        GameObject favouriteButton = GameObject.Find("Favourite");
-        if (favouriteButton != null && storeLoginSessionId.loginId != -1)
+        
+        if (storeLoginSessionId.loginId != -1)
         {
-            favouriteButton.GetComponent<UpdateFavouriteButton>().changeText();
+            favouriteButton.changeText();
         }
     }
 
@@ -108,13 +111,12 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         addressText.text = "Address";
         linkText.text = "Web Link";
         addressURL.text = "";
-
-        GameObject favouriteButton = GameObject.Find("Favourite");
+        
         if (favouriteButton != null)
         {
             //favouriteButton.gameObject.SetActive(true);
-            favouriteButton.GetComponent<UpdateFavouriteButton>().changeText();
-            //favouriteButton.gameObject.SetActive(true);
+            favouriteButton.changeText();
+            favouriteButton.gameObject.SetActive(true);
         }
     }
 
