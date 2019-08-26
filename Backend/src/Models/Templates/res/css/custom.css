@@ -23,8 +23,16 @@
 #hid_info {
     width: 120px;
     height: 50px;
-    left: 80px;
-    background: rgba(128,138,135,0.3);
+    left: 75px;
+    background: rgba(128,138,135,0.15);
     position: absolute;
     display: none;
+    padding: 5px;
+}
+
+#info_ctnt {
+    margin-left:3px;
+    margin-right: 5px;
+    font-size: 6px;
+    text-align:center;
 }
