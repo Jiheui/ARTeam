@@ -178,14 +178,14 @@ $(document).ready(function () {
     // ------------------------------------------------------ //
 
 
-    var btn = document.getElementById('icon_i');
+    var title = document.getElementById('icon_i');
     var box = document.getElementById('hid_info');
     var timer = null;
-    box.onmouseover = btn.onmouseover = function(){
+    box.onmouseover = title.onmouseover = function(){
         if(timer) clearTimeout(timer)
         box.style.display = 'block';
     }
-    box.onmouseout = btn.onmouseout = function(){
+    box.onmouseout = title.onmouseout = function(){
         timer = setTimeout(function(){
             box.style.display = 'none';
         },0);
