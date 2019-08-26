@@ -19,3 +19,12 @@
     height: 17px;
     color: darkgray;
 }
+
+#hid_info {
+    width: 120px;
+    height: 50px;
+    left: 80px;
+    background: rgba(128,138,135,0.3);
+    position: absolute;
+    display: none;
+}

@@ -173,4 +173,22 @@ $(document).ready(function () {
         return false;
     });
 
+    // ------------------------------------------------------ //
+    // Hidden Info panel
+    // ------------------------------------------------------ //
+
+
+    var btn = document.getElementById('icon_i');
+    var box = document.getElementById('hid_info');
+    var timer = null;
+    box.onmouseover = btn.onmouseover = function(){
+        if(timer) clearTimeout(timer)
+        box.style.display = 'block';
+    }
+    box.onmouseout = btn.onmouseout = function(){
+        timer = setTimeout(function(){
+            box.style.display = 'none';
+        },0);
+    }
+
 });
