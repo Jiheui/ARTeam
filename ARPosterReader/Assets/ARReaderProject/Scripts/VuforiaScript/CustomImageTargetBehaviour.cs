@@ -47,6 +47,10 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         zoomBtn.imageTargeter = this.gameObject;
         zoomBtn.UpdateTargetBehaviour();
         eventManager.aimImageTarget = this.gameObject;
+        for (var i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.SetActive(true);
+        }
 
         // The Method in Loom.Run Async can start a thread. And In the Thread, add the action that can only process on main thread.
         if (poster != null)
@@ -66,11 +70,6 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         zoomBtn.imageTargeter = null;
         zoomBtn.UpdateTargetBehaviour();
         clearDetail();
-        Debug.Log("The count is : " + transform.childCount);
-        for (var i = 0; i < transform.childCount; i++)
-        {
-            transform.GetChild(i).gameObject.SetActive(false);
-        }
     }
 
     public bool IsTargetFound()

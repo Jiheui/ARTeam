@@ -3,6 +3,7 @@ using UnityEngine;
 using Vuforia;
 using UnityEngine.Networking;
 using Models;
+using ChartAndGraph;
 
 public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
 {
@@ -13,6 +14,8 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
     private GameObject mBundleInstance;
 
     private bool mIsScanning = false;
+
+    public GameObject GraphTemplate;
 
     //private string mTargetMetadata = "";
 
@@ -49,8 +52,18 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         {
             mCloudRecoBehaviour.CloudRecoEnabled = true;
         }
-        
-        StartCoroutine(DownloadAndCache(targetSearchResult,newImageTarget));
+        GameObject gmGraph = OnNewSearchGraph();
+        Material mat = new Material(Shader.Find("Chart/Canvas/Gradient"));
+        mat.SetVector("_ColorFrom", Color.red);
+        mat.SetVector("_ColorTo", Color.yellow);
+        gmGraph.GetComponent<BarChartFeed>().setBars(4, "People", mat);
+
+        gmGraph.GetComponent<BarChartFeed>().setBars(7, "Dogs", mat);
+
+        gmGraph.transform.parent = newImageTarget.transform;
+        gmGraph.transform.localPosition = new Vector3(0, -5, 0);
+        gmGraph.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        //StartCoroutine(DownloadAndCache(targetSearchResult,newImageTarget));
 
         Debug.Log("Finished");
 
@@ -111,6 +124,11 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
 
             tracker.GetTargetFinder<ImageTargetFinder>().ClearTrackables(false);
         }
+    }
+
+    public GameObject OnNewSearchGraph(){
+        GameObject newGMGraph = Instantiate(GraphTemplate.gameObject) as GameObject;
+        return newGMGraph;
     }
 
     // Start is called before the first frame update

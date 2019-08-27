@@ -10,14 +10,14 @@ public class BarChartFeed : MonoBehaviour {
         }
     }
 
-    void setBars(float value, string category, Material material)
+    public void setBars(float value, string category, Material material)
     {
         BarChart barChart = GetComponent<BarChart>();
         if (barChart != null)
         {
             barChart.DataSource.AddCategory(category, material);
-            barChart.DataSource.SetValue(category, "Scholarship Program", 0);
-            barChart.DataSource.SlideValue(category, "Scholarship Program", value, 10f);
+            barChart.DataSource.SetValue(category, "Scholarship Program", value);
+            //barChart.DataSource.SlideValue(category, "Scholarship Program", value, 10f);
         }
 
     }
