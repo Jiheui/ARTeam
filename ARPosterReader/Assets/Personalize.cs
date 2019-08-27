@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Models;
-using UnityEditor;
+﻿using Models;
 using UnityEngine;
 using UnityEngine.UI;
 
-[InitializeOnLoad]
 public class Personalize : MonoBehaviour
 {
     public Text Name;
@@ -14,8 +10,8 @@ public class Personalize : MonoBehaviour
     {
         User u = new User();
         u.id = storeLoginSessionId.loginId;
+        Name.text = "Login Failed!!!!!";
         u.FindUser();
-
         if (u.authenticated)
         {
             if (string.IsNullOrEmpty(u.name))
