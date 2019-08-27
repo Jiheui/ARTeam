@@ -1,0 +1,40 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using Models;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UI;
+
+[InitializeOnLoad]
+public class Personalize : MonoBehaviour
+{
+    public Text Name;
+
+    public void Start()
+    {
+        User u = new User();
+        u.id = storeLoginSessionId.loginId;
+        u.FindUser();
+
+        if (u.authenticated)
+        {
+            if (string.IsNullOrEmpty(u.name))
+            {
+                storeLoginSessionId.name = u.username;
+            }
+            else
+            {
+                storeLoginSessionId.name = u.name;
+            }
+            Name.text = storeLoginSessionId.name;
+        }
+        else
+        {
+            Debug.Log("Login Failed");
+            Name.text = "Login Failed!";
+        }
+        
+    }
+
+
+}
