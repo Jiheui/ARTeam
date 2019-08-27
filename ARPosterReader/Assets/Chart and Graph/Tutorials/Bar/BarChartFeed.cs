@@ -7,9 +7,19 @@ public class BarChartFeed : MonoBehaviour {
         BarChart barChart = GetComponent<BarChart>();
         if (barChart != null)
         {
-            barChart.DataSource.SetValue("Player 1", "Value 1", Random.value * 20);
-            barChart.DataSource.SlideValue("Player 2", "Value 1", Random.value * 20, 40f);
         }
+    }
+
+    void setBars(float value, string category, Material material)
+    {
+        BarChart barChart = GetComponent<BarChart>();
+        if (barChart != null)
+        {
+            barChart.DataSource.AddCategory(category, material);
+            barChart.DataSource.SetValue(category, "Scholarship Program", 0);
+            barChart.DataSource.SlideValue(category, "Scholarship Program", value, 10f);
+        }
+
     }
     private void Update()
     {
