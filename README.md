@@ -3,40 +3,54 @@
 #### A. Introduction/Background
 Accenture is an experienced firm which provides professional strategy, technology and consulting services for clients all over the world and have long term cooperation with Australia’s most successful organisations. Accenture is dedicated to helping clients gain initiative in market competition and turn the client’s ideas to business values.
 
-Traditional printed posters/pamphlets waste natural resources and are difficult to update when information becomes outdated. As a result, they are usually expensive, inefficient, unattractive and environmentally impactful. However, digital posters with AR technology can help to solve these problems and give clients a new and engaging reading experience.
+Accenture have been thinking of how to make improvements to traditional printed posters/pamphlets which wastes natural resources and are difficult to update when information becomes outdated. As a result, they are usually expensive, inefficient, unattractive and environmentally impactful. However, digital posters with AR technology can help to solve these problems and give clients a new and engaging reading experience.
 
 
 #### B. Objectives
-The objective of this project is to further develop the mobile phone-based application for AR poster viewing to solve the problems of traditional posters of physical limits. As we want to obtain more information about the poster and modify the poster to latest one, not the unchanged and limited one. Last semester, all the initial features has been built, and achieved good output.
+Accenture have been thinking of how to make improvements to traditional printed posters/pamphlets which wastes natural resources and are difficult to update when information becomes outdated. As a result, they are usually expensive, inefficient, unattractive and environmentally impactful. However, digital posters with AR technology can help to solve these problems and give clients a new and engaging reading experience.
 
-In addition, for this semester, through this project, we want to gain further experience in real-world business methodologies, issue analysing and application development to make the application more attractive, intelligent and user-friendly. 
+B. Objectives
+ 
+The objective of this project is to further develop on the mobile phone-based application for AR poster viewing developed during the previous semester to solve the problems of traditional posters. To provide accurate and up-to-date information to the user, poster modification can be uploaded to replace obsolete poster elements. Last semester, the mobile application successfully scanned and provided information of a poster to users. 
 
-The following are detailed goal of our team this semester. For more attractive, this involves more engagement of users, which means they can become both poster providers and consumers. For intelligent, the system would apply machine learning algorithms to recommend the posters based on the favourite one of users. For user-friendly, better user interface would be developed to make the application look nicer, and more realistic AR models would be built this semester.
+This semester, through this project, we want to gain further experience in real-world business methodologies, issue analysing and application development to make our application more attractive, intelligent and user-friendly. 
+
+The following are detailed goals of our team for this semester. To attract more users, the application increase features that users such as poster provider and consumers can engage. The final product will include functions that involves contribution of users such as poll and questionnaire. For intelligent, the system would apply machine learning algorithms to recommend the posters based on the favourite one of users, the system would analyse the user habits and the user hobbies, and recommend them with the posters which have high similarity with their favourite ones. For user-friendly, better user interface would be developed to make the application look nicer, and more realistic AR models would be built this semester, the whole UI would be redesigned and make it more looks more commercial, some UI will be placed on top of the poster to help display further relevant information. This will be done through customer research and user testing to ascertain whether user interface is easily used by users.
 
 
 
 #### C. Scope of Work
-In the next three months, throughout the project, we will research on better UI , faster response(through new server), more intelligent (through machine learning), more user-friendly (through the overall improvement of user experience), internal and external testing (fix possible bugs). The final application would contain the main functions of poster viewing through scanning the physical poster, but also viewing a poster in diverse way, poster saving, sharing and updating, and recommendation posters through favorite
+In the next three months, throughout the project, we will research on better UI , faster response(through new server), more intelligent (through machine learning), more user-friendly (through the overall improvement of user experience), internal and external testing (fix possible bugs). The final application would contain the main functions of poster viewing through scanning the physical poster, but also viewing a poster in diverse ways, poster saving, sharing and updating, and recommendation posters through favorite.
 
 #### D. Deliverable Schedule
 | WEEK   | DAY       | TODO
 | :----: | :-------: | ----
-| Week2  | Monday    | Discuss on improvements the team should work on as a team.
+| Week2  | Monday    | Discuss on improvements the team should work on as a team
 |        | Thursday  | Discuss on direction of application development and create user stories.
 | Week3  | Monday    | Discuss with client and get to know their requirement 
 |        |           | Finish the Intellectural Property Agreement
 |        |           | Review and discuss with client about the statement of work and sign it.
 |        | Wednesday | Prepare for audit 1 
 | Week4  | Monday    | Reflect on feedback from audit 1
-|        | Thursday  | Finish Statement of Work.
+|        | Thursday  | Discuss with shadow team about feedback
+|        |           | Started Sprints
 | Week5  | Monday    | Discuss with clients the part we have already finished and get the possible feedbacks from them.
 |        | Thursday  | Prepare for next week's audit
-| Week6  | Monday  | Make sure each interface should have all the essential elements with some basic functions work & Client review & Test (Client)
-|        | Thursday  | Start preparing for poster, showcase and audit 3
-| Week7  |           | Follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
-| Week8  |           | Continuing to follow the client’s suggestion to adjust the product & Implement all the functions & Client review & Test (Client and developer team)
-| Week9  | Friday    | Project Poster
+| Week6  | Monday    | Practice presentation as well as practicing questions
+|        | Thursday  | Audit 2
+|        |           | Start preparing for poster
+|        |           | End of sprint 1 and start of sprint 2
+| Break 1| Monday    | Reflect on feedback from audit 2
+| Break 2| Thursday  | End of sprint 2 and start of sprint 3
+| Week7  |           | Discuss direction of development / project
+| Week8  | Monday    | Continuing to follow the client’s suggestion & Implement features
+|        |           | End of sprint 3 and start of sprint 4
+| Week9  | Friday    | Project Poster due
 | Week10 | Monday    | Fix all the bugs during the test & Prepare for TechLauncher Showcase
+|        | Thursday  | Audit 3
+|        |           | Project showcase
+|        |           | End sprint 4 and start sprint 5
+| Week12 | Thursday  | End sprint 5
 
 ## Team Members
 UID | Name 
@@ -58,8 +72,8 @@ Accenture is a company that focuses on improving existing organisations business
 #### Expectations
 Accenture expects to have a professional proof of concept application developed by the end of the semester that solves the problem statement. This application would utilise AR technology to display a digital poster which is personalisable to the user and allow for an interactive experience.
 
-#### Improvements
-Accenture will be able to provide extended support to improve existing companies.
+#### Benefits
+Accenture will be able to provide extended support to companies Accenture is providing service to.
 
 ### University Students: User
 
@@ -69,7 +83,7 @@ As per instructions by Accenture, we were to focus on developing using a use cas
 #### Expectations
 Students expect the application would utilise AR technology to display a digital poster which is personalisable to the user and allow for an interactive experience.
 
-#### Improvements
+#### Benefits
 Students can obtain relevant details that cannot be covered by a traditional poster.
 
 ### Poster Provider: Business Partner
@@ -80,7 +94,7 @@ The poster provider is an individual/organisation that is interested in advertis
 #### Expectations
 The business partner expects a service to display their digital poster. The service includes accepting a certain form of digital poster, displaying said poster on an application through AR technology and providing a platform for sharing the poster. The poster provider will also have access to feature allowing them to update the information on their posters.
 
-#### Improvements
+#### Benefits
 The business partner may save cost by minimizing the waste, such as reprinting a poster due to an update or minimizing the copy of the posters to print. It is possible for the business partner to display and give information to user in diverse ways and allows for a more interactive user engagement.
 
 
@@ -134,9 +148,8 @@ Please see the table of Deliverable Schedule above
 - Euforia (The New AR SDK)
 
 ## Risks:
-- Technological risks: our selection of technology could not work in some platforms
-- People risk: not having the expertise to deliver the product
-- Equipment risks: suddenly shortage of electricity or Internet
+Please take a look at [SoW file](https://docs.google.com/document/d/1kpZvua5G4cOstHhluaJsl9QI2xzE7FR-AV2BVpuHk5o/edit?usp=sharing).
+
 
 ## Potential Costs:
 - Phone, Android Studio for Business 

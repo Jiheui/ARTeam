@@ -17,13 +17,13 @@ public class Check_Login : MonoBehaviour {
             StreamReader reader = new StreamReader(path);
             string id = reader.ReadLine();
 
-            if (id != null)
+            if (!string.IsNullOrEmpty(id))
             {
                 string name = reader.ReadLine();
                 reader.Close();
                 storeLoginSessionId.loginId = int.Parse(id);
                 storeLoginSessionId.name = name;
-                SceneManager.LoadScene("MainCameraScene");
+                //SceneManager.LoadScene("MainCameraScene");
             }
         }
             

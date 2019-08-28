@@ -93,6 +93,7 @@ namespace Models {
 					this.dob = ur.user.dob;
 					this.facebook = ur.user.facebook;
 					this.google = ur.user.google;
+                        this.authenticated = ur.isexist;
 					return ur.error;
 				}
 			}

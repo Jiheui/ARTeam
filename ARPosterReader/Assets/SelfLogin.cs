@@ -67,7 +67,7 @@ public class SelfLogin : MonoBehaviour {
                 File.WriteAllText(path, uID + "\n" + storeLoginSessionId.name + "\n");
             }
             
-            SceneManager.LoadScene("HiARRobot");
+            SceneManager.LoadScene("MainCameraScene");
         }
         else
         {

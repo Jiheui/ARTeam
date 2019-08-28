@@ -53,15 +53,15 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
             mCloudRecoBehaviour.CloudRecoEnabled = true;
         }
         GameObject gmGraph = OnNewSearchGraph();
-        Material mat = new Material(Shader.Find("Chart/Canvas/Gradient"));
-        mat.SetVector("_ColorFrom", Color.red);
-        mat.SetVector("_ColorTo", Color.yellow);
+        Material mat = new Material(Shader.Find("Standard"));
+        mat.SetVector("_Color", Color.red);
+        //mat.SetVector("_ColorTo", Color.yellow);
         gmGraph.GetComponent<BarChartFeed>().setBars(4, "People", mat);
 
         gmGraph.GetComponent<BarChartFeed>().setBars(7, "Dogs", mat);
 
         gmGraph.transform.parent = newImageTarget.transform;
-        gmGraph.transform.localPosition = new Vector3(0, -5, 0);
+        gmGraph.transform.localPosition = new Vector3(-2f, -5, 0);
         gmGraph.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         //StartCoroutine(DownloadAndCache(targetSearchResult,newImageTarget));
 
