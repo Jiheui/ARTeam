@@ -3,7 +3,7 @@
  * @Date: 2019-08-11 21:50:37
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-19 03:26:29
+ * @Last Modified time: 2019-08-28 17:33:55
  * @Description: This file contains serveral some tools different usage
  */
 package Tools
@@ -16,7 +16,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math/rand"
 	"os"
+	"time"
 )
 
 // Convert Image to Base64 string from readers
@@ -71,6 +73,18 @@ func EncodePassword(text string) string {
 	hasher := md5.New()
 	hasher.Write([]byte(text))
 	return base64.StdEncoding.EncodeToString(hasher.Sum(nil))
+}
+
+// Random string
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func RandString(n int) string {
+	b := make([]rune, n)
+	rand.Seed(time.Now().UnixNano())
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
 }
 
 // This function is used to parse config file

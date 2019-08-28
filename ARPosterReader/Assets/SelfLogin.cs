@@ -31,7 +31,6 @@ public class SelfLogin : MonoBehaviour {
 
     }
 
-
     public void checkPassword()
 	{
 		User u = new User ();
@@ -76,6 +75,5 @@ public class SelfLogin : MonoBehaviour {
             _password.text = "";
         }
 	}
-
 
 }

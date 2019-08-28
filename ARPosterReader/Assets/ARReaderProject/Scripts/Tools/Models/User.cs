@@ -59,6 +59,18 @@ namespace Models {
 			return Patch ("/users");
 		}
 
+        public string ResetPassword()
+        {
+            if(!string.IsNullOrEmpty(password))
+            {
+                return Post("/users/reset/password");
+            }
+            else
+            {
+                return Get("/users/temp/password/" + email);
+            }
+        }
+
 		public string Get(string endpoint)
 		{
 			var uri = "http://" + new Tools().Server + endpoint;
