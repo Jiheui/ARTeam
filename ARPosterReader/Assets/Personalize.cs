@@ -28,7 +28,7 @@ public class Personalize : MonoBehaviour
         else
         {
             Debug.Log("Login Failed");
-            Name.text = "Login Failed!";
+            Name.text = "";
         }
         
     }
