@@ -486,6 +486,7 @@ namespace ChartAndGraph
                 Vector3 newPos = AlignLabel(mCategoryLabels, bar.InnerPosition, bar.Size);
                 bar.CategoryLabel.transform.localPosition = newPos;
             }
+            bar.GroupLabel.gameObject.SetActive(false);
         }
 
         /// <summary>
