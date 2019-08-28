@@ -97,6 +97,8 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         linkText.text = detailPos.poslink;
         addressURL.text = detailPos.posmap;
         keyId.text = detailPos.targetid;
+        relevantInfo.text = detailPos.relevantinfo;
+        
         
         if (storeLoginSessionId.loginId != -1)
         {
@@ -111,6 +113,7 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         addressText.text = "Address";
         linkText.text = "Web Link";
         addressURL.text = "";
+        relevantInfo.text = "Relevant Information";
         
         if (favouriteButton != null)
         {

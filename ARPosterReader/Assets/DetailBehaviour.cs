@@ -17,6 +17,7 @@ public class DetailBehaviour : MonoBehaviour {
         addressText = GameObject.Find("Address").GetComponent<Text>();
         linkText = GameObject.Find("Web Link").GetComponent<Text>();
         addressURL = GameObject.Find("Address Url").GetComponent<Text>();
+        
     }
 
     public void OpenMapOnClick()

@@ -1,6 +1,9 @@
 fileFormatVersion: 2
-guid: d27da37b5cab20d48ae3094859dacde4
-folderAsset: yes
+guid: 0709f79196d64d11b8171d4ee0249cfe
+labels:
+- gvh
+- gvh_targets-editor
+- gvh_version-1.2.95.0
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -15,14 +18,20 @@ PluginImporter:
   - first:
       Any: 
     second:
-      enabled: 1
+      enabled: 0
       settings: {}
   - first:
       Editor: Editor
     second:
-      enabled: 0
+      enabled: 1
       settings:
         DefaultValueInitialized: true
+  - first:
+      Windows Store Apps: WindowsStoreApps
+    second:
+      enabled: 0
+      settings:
+        CPU: AnyCPU
   userData: 
   assetBundleName: 
   assetBundleVariant: 
