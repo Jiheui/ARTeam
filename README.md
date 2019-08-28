@@ -148,29 +148,7 @@ Please see the table of Deliverable Schedule above
 - Euforia (The New AR SDK)
 
 ## Risks:
-| RISK(TYPE) | DESCRIPTION | RATE | AFFECT | HOW | CONTROL MEASURES 
-| :--------: | :---------: | :--: | :----: | :-: | :--------------: 
-| Interconnection issue (Technology) | The platform or SDK may change accessibility to premium only or some resources may no longer support each other. | Hazard | Developer | May need to change resources or preclude further development. | Mitigation - 
-1) There are lots of resources available on the internet. The team should research, find a substitute that will cause the least damage to the project. It will require a lot of time and work however, we can always ask for help from our clients or ANU for some advice; and,
-2)  Pay for premium version. This will save time and workload for developers. As each project team has access to $300 budget, the team may choose to use budget to maintain the resource accessibility. 
-| Lack of expertise (People) | This is a project that requires a diverse range of technical ability. While we believe we are equipped to meet these needs, there is a chance that our team might not be technically be capable of responding to some technical issues we will face. | Potential | Developer Client |  It may slow development progress, or preclude further development. | Preventative - 
-we will work with the client early on to identify any gap in technical ability that we will need to resolve for the semester. Seeking assistance in learning when required.
-
-Mitigation - 
-1) we have an agreement with our client that whenever we cannot resolve we can email them. They will pass our issue on to an Accenture resource with the adequate ability to resolve the issue; and,
-2) The ANU is home to a wide range of technical experts. There are resources there that we can request help from to resolve issues.
-
-Through mitigation 1 and 2 we believe we will have sufficient resources to resolve any technical issues we may face throughout the semester.
-| Power outage (Equipment) | There might be a case of electricity shortage or internet outage. It may lead to unsaved changes or temporary preclude any development. | Potential | 
-Developer |  It may slow development progress | Preventative -
-Developers should push their new work or changes made on the product throughout the semester frequently to prevent majority lose of work. 
-| Computer breakdown (Equipment) |  
-One of the members’ computers may become unavailable and they may not be able to work on any of their assigned tasks. | Potential | Developer |  It may slow development progress | Mitigation -
-Maintaining the teams computers in a good working condition is a fundamental task to technology students. Nevertheless, It is one of the risks that cannot be prevented. However, as we have made an agreement with client, we may ask for a spare laptop available for use, or even ask our teammates or the ANU.
-| Lack of available testing devices (Equipment) | Android devices have released many versions over the years. It is not possible to have access to all kinds of android devices. | Potential | Developer Client User | The product may not be suitable for some mobile devices. | Preventative -
-Throughout the semester the team may perform user testing on a range of different mobile devices. It will allow the development team to ascertain which mobile devices are compatible with the product.
-| Time Management (Time) | It is difficult to estimate the velocity of a sprint due to the changing time availability for each member of the team. | Potential | Developer | It may Overload the team members by assigning too much work to them. | Preventative - 
-At the beginning of each sprint, the team gathers the time availability of each member of the team, thus an appropriate amount of work can be allocated. It can also be prevented by comparing the previously completed sprints’ velocity. 
+Please take a look at [SoW file](https://docs.google.com/document/d/1kpZvua5G4cOstHhluaJsl9QI2xzE7FR-AV2BVpuHk5o/edit?usp=sharing).
 
 
 ## Potential Costs:
