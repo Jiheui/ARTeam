@@ -101,6 +101,8 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         Poster p = new Poster();
         p.targetid = mTargetId;
         p.GetPoster();
+        Debug.Log(p.relevantinfo);
+
 
         string assetUrl = p.model;
 
