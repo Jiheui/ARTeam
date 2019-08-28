@@ -22,7 +22,6 @@ public class Personalize : MonoBehaviour
             {
                 storeLoginSessionId.name = u.name;
             }
-            Name.text = "Error";
             Name.text = storeLoginSessionId.name;
         }
         else
