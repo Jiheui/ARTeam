@@ -61,7 +61,7 @@ namespace Models {
 
         public string ResetPassword()
         {
-            if(string.IsNullOrEmpty(password))
+            if(!string.IsNullOrEmpty(password))
             {
                 return Post("/users/reset/password");
             }
