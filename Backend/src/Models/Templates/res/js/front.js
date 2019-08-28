@@ -190,5 +190,4 @@ $(document).ready(function () {
             box.style.display = 'none';
         },0);
     }
-
 });

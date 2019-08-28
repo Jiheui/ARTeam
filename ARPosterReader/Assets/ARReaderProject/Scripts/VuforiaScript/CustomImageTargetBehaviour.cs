@@ -13,6 +13,7 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
     public Text addressURL;
     public Text keyId;
     public Text posterTitle;
+    public Text relevantInfo;
     public CameraManager eventManager;
     public ObserveImageTarget zoomBtn;
     public UpdateFavouriteButton favouriteButton;

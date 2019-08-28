@@ -182,6 +182,7 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 			PosLocation: req.Form["location"][0],
 			PosMap:      req.Form["mapurl"][0],
 			PosLink:     req.Form["url"][0],
+			ReleventInfo:     req.Form["rvntinfo"][0],
 		}
 		upload_url := "http://" + req.Host + "/files/upload/"
 		file_url_prefix := "http://" + req.Host + "/files/"
@@ -231,11 +232,11 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		}
 	}
 
-	// 	http.Redirect(response.ResponseWriter,
-	// 		request.Request,
-	// 		"/console/manage",
-	// 		http.StatusTemporaryRedirect)
-	// }
+	 	http.Redirect(response.ResponseWriter,
+	 		request.Request,
+	 		"/console/manage",
+	 		301)
+
 }
 
 // Manage page

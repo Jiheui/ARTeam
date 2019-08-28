@@ -26,6 +26,7 @@ type Poster struct {
 	ResUrl      string `json:"resurl" xorm:"resurl"`
 	Model       string `json:"model" xorm:"model"`
 	Thumbnail   string `json:"thumbnail" xorm:"thumbnail"`
+	ReleventInfo   string `json:"releventInfo" xorm:"releventInfo"`
 }
 
 type PosterResponse struct {
