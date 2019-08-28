@@ -16,7 +16,7 @@ public class BarChartFeed : MonoBehaviour {
         if (barChart != null)
         {
             barChart.DataSource.AddCategory(category, material);
-            barChart.DataSource.SetValue(category, "Scholarship Program", value);
+            barChart.DataSource.SetValue(category, "Value", value);
             //barChart.DataSource.SlideValue(category, "Scholarship Program", value, 10f);
         }
 

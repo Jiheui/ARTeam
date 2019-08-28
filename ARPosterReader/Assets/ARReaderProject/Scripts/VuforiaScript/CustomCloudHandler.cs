@@ -52,33 +52,41 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         {
             mCloudRecoBehaviour.CloudRecoEnabled = true;
         }
-        GameObject gmGraph = OnNewSearchGraph();
-        Material mat = new Material(Shader.Find("Standard"));
-        mat.SetVector("_Color", Color.red);
-        //mat.SetVector("_ColorTo", Color.yellow);
-        gmGraph.GetComponent<BarChartFeed>().setBars(4, "People", mat);
+        TargetFinder.CloudRecoSearchResult cloudRecoSearchResult = (TargetFinder.CloudRecoSearchResult)targetSearchResult;
+        string mTargetId = cloudRecoSearchResult.UniqueTargetId;
+        Debug.Log("The result id is " + mTargetId);
+        if (mTargetId.Equals("05289705e0124f63b913a9c169d35243"))
+        {
+            GameObject gmGraph = OnNewSearchGraph();
+            Material mat = new Material(Shader.Find("Standard"));
+            mat.SetVector("_Color", Color.red);
+            mat.SetFloat("_Glossiness", 1.0f);
+            //mat.SetVector("_ColorTo", Color.yellow);
+            gmGraph.GetComponent<BarChartFeed>().setBars(4, "People", mat);
 
-        gmGraph.GetComponent<BarChartFeed>().setBars(7, "Dogs", mat);
+            Material mat2 = new Material(Shader.Find("Standard"));
+            mat2.SetVector("_Color", Color.yellow);
+            mat2.SetFloat("_Glossiness", 1.0f);
+            gmGraph.GetComponent<BarChartFeed>().setBars(7, "Dogs", mat2);
 
-        gmGraph.transform.parent = newImageTarget.transform;
-        gmGraph.transform.localPosition = new Vector3(-2f, -5, 0);
-        gmGraph.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-        //StartCoroutine(DownloadAndCache(targetSearchResult,newImageTarget));
+            gmGraph.transform.parent = newImageTarget.transform;
+            gmGraph.transform.localPosition = new Vector3(-2f, -5, -1);
+            gmGraph.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            return ;
+        }
 
+        
+        StartCoroutine(DownloadAndCache(mTargetId,newImageTarget));
+        
         Debug.Log("Finished");
 
     }
 
-    IEnumerator DownloadAndCache(TargetFinder.TargetSearchResult targetSearchResult,GameObject ImageTargetObject)
+    IEnumerator DownloadAndCache(string mTargetId ,GameObject ImageTargetObject)
     {
         while (!Caching.ready)
             yield return null;
 
-        TargetFinder.CloudRecoSearchResult cloudRecoSearchResult = (TargetFinder.CloudRecoSearchResult)targetSearchResult;
-
-        // do something with the target metadata
-        string mTargetMetadata = cloudRecoSearchResult.MetaData;
-        string mTargetId = cloudRecoSearchResult.UniqueTargetId;
         Debug.Log("The result id is " + mTargetId);
 
         Poster p = new Poster();
