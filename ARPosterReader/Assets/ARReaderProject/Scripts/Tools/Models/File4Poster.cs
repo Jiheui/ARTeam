@@ -99,7 +99,8 @@ namespace Models
 				}
 				catch (Exception ex)
 				{
-					//throw ex;
+                    //throw ex;
+                    Debug.Log(ex);
 					return null;
 				}
 			}

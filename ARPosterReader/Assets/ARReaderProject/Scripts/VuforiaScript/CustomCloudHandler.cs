@@ -57,17 +57,26 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         Debug.Log("The result id is " + mTargetId);
         if (mTargetId.Equals("05289705e0124f63b913a9c169d35243"))
         {
+            string mMeta = cloudRecoSearchResult.MetaData;
+            string[] label = mMeta.Split(',');
             GameObject gmGraph = OnNewSearchGraph();
-            Material mat = new Material(Shader.Find("Standard"));
-            mat.SetVector("_Color", Color.red);
-            mat.SetFloat("_Glossiness", 1.0f);
-            //mat.SetVector("_ColorTo", Color.yellow);
-            gmGraph.GetComponent<BarChartFeed>().setBars(4, "People", mat);
-
-            Material mat2 = new Material(Shader.Find("Standard"));
-            mat2.SetVector("_Color", Color.yellow);
-            mat2.SetFloat("_Glossiness", 1.0f);
-            gmGraph.GetComponent<BarChartFeed>().setBars(7, "Dogs", mat2);
+            for(int i = 0; i < label.Length; i++)
+            {
+                string[] value = label[i].Split(':');
+                Material mat = new Material(Shader.Find("Standard"));
+                if (i % 2 == 0)
+                {
+                    mat.SetVector("_Color", Color.red);
+                }
+                else
+                {
+                    mat.SetVector("_Color", Color.yellow);
+                }
+                
+                mat.SetFloat("_Glossiness", 1.0f);
+                //mat.SetVector("_ColorTo", Color.yellow);
+                gmGraph.GetComponent<BarChartFeed>().setBars(int.Parse(value[1]), value[0], mat);
+            }
 
             gmGraph.transform.parent = newImageTarget.transform;
             gmGraph.transform.localPosition = new Vector3(-2f, -5, -1);
