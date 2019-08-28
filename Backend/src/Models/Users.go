@@ -3,7 +3,7 @@
  * @Date: 2019-03-31 19:00:29
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-19 00:56:24
+ * @Last Modified time: 2019-08-29 00:08:24
  * @Description: This file is created for user related functions
  */
 package Models
@@ -15,6 +15,7 @@ import (
 	"Tools"
 
 	//log "github.com/Sirupsen/logrus"
+	log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
 	restfulspec "github.com/emicklei/go-restful-openapi"
 	"github.com/gorilla/sessions"
@@ -92,6 +93,13 @@ func (u UserResource) WebService() *restful.WebService {
 		Doc("create a user").
 		Metadata(restfulspec.KeyOpenAPITags, tags).
 		Reads(User{})) // from the request
+
+	ws.Route(ws.POST("/reset/password").To(u.resetPassword).
+		Doc("reset password").
+		Reads(User{}))
+
+	ws.Route(ws.GET("/temp/password/{email}").To(u.sendTempPassword)).
+		Doc("reset password")
 
 	return ws
 }
@@ -225,5 +233,43 @@ func (u UserResource) checkExist(request *restful.Request, response *restful.Res
 		}
 	} else {
 		response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
+	}
+}
+
+// Reset password
+// send a random password to user
+func (u UserResource) sendTempPassword(request *restful.Request, response *restful.Response) {
+	email := request.PathParameter("email")
+	usr := User{Email: email}
+	new_password := Tools.RandString(8)
+
+	if has, err := db.Engine.Table("user").Where("email=?", email).Get(&usr); err != nil {
+		log.Error(err)
+	} else if has {
+		usr.Password = Tools.EncodePassword(new_password)
+		if _, err = db.Engine.Id(usr.ID).Update(usr); err != nil {
+			log.Error(err)
+		}
+	}
+	Tools.SendPassword(usr.Email, new_password)
+}
+
+func (u UserResource) resetPassword(request *restful.Request, response *restful.Response) {
+	usr := User{}
+	err := request.ReadEntity(&usr)
+
+	if usr.ID == 0 || usr.Password == "" {
+		response.WriteHeaderAndEntity(http.StatusBadRequest, UsersResponse{Error: "Data provided not enough."})
+		return
+	}
+
+	if err == nil {
+		if _, err = db.Engine.Id(usr.ID).Update(usr); err != nil {
+			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
+		} else {
+			response.WriteEntity(UsersResponse{Success: true})
+		}
+	} else {
+		response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: "Cannot read data from request."})
 	}
 }

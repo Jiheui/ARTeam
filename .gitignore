@@ -43,3 +43,31 @@ Backend/.idea/workspace.xml
 ARPosterReader/QCAR/*
 ARPosterReader/Assets/FacebookSDK/Plugins/*
 ARPosterReader/QCAR/ts8
+*.meta
+.DS_Store
+ARPosterReader/Assets/ARReaderProject/Scripts/Tools/Proyecto26.RestClient/Utils.meta
+ARPosterReader/Assets/AudienceNetwork/Editor.meta
+ARPosterReader/Assets/AudienceNetwork/Plugins/Android.meta
+ARPosterReader/Assets/AudienceNetwork/Plugins/iOS/libs/FBAudienceNetwork.framework.meta
+ARPosterReader/Assets/AudienceNetwork/Scenes.meta
+ARPosterReader/Assets/Chart and Graph/Text Mesh Pro/2018 - TextMeshPro.unitypackage.meta
+ARPosterReader/Assets/Chart and Graph/Text Mesh Pro/TextMeshPro.unitypackage.meta
+ARPosterReader/Assets/PlayServicesResolver/Editor/Google.IOSResolver_v1.2.95.0.dll
+ARPosterReader/Assets/PlayServicesResolver/Editor/Google.IOSResolver_v1.2.95.0.dll.mdb.meta
+ARPosterReader/Assets/PlayServicesResolver/Editor/Google.IOSResolver_v1.2.95.0.dll.meta
+ARPosterReader/Assets/PlayServicesResolver/Editor/Google.JarResolver_v1.2.95.0.dll
+ARPosterReader/Assets/PlayServicesResolver/Editor/Google.JarResolver_v1.2.95.0.dll.mdb.meta
+ARPosterReader/Assets/PlayServicesResolver/Editor/Google.JarResolver_v1.2.95.0.dll.meta
+ARPosterReader/Assets/PlayServicesResolver/Editor/Google.VersionHandler.dll
+ARPosterReader/Assets/PlayServicesResolver/Editor/Google.VersionHandler.dll.mdb.meta
+ARPosterReader/Assets/PlayServicesResolver/Editor/Google.VersionHandlerImpl_v1.2.95.0.dll
+ARPosterReader/Assets/PlayServicesResolver/Editor/Google.VersionHandlerImpl_v1.2.95.0.dll.mdb.meta
+ARPosterReader/Assets/PlayServicesResolver/Editor/Google.VersionHandlerImpl_v1.2.95.0.dll.meta
+ARPosterReader/Assets/PlayServicesResolver/Editor/play-services-resolver_v1.2.95.0.txt.meta
+ARPosterReader/ProjectSettings/ProjectSettings.asset
+ARPosterReader/ProjectSettings/ProjectVersion.txt
+ARPosterReader/ProjectSettings/ProjectVersion.txt
+*.asset
+*.meta
+ARPosterReader/QCAR/somedata16
+ARPosterReader/QCAR/somedata16
