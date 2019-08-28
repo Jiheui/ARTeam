@@ -10,7 +10,7 @@ public class Personalize : MonoBehaviour
     {
         User u = new User();
         u.id = storeLoginSessionId.loginId;
-        Name.text = "Login Failed!!!!!";
+        
         u.FindUser();
         if (u.authenticated)
         {
@@ -22,6 +22,7 @@ public class Personalize : MonoBehaviour
             {
                 storeLoginSessionId.name = u.name;
             }
+            Name.text = "Error";
             Name.text = storeLoginSessionId.name;
         }
         else
