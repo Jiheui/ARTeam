@@ -6,6 +6,7 @@
 </header>
 
 <section>
+                                    <form class="form-horizontal" method="POST" enctype="multipart/form-data">
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="card-body">
@@ -13,7 +14,9 @@
 			    <div class="form-group row has-success">
 			        <label class="col-sm-3 form-control-label">A Poster</label>
 			        <div class="col-sm-7">
-			            <input type="text" class="form-control" disabled></input>
+					<input name="targetid" type="hidden" class="form-control" value="{{.Pos.TargetId}}">
+                        			        <input name="title" required="true" type="text" class="form-control" value="{{.Pos.PosTitle}}">
+                        			        <div class="invalid-feedback">Please provide title</div>
 			        </div>
 			        <div class="col-sm-2">
                         <button type="button" onclick="showPanel()" class="btn btn-secondary">Show</button>
@@ -22,35 +25,80 @@
 
 
 			    <div class="panel panel-default infoPanel">
-			        <div class="line"></div>
                     <div class="panel-body">
-                        Update poster here!!!
+                        			    <div class="line"></div>
+                        			    <div class="form-group row">
+                        			      <label class="col-sm-3 form-control-label">Thumbnail Image</label>
+
+                        			      <!--Show the original thumbnail image-->
+                                          <div class="col-sm-3"><img src="{{.Pos.Thumbnail}}" class="img-thumbnail original_pic"></div>
+
+                        			      <div class="col-sm-3">
+                        			      	<input id="thumbnail" name="thumbnail" type="file" class="form-control-file">
+                        			      </div>
+                        			    </div>
+
+                        			    <div class="line"></div>
+                        			    <div class="form-group row">
+                        			      <label class="col-sm-3 form-control-label">AR Model</label>
+                        			      <div class="col-sm-3">
+                        			      	<input id="armodel" name="armodel" type="file" class="form-control-file">
+                        			      </div>
+                        			    </div>
+
+                        			    
+
+                        			    <div class="line"></div>
+                        			    <div class="form-group row has-danger">
+                        			      <label class="col-sm-3 form-control-label">Location</label>
+                        			      <div class="col-sm-9">
+                        			        <input id="location" name="location" required="true" type="text" class="form-control" value="{{.Pos.PosLocation}}" onfocusout="addressConvert()">
+
+                        			        <input id="mapurl" name="mapurl" required="true" type="hidden" class="form-control">
+                        			        <div class="invalid-feedback">Please provide location</div>
+                        			      </div>
+                        			    </div>
+
+                        			    <div class="line"></div>
+                        			    <div class="form-group row has-danger">
+                        			      <label class="col-sm-3 form-control-label">Date Time</label>
+                        			      <div class="col-sm-9">
+                        			        <input name="datetime" required="true" type="datetime-local" class="form-control" value="{{.Pos.PosDate}}">
+                        			        <div class="invalid-feedback">Please provide date and time</div>
+                        			      </div>
+                        			    </div>
+
+                        			    <div class="line"></div>
+                        			    <div class="form-group row has-danger">
+                        			      <label class="col-sm-3 form-control-label">Event Link</label>
+                        			      <div class="col-sm-9">
+                        			        <input name="url" required="true" type="text" class="form-control" value="{{.Pos.PosLink}}">
+                        			        <div class="invalid-feedback">Please event link</div>
+                        			      </div>
+                        			    </div>
+
+                        			    <div class="line"></div>
+                                        <div class="form-group row has-danger">
+                                          <label class="col-sm-3 form-control-label">Relevant information</label>
+                                          <div class="col-sm-9">
+                                        	<input name="rvntinfo" required="false" type="text" class="form-control" value="{{.Pos.Relevantinfo}}">
+                                        	<div class="invalid-feedback">Please event relevant information</div>
+                                          </div>
+                                        </div>
+
+                        			    <div class="line"></div>
+                        			    <div class="form-group row">
+                        			      <div class="col-sm-4 offset-sm-3">
+
+                        			        <button type="submit" class="btn btn-primary">Update</button>
+                        			      </div>
+                        			    </div>
                     </div>
                 </div>
-
-
-                <div class="line"></div>
-                <div class="form-group row has-success">
-                    <label class="col-sm-3 form-control-label">A Poster</label>
-                	<div class="col-sm-7">
-                	    <input type="text" class="form-control" disabled></input>
-                	</div>
-                	<div class="col-sm-2">
-                        <button type="button" onclick="showPanel()" class="btn btn-secondary">Show</button>
-                    </div>
-                </div>
-
-
-                <div class="panel panel-default infoPanel">
-                	<div class="line"></div>
-                    <div class="panel-body">
-                         Update poster here!!!
-                    </div>
-                </div>
-
 			</div>
 		</div>
 	</div>
+                        			  </form>
 </section>
 
 

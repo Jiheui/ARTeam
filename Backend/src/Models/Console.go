@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-23 16:27:32
+ * @Last Modified time: 2019-08-29 10:04:08
  * @Description:
  */
 package Models
@@ -39,6 +39,9 @@ type Console struct {
 	// Dashboard
 	TotalPosters   int
 	TotalResources int
+
+	// Manage
+	Pos Poster
 }
 
 type ConsoleResource struct {
@@ -58,6 +61,7 @@ func (c *ConsoleResource) WebService() *restful.WebService {
 
 	ws.Route(ws.GET("/dashboard").Filter(basicAuthenticate).To(c.Dashboard))
 	ws.Route(ws.GET("/manage").Filter(basicAuthenticate).To(c.Manage))
+	ws.Route(ws.POST("/manage").Filter(basicAuthenticate).To(c.Manage))
 
 	ws.Route(ws.GET("/upload").Filter(basicAuthenticate).To(c.Upload))
 	ws.Route(ws.POST("/upload").Filter(basicAuthenticate).To(c.Upload))
@@ -177,12 +181,12 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		}
 
 		new_poster_info := &Poster{
-			PosTitle:    req.Form["location"][0],
-			PosDate:     req.Form["datetime"][0],
-			PosLocation: req.Form["location"][0],
-			PosMap:      req.Form["mapurl"][0],
-			PosLink:     req.Form["url"][0],
-			Relevantinfo:     req.Form["rvntinfo"][0],
+			PosTitle:     req.Form["title"][0],
+			PosDate:      req.Form["datetime"][0],
+			PosLocation:  req.Form["location"][0],
+			PosMap:       req.Form["mapurl"][0],
+			PosLink:      req.Form["url"][0],
+			Relevantinfo: req.Form["rvntinfo"][0],
 		}
 		upload_url := "http://" + req.Host + "/files/upload/"
 		file_url_prefix := "http://" + req.Host + "/files/"
@@ -225,34 +229,83 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		}
 
 		hostURL := "http://" + req.Host + "/posters"
-		if err := storePublishInformation(new_poster_info, hostURL); err != nil {
+		if err := storePosterInformation(new_poster_info, hostURL); err != nil {
+			log.Error(err)
+			response.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		pub := &Publish{UserId: usr.ID, TargetId: new_poster_info.TargetId}
+		hostURL = "http://" + req.Host + "/posters/publish"
+		if err := storePublishInformation(pub, hostURL); err != nil {
 			log.Error(err)
 			response.WriteHeader(http.StatusBadRequest)
 			return
 		}
 	}
 
-	 	http.Redirect(response.ResponseWriter,
-	 		request.Request,
-	 		"/console/manage",
-	 		301)
+	http.Redirect(response.ResponseWriter,
+		request.Request,
+		"/console/manage",
+		301)
 
 }
 
 // Manage page
 func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Response) {
-	p := newConsoleWithStaticFilePrefix(request)
-	p.PageName = "manage"
-	p.TotalPosters = 25
-	p.TotalResources = 70
-
-	t, err := template.ParseFiles("Models/Templates/layout.tmpl",
-		"Models/Templates/manage.tmpl")
-	if err != nil {
-		log.Fatalf("Template gave: %s", err)
+	session, _ := Store.Get(request.Request, "ARPosterCookie")
+	usr, ok := session.Values["userdata"].(*User)
+	if !ok {
+		log.Error("Load user data from session failed.")
 	}
 
-	t.Execute(response.ResponseWriter, p)
+	if request.Request.Method == "GET" {
+		p := newConsoleWithStaticFilePrefix(request)
+		p.PageName = "manage"
+		p.TotalPosters = 25
+		p.TotalResources = 70
+
+		pub := Publish{}
+		if _, err := db.Engine.Table("publish").Where("userid=?", usr.ID).Get(&pub); err != nil {
+			log.Error(err)
+			response.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		if _, err := db.Engine.Table("poster").Where("targetid=?", pub.TargetId).Get(&p.Pos); err != nil {
+			log.Error(err)
+			response.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		t, err := template.ParseFiles("Models/Templates/layout.tmpl",
+			"Models/Templates/manage.tmpl")
+		if err != nil {
+			log.Fatalf("Template gave: %s", err)
+		}
+
+		t.Execute(response.ResponseWriter, p)
+	} else {
+		req := request.Request
+		req.ParseMultipartForm(1048576000)
+		log.Println(req.Form)
+		new_poster_info := &Poster{
+			TargetId:     req.Form["targetid"][0],
+			PosTitle:     req.Form["title"][0],
+			PosDate:      req.Form["datetime"][0],
+			PosLocation:  req.Form["location"][0],
+			PosMap:       req.Form["mapurl"][0],
+			PosLink:      req.Form["url"][0],
+			Relevantinfo: req.Form["rvntinfo"][0],
+		}
+
+		hostURL := "http://" + req.Host + "/posters/update"
+		if err := storePosterInformation(new_poster_info, hostURL); err != nil {
+			log.Error(err)
+			response.WriteHeader(http.StatusBadRequest)
+			return
+		}
+	}
 }
 
 /*
@@ -260,7 +313,32 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 *	Tools
 *
 ***/
-func storePublishInformation(p *Poster, hostURL string) error {
+func storePosterInformation(p *Poster, hostURL string) error {
+	b, err := json.Marshal(p)
+	if err != nil {
+		return err
+	}
+	body := &bytes.Buffer{}
+	body.WriteString(string(b))
+
+	req, err := http.NewRequest("POST", hostURL, body)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+
+	defer res.Body.Close()
+	return err
+}
+
+func storePublishInformation(p *Publish, hostURL string) error {
 	b, err := json.Marshal(p)
 	if err != nil {
 		return err

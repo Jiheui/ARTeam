@@ -3,7 +3,7 @@
  * @Date: 2019-04-11 15:42:37
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-22 22:43:53
+ * @Last Modified time: 2019-08-29 10:06:28
  * @Description: This file is created for store & get poster information
  */
 package Models
@@ -16,17 +16,22 @@ import (
 	//restfulspec "github.com/emicklei/go-restful-openapi"
 )
 
+type Publish struct {
+	UserId   int    `json:"userid" xorm:"userid"`
+	TargetId string `json:"targetid" xorm:"targetid"`
+}
+
 type Poster struct {
-	TargetId    string `json:"targetid" xorm:"targetid"`
-	PosTitle    string `json:"postitle" xorm:"postitle"`
-	PosDate     string `json:"posdate" xorm:"posdate"`
-	PosLocation string `json:"poslocation" xorm:"poslocation"`
-	PosMap      string `json:"posmap" xorm:"posmap"`
-	PosLink     string `json:"poslink" xorm:"poslink"`
-	ResUrl      string `json:"resurl" xorm:"resurl"`
-	Model       string `json:"model" xorm:"model"`
-	Thumbnail   string `json:"thumbnail" xorm:"thumbnail"`
-	Relevantinfo   string `json:"relevantinfo" xorm:"relevantinfo"`
+	TargetId     string `json:"targetid" xorm:"targetid"`
+	PosTitle     string `json:"postitle" xorm:"postitle"`
+	PosDate      string `json:"posdate" xorm:"posdate"`
+	PosLocation  string `json:"poslocation" xorm:"poslocation"`
+	PosMap       string `json:"posmap" xorm:"posmap"`
+	PosLink      string `json:"poslink" xorm:"poslink"`
+	ResUrl       string `json:"resurl" xorm:"resurl"`
+	Model        string `json:"model" xorm:"model"`
+	Thumbnail    string `json:"thumbnail" xorm:"thumbnail"`
+	Relevantinfo string `json:"relevantinfo" xorm:"relevantinfo"`
 }
 
 type PosterResponse struct {
@@ -54,6 +59,12 @@ func (p PosterResource) WebService() *restful.WebService {
 	ws.Route(ws.POST("").To(p.Post).
 		Doc("store poster info")) // from the request
 
+	ws.Route(ws.POST("/publish").To(p.StorePublish).
+		Reads(Publish{}))
+
+	ws.Route(ws.POST("/update").To(p.Update).
+		Reads(Poster{}))
+
 	return ws
 }
 
@@ -76,6 +87,34 @@ func (p *PosterResource) Post(request *restful.Request, response *restful.Respon
 		defer db.WUnlock() //unlock when exit this method
 
 		if _, err := db.Engine.Insert(&poster); err != nil {
+			response.WriteHeaderAndEntity(http.StatusInternalServerError, PosterResponse{Error: err.Error()})
+		} else {
+			response.WriteHeaderAndEntity(http.StatusCreated, PosterResponse{Success: true})
+		}
+	} else {
+		response.WriteHeaderAndEntity(http.StatusInternalServerError, PosterResponse{Error: err.Error()})
+	}
+}
+
+func (p *PosterResource) StorePublish(request *restful.Request, response *restful.Response) {
+	pub := Publish{}
+	err := request.ReadEntity(&pub)
+	if err == nil {
+		if _, err := db.Engine.Insert(&pub); err != nil {
+			response.WriteHeaderAndEntity(http.StatusInternalServerError, PosterResponse{Error: err.Error()})
+		} else {
+			response.WriteHeaderAndEntity(http.StatusCreated, PosterResponse{Success: true})
+		}
+	} else {
+		response.WriteHeaderAndEntity(http.StatusInternalServerError, PosterResponse{Error: err.Error()})
+	}
+}
+
+func (p *PosterResource) Update(request *restful.Request, response *restful.Response) {
+	poster := Poster{}
+	err := request.ReadEntity(&poster)
+	if err == nil {
+		if _, err := db.Engine.Where("targetid=?", poster.TargetId).Update(&poster); err != nil {
 			response.WriteHeaderAndEntity(http.StatusInternalServerError, PosterResponse{Error: err.Error()})
 		} else {
 			response.WriteHeaderAndEntity(http.StatusCreated, PosterResponse{Success: true})
