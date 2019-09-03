@@ -22,7 +22,7 @@ public class Personalize : MonoBehaviour
             {
                 storeLoginSessionId.name = u.name;
             }
-            Name.text = storeLoginSessionId.name;
+            Name.text = "Hello: " + storeLoginSessionId.name;
         }
         else
         {
