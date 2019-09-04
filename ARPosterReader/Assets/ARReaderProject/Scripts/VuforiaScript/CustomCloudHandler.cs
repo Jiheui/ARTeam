@@ -3,7 +3,6 @@ using UnityEngine;
 using Vuforia;
 using UnityEngine.Networking;
 using Models;
-using UnityEngine.UI;
 using ChartAndGraph;
 
 public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
@@ -61,19 +60,10 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         Debug.Log("The result id is " + mTargetId);
         if (mTargetId.Equals("05289705e0124f63b913a9c169d35243"))
         {
-
-            
-            
-
             string mMeta = cloudRecoSearchResult.MetaData;
             string[] label = mMeta.Split(',');
             GameObject gmGraph = OnNewSearchGraph();
 
-            // get the user information
-            User u = new User();
-            u.id = storeLoginSessionId.loginId;
-            gmGraph.GetComponent<GUIText>().text = "Hello " + storeLoginSessionId.name;
-            // "Hello " + storeLoginSessionId.name
 
             for (int i = 0; i < label.Length; i++)
             {
@@ -96,8 +86,8 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
             gmGraph.transform.parent = newImageTarget.transform;
             gmGraph.transform.localPosition = new Vector3(-2f, -5, -1);
             gmGraph.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-           
-            return ;
+
+            return;
         }
 
         
