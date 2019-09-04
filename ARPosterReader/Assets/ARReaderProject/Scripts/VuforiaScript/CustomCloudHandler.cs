@@ -3,6 +3,7 @@ using UnityEngine;
 using Vuforia;
 using UnityEngine.Networking;
 using Models;
+using UnityEngine.UI;
 using ChartAndGraph;
 
 public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
@@ -16,6 +17,8 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
     private bool mIsScanning = false;
 
     public GameObject GraphTemplate;
+
+    public GameObject newText;
 
     //private string mTargetMetadata = "";
 
@@ -52,15 +55,27 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         {
             mCloudRecoBehaviour.CloudRecoEnabled = true;
         }
+
         TargetFinder.CloudRecoSearchResult cloudRecoSearchResult = (TargetFinder.CloudRecoSearchResult)targetSearchResult;
         string mTargetId = cloudRecoSearchResult.UniqueTargetId;
         Debug.Log("The result id is " + mTargetId);
         if (mTargetId.Equals("05289705e0124f63b913a9c169d35243"))
         {
+
+            
+            
+
             string mMeta = cloudRecoSearchResult.MetaData;
             string[] label = mMeta.Split(',');
             GameObject gmGraph = OnNewSearchGraph();
-            for(int i = 0; i < label.Length; i++)
+
+            // get the user information
+            User u = new User();
+            u.id = storeLoginSessionId.loginId;
+            gmGraph.GetComponent<GUIText>().text = "Hello " + storeLoginSessionId.name;
+            // "Hello " + storeLoginSessionId.name
+
+            for (int i = 0; i < label.Length; i++)
             {
                 string[] value = label[i].Split(':');
                 Material mat = new Material(Shader.Find("Standard"));
@@ -81,6 +96,7 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
             gmGraph.transform.parent = newImageTarget.transform;
             gmGraph.transform.localPosition = new Vector3(-2f, -5, -1);
             gmGraph.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+           
             return ;
         }
 
@@ -102,7 +118,6 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         p.targetid = mTargetId;
         p.GetPoster();
         //Debug.Log(p.relevantinfo);
-
 
         string assetUrl = p.model;
 
@@ -149,6 +164,9 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         GameObject newGMGraph = Instantiate(GraphTemplate.gameObject) as GameObject;
         return newGMGraph;
     }
+
+
+    
 
     // Start is called before the first frame update
     void Start()
