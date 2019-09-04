@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Models;
+﻿using Models;
 using UnityEngine;
 
 public class personalizePoster3D : MonoBehaviour
