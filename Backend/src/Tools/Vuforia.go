@@ -3,7 +3,7 @@
  * @Date: 2019-08-11 21:42:07
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-28 20:06:52
+ * @Last Modified time: 2019-09-05 22:13:19
  * @Description:  This file is created for backend to connect to Vuforia server via REST api.
  *
  * @About Vuforia: Vuforia Engine is a software platform for creating Augmented Reality apps.
