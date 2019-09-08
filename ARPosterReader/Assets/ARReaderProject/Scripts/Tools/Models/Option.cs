@@ -23,6 +23,11 @@ namespace Models
             return Post("/options/incr");
         }
 
+        public string GetOptions()
+        {
+            return Get("/options/");
+        }
+
         public string Post(string endpoint)
         {
             var uri = "http://" + new Tools().Server + endpoint;
@@ -46,21 +51,22 @@ namespace Models
             }
         }
 
-        public string Delete(string endpoint)
+        public string Get(string endpoint)
         {
-            var uri = "http://" + new Tools().Server + endpoint + "/" + this.id;
+            var uri = "http://" + new Tools().Server + endpoint + "/" + targetid;
             var req = HttpWebRequest.Create(uri);
 
             req.ContentType = "application/json";
-            req.Method = "DELETE";
+            req.Method = "GET";
 
             var response = req.GetResponse() as HttpWebResponse;
 
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
                 var json = reader.ReadToEnd();
-                var fb = JsonUtility.FromJson<OptionResponse>(json);
-                return fb.error;
+                var op = JsonUtility.FromJson<OptionResponse>(json);
+                this.options = op.options;
+                return op.error;
             }
         }
 

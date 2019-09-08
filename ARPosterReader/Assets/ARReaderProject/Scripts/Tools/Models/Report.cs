@@ -47,24 +47,6 @@ namespace Models
             }
         }
 
-        public string Delete(string endpoint)
-        {
-            var uri = "http://" + new Tools().Server + endpoint + "/" + this.id;
-            var req = HttpWebRequest.Create(uri);
-
-            req.ContentType = "application/json";
-            req.Method = "DELETE";
-
-            var response = req.GetResponse() as HttpWebResponse;
-
-            using (var reader = new StreamReader(response.GetResponseStream()))
-            {
-                var json = reader.ReadToEnd();
-                var fb = JsonUtility.FromJson<ReportResponse>(json);
-                return fb.error;
-            }
-        }
-
         [Serializable]
         public class ReportResponse
         {
