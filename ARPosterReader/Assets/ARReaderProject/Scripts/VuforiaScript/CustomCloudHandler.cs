@@ -3,7 +3,6 @@ using UnityEngine;
 using Vuforia;
 using UnityEngine.Networking;
 using Models;
-using ChartAndGraph;
 
 public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
 {
@@ -52,49 +51,45 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         }
 
         TargetFinder.CloudRecoSearchResult cloudRecoSearchResult = (TargetFinder.CloudRecoSearchResult)targetSearchResult;
+
         string mTargetId = cloudRecoSearchResult.UniqueTargetId;
-        if (mTargetId.Equals("05289705e0124f63b913a9c169d35243"))
+
+        Poster p = new Poster();
+        p.targetid = mTargetId;
+        p.GetPoster();
+
+        if (p.type == 2) // 2 is graph type
         {
-            string mMeta = cloudRecoSearchResult.MetaData;
-            string[] label = mMeta.Split(',');
+            Option opt = new Option();
+            opt.targetid = mTargetId;
+            opt.GetOptions();
+
             GameObject gmGraph = OnNewSearchGraph();
-
-
-            for (int i = 0; i < label.Length; i++)
+            foreach (Option op in opt.options)
             {
-                string[] value = label[i].Split(':');
                 Material mat = new Material(Shader.Find("Standard"));
-                if (i % 2 == 0)
-                {
-                    mat.SetVector("_Color", Color.red);
-                }
-                else
-                {
-                    mat.SetVector("_Color", Color.yellow);
-                }
-                
+                float r = Random.Range(0f, 1f);
+                float g = Random.Range(0f, 1f);
+                float b = Random.Range(0f, 1f);
+                float a = 0.9f;
+                mat.SetVector("_Color", new Color(r,g,b,a));
                 mat.SetFloat("_Glossiness", 1.0f);
                 //mat.SetVector("_ColorTo", Color.yellow);
-                gmGraph.GetComponent<BarChartFeed>().setBars(int.Parse(value[1]), value[0], mat);
+                gmGraph.GetComponent<BarChartFeed>().setBars(op.value, op.key, mat);
             }
-
             gmGraph.transform.parent = newImageTarget.transform;
             gmGraph.transform.localPosition = new Vector3(-2f, -5, -1);
             gmGraph.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
             return;
         }
-        StartCoroutine(DownloadAndCache(mTargetId,newImageTarget));
+        StartCoroutine(DownloadAndCache(p,newImageTarget));
     }
 
-    IEnumerator DownloadAndCache(string mTargetId ,GameObject ImageTargetObject)
+    IEnumerator DownloadAndCache(Poster p,GameObject ImageTargetObject)
     {
         while (!Caching.ready)
             yield return null;
-
-        Poster p = new Poster();
-        p.targetid = mTargetId;
-        p.GetPoster();
 
         string assetUrl = p.model;
 

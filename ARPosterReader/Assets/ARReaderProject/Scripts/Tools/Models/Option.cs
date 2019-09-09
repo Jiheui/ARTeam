@@ -53,7 +53,7 @@ namespace Models
 
         public string Get(string endpoint)
         {
-            var uri = "http://" + new Tools().Server + endpoint + "/" + targetid;
+            var uri = "http://" + new Tools().Server + endpoint + targetid;
             var req = HttpWebRequest.Create(uri);
 
             req.ContentType = "application/json";
