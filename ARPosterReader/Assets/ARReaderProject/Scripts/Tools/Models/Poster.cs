@@ -18,6 +18,7 @@ namespace Models {
         public string model;
         public string thumbnail;
         public string relevantinfo;
+        public int type;
 
 		public string GetPoster() {
 			return Get("/posters");
@@ -50,6 +51,7 @@ namespace Models {
                 this.model = pr.poster.model;
                 this.thumbnail = pr.poster.thumbnail;
                 this.relevantinfo = pr.poster.relevantinfo;
+                this.type = pr.poster.type;
 				return pr.error;
 			}
 		}
