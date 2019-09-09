@@ -82,7 +82,7 @@ namespace Models
 			}
 			catch (Exception ex)
 			{
-				//return ex.Message;
+                Debug.Log(ex.Message);
 				return null;
 			}
 		}

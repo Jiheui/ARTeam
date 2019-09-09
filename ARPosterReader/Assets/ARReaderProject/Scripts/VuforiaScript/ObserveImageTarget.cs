@@ -20,7 +20,7 @@ public class ObserveImageTarget : MonoBehaviour {
     {
         if (imageTargeter == null)
         {
-            buttonImage.color = new Color32(255, 255, 225, 0);
+            //buttonImage.color = new Color32(255, 255, 225, 0);
             return;
         }
         targetBehaviour = imageTargeter.GetComponent<CustomImageTargetBehaviour>();

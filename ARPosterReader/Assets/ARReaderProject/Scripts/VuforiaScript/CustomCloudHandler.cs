@@ -17,10 +17,6 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
 
     public GameObject GraphTemplate;
 
-    public GameObject newText;
-
-    //private string mTargetMetadata = "";
-
     public void OnInitialized(TargetFinder targetFinder)
     {
         Debug.Log("Cloud Reco initialized");
@@ -57,7 +53,6 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
 
         TargetFinder.CloudRecoSearchResult cloudRecoSearchResult = (TargetFinder.CloudRecoSearchResult)targetSearchResult;
         string mTargetId = cloudRecoSearchResult.UniqueTargetId;
-        Debug.Log("The result id is " + mTargetId);
         if (mTargetId.Equals("05289705e0124f63b913a9c169d35243"))
         {
             string mMeta = cloudRecoSearchResult.MetaData;
@@ -89,12 +84,7 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
 
             return;
         }
-
-        
         StartCoroutine(DownloadAndCache(mTargetId,newImageTarget));
-        
-        Debug.Log("Finished");
-
     }
 
     IEnumerator DownloadAndCache(string mTargetId ,GameObject ImageTargetObject)
@@ -102,18 +92,13 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         while (!Caching.ready)
             yield return null;
 
-        Debug.Log("The result id is " + mTargetId);
-
         Poster p = new Poster();
         p.targetid = mTargetId;
         p.GetPoster();
-        //Debug.Log(p.relevantinfo);
 
         string assetUrl = p.model;
 
         ImageTargetObject.GetComponent<CustomImageTargetBehaviour>().setPoster(p);
-
-        Debug.Log("The asset url is " + assetUrl);
 
         using (UnityWebRequest www = UnityWebRequestAssetBundle.GetAssetBundle(assetUrl))
         {

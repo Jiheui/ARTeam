@@ -71,6 +71,10 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         zoomBtn.imageTargeter = null;
         zoomBtn.UpdateTargetBehaviour();
         clearDetail();
+        for (var i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.SetActive(false);
+        }
     }
 
     public bool IsTargetFound()
