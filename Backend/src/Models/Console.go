@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-09 22:39:53
+ * @Last Modified time: 2019-09-10 00:15:22
  * @Description:
  */
 package Models
@@ -410,6 +410,13 @@ func basicAuthenticate(req *restful.Request, resp *restful.Response, chain *rest
 
 func newConsoleWithStaticFilePrefix(request *restful.Request) *Console {
 	host := request.Request.Host
+
+	// session, _ := Store.Get(request.Request, "ARPosterCookie")
+	// usr, ok := session.Values["userdata"].(*User)
+	// if !ok {
+	// 	log.Error("Load user data from session failed.")
+	// }
+
 	return &Console{StaticFilePrefix: "http://" + host + "/files/res"}
 }
 
