@@ -3,25 +3,24 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-29 10:04:08
+ * @Last Modified time: 2019-09-06 01:15:04
  * @Description:
  */
 package Models
 
 import (
-	"bytes"
+	"Tools"
 	"encoding/gob"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
-	"net/url"
+	"os"
 	"path"
+	"strings"
 	"text/template"
 	"time"
-
-	"Tools"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
@@ -215,13 +214,13 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		} else {
 			new_poster_info.TargetId = targetId
 
-			if err := uploadPosterFile(targetId, upload_url+thumbnail_filename, thumbnail); err != nil {
+			if err := Tools.UploadPosterFile(upload_url+thumbnail_filename, thumbnail); err != nil {
 				log.Error(err)
 				response.WriteHeader(http.StatusBadRequest)
 				return
 			}
 
-			if err := uploadPosterFile(new_poster_info.TargetId, upload_url+model_filename, posterModel); err != nil {
+			if err := Tools.UploadPosterFile(upload_url+model_filename, posterModel); err != nil {
 				log.Error(err)
 				response.WriteHeader(http.StatusBadRequest)
 				return
@@ -229,7 +228,7 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		}
 
 		hostURL := "http://" + req.Host + "/posters"
-		if err := storePosterInformation(new_poster_info, hostURL); err != nil {
+		if _, err := Tools.PostByStructURL(new_poster_info, hostURL); err != nil {
 			log.Error(err)
 			response.WriteHeader(http.StatusBadRequest)
 			return
@@ -237,18 +236,17 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 
 		pub := &Publish{UserId: usr.ID, TargetId: new_poster_info.TargetId}
 		hostURL = "http://" + req.Host + "/posters/publish"
-		if err := storePublishInformation(pub, hostURL); err != nil {
+		if _, err := Tools.PostByStructURL(pub, hostURL); err != nil {
 			log.Error(err)
 			response.WriteHeader(http.StatusBadRequest)
 			return
 		}
+
+		http.Redirect(response.ResponseWriter,
+			request.Request,
+			"/console/manage",
+			301)
 	}
-
-	http.Redirect(response.ResponseWriter,
-		request.Request,
-		"/console/manage",
-		301)
-
 }
 
 // Manage page
@@ -267,12 +265,14 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 
 		pub := Publish{}
 		if _, err := db.Engine.Table("publish").Where("userid=?", usr.ID).Get(&pub); err != nil {
+			log.Error(1)
 			log.Error(err)
 			response.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		if _, err := db.Engine.Table("poster").Where("targetid=?", pub.TargetId).Get(&p.Pos); err != nil {
+			log.Error(2)
 			log.Error(err)
 			response.WriteHeader(http.StatusInternalServerError)
 			return
@@ -288,19 +288,62 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 	} else {
 		req := request.Request
 		req.ParseMultipartForm(1048576000)
-		log.Println(req.Form)
-		new_poster_info := &Poster{
-			TargetId:     req.Form["targetid"][0],
-			PosTitle:     req.Form["title"][0],
-			PosDate:      req.Form["datetime"][0],
-			PosLocation:  req.Form["location"][0],
-			PosMap:       req.Form["mapurl"][0],
-			PosLink:      req.Form["url"][0],
-			Relevantinfo: req.Form["rvntinfo"][0],
+
+		targetId := req.Form["targetid"][0]
+		poster_info := &Poster{}
+		if has, err := db.Engine.Table("poster").Where("targetid = ?", targetId).Get(poster_info); err != nil {
+		} else if !has {
+		} else {
+			poster_info.PosTitle = req.Form["title"][0]
+			poster_info.PosDate = req.Form["datetime"][0]
+			poster_info.PosLocation = req.Form["location"][0]
+			poster_info.PosMap = req.Form["mapurl"][0]
+			poster_info.PosLink = req.Form["url"][0]
+			poster_info.Relevantinfo = req.Form["rvntinfo"][0]
+		}
+
+		upload_url := "http://" + req.Host + "/files/upload/"
+		file_url_prefix := "http://" + req.Host + "/files/"
+		f, thumbnail, err := getFileFromRequest("thumbnail", req)
+		if err != nil {
+			log.Error(err)
+			response.WriteHeader(http.StatusBadRequest)
+			return
+		} else if f != nil {
+			thumbnail_filename := parseFileNameFromURL(poster_info.Thumbnail)
+			os.Remove("/var/arposter/files/" + thumbnail_filename)
+			// delete original file
+			thumbnail_filename = replaceSuffix(thumbnail_filename, path.Ext(path.Base(thumbnail.Filename)))
+			poster_info.Thumbnail = file_url_prefix + thumbnail_filename
+			// store new file
+			if err := Tools.UploadPosterFile(upload_url+thumbnail_filename, thumbnail); err != nil {
+				log.Error(err)
+				response.WriteHeader(http.StatusBadRequest)
+				return
+			}
+		}
+
+		f, posterModel, err := getFileFromRequest("armodel", req)
+		if err != nil {
+			log.Error(err)
+			response.WriteHeader(http.StatusBadRequest)
+			return
+		} else if f != nil {
+			model_filename := parseFileNameFromURL(poster_info.Model)
+			os.Remove("/var/arposter/files/" + model_filename)
+			// delete original file
+			model_filename = replaceSuffix(model_filename, path.Ext(path.Base(posterModel.Filename)))
+			poster_info.Model = file_url_prefix + model_filename
+			// store new file
+			if err := Tools.UploadPosterFile(upload_url+model_filename, posterModel); err != nil {
+				log.Error(err)
+				response.WriteHeader(http.StatusBadRequest)
+				return
+			}
 		}
 
 		hostURL := "http://" + req.Host + "/posters/update"
-		if err := storePosterInformation(new_poster_info, hostURL); err != nil {
+		if _, err := Tools.PostByStructURL(poster_info, hostURL); err != nil {
 			log.Error(err)
 			response.WriteHeader(http.StatusBadRequest)
 			return
@@ -308,80 +351,16 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 	}
 }
 
-/*
-*
-*	Tools
-*
-***/
-func storePosterInformation(p *Poster, hostURL string) error {
-	b, err := json.Marshal(p)
-	if err != nil {
-		return err
-	}
-	body := &bytes.Buffer{}
-	body.WriteString(string(b))
-
-	req, err := http.NewRequest("POST", hostURL, body)
-	if err != nil {
-		return err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	res, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-
-	defer res.Body.Close()
-	return err
+func replaceSuffix(filename, suffix string) string {
+	suffix = strings.TrimPrefix(suffix, ".")
+	s := strings.Split(filename, ".")
+	s[len(s)-1] = suffix
+	return strings.Join(s, ".")
 }
 
-func storePublishInformation(p *Publish, hostURL string) error {
-	b, err := json.Marshal(p)
-	if err != nil {
-		return err
-	}
-	body := &bytes.Buffer{}
-	body.WriteString(string(b))
-
-	req, err := http.NewRequest("POST", hostURL, body)
-	if err != nil {
-		return err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	res, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-
-	defer res.Body.Close()
-	return err
-}
-
-func uploadPosterFile(targetId, url string, fileHeader *multipart.FileHeader) error {
-	file, err := fileHeader.Open()
-	if err != nil {
-		return err
-	}
-
-	req, err := http.NewRequest("POST", url, file)
-	if err != nil {
-		return err
-	}
-	req.Header.Set("Content-Type", "application/octet-stream")
-
-	client := &http.Client{}
-	res, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
-	return err
+func parseFileNameFromURL(urlString string) string {
+	s := strings.Split(urlString, "/")
+	return s[len(s)-1]
 }
 
 func sendLoginInfo(username, password, hostURL string) (User, error) {
@@ -393,22 +372,7 @@ func sendLoginInfo(username, password, hostURL string) (User, error) {
 	}
 	usr.Password = password
 
-	b, err := json.Marshal(usr)
-	if err != nil {
-		return User{}, err
-	}
-	body := &bytes.Buffer{}
-	body.WriteString(string(b))
-
-	req, err := http.NewRequest("POST", hostURL, body)
-	if err != nil {
-		return User{}, err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	res, err := client.Do(req)
+	res, err := Tools.PostByStructURL(usr, hostURL)
 	if err != nil {
 		return User{}, err
 	}
@@ -429,19 +393,6 @@ func sendLoginInfo(username, password, hostURL string) (User, error) {
 	} else {
 		return User{}, errors.New("login failed: " + username + " " + password)
 	}
-}
-
-func sendSimplePost(url, contentType string, form url.Values) ([]byte, error) {
-	body := bytes.NewBufferString(form.Encode())
-
-	resp, err := http.Post(url, contentType, body)
-
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	return ioutil.ReadAll(resp.Body)
 }
 
 func basicAuthenticate(req *restful.Request, resp *restful.Response, chain *restful.FilterChain) {

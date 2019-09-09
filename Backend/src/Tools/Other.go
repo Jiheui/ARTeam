@@ -3,12 +3,13 @@
  * @Date: 2019-08-11 21:50:37
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-28 17:33:55
+ * @Last Modified time: 2019-09-06 00:55:59
  * @Description: This file contains serveral some tools different usage
  */
 package Tools
 
 import (
+	"bytes"
 	"crypto/hmac"
 	"crypto/md5"
 	"crypto/sha1"
@@ -16,10 +17,72 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"math/rand"
+	"mime/multipart"
+	"net/http"
+	"net/url"
 	"os"
 	"time"
 )
+
+func UploadPosterFile(url string, fileHeader *multipart.FileHeader) error {
+	file, err := fileHeader.Open()
+	if err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest("POST", url, file)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/octet-stream")
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+	return err
+}
+
+func PostByStructURL(_struct interface{}, hostURL string) (*http.Response, error) {
+	b, err := json.Marshal(_struct)
+	if err != nil {
+		return nil, err
+	}
+	body := &bytes.Buffer{}
+	body.WriteString(string(b))
+
+	req, err := http.NewRequest("POST", hostURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	//defer res.Body.Close()
+	return res, err
+}
+
+func PostByForm(url, contentType string, form url.Values) ([]byte, error) {
+	body := bytes.NewBufferString(form.Encode())
+
+	resp, err := http.Post(url, contentType, body)
+
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	return ioutil.ReadAll(resp.Body)
+}
 
 // Convert Image to Base64 string from readers
 //func EncodeImageFromReader(input ) (string, err) {

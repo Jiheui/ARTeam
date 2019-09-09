@@ -1,16 +1,15 @@
 ﻿using Models;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class Personalize : MonoBehaviour
+public class personalizePoster3D : MonoBehaviour
 {
-    public Text Name;
+    public TextMesh textMesh; 
 
     public void Start()
     {
         User u = new User();
         u.id = storeLoginSessionId.loginId;
-        
+
         u.FindUser();
         if (u.authenticated)
         {
@@ -22,15 +21,13 @@ public class Personalize : MonoBehaviour
             {
                 storeLoginSessionId.name = u.name;
             }
-            Name.text = "Hello " + storeLoginSessionId.name;
+            textMesh.text = "Hello " + storeLoginSessionId.name;
         }
         else
         {
             Debug.Log("Login Failed");
-            Name.text = "";
+            textMesh.text = "";
         }
-        
+
     }
-
-
 }

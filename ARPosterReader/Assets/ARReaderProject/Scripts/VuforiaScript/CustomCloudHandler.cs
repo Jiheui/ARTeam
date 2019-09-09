@@ -17,6 +17,8 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
 
     public GameObject GraphTemplate;
 
+    public GameObject newText;
+
     //private string mTargetMetadata = "";
 
     public void OnInitialized(TargetFinder targetFinder)
@@ -52,6 +54,7 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         {
             mCloudRecoBehaviour.CloudRecoEnabled = true;
         }
+
         TargetFinder.CloudRecoSearchResult cloudRecoSearchResult = (TargetFinder.CloudRecoSearchResult)targetSearchResult;
         string mTargetId = cloudRecoSearchResult.UniqueTargetId;
         Debug.Log("The result id is " + mTargetId);
@@ -60,7 +63,9 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
             string mMeta = cloudRecoSearchResult.MetaData;
             string[] label = mMeta.Split(',');
             GameObject gmGraph = OnNewSearchGraph();
-            for(int i = 0; i < label.Length; i++)
+
+
+            for (int i = 0; i < label.Length; i++)
             {
                 string[] value = label[i].Split(':');
                 Material mat = new Material(Shader.Find("Standard"));
@@ -81,7 +86,8 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
             gmGraph.transform.parent = newImageTarget.transform;
             gmGraph.transform.localPosition = new Vector3(-2f, -5, -1);
             gmGraph.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            return ;
+
+            return;
         }
 
         
@@ -102,7 +108,6 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         p.targetid = mTargetId;
         p.GetPoster();
         //Debug.Log(p.relevantinfo);
-
 
         string assetUrl = p.model;
 
@@ -149,6 +154,9 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         GameObject newGMGraph = Instantiate(GraphTemplate.gameObject) as GameObject;
         return newGMGraph;
     }
+
+
+    
 
     // Start is called before the first frame update
     void Start()
