@@ -3,7 +3,7 @@
  * @Date: 2019-09-08 21:22:34
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-10 00:34:03
+ * @Last Modified time: 2019-09-10 00:55:15
  * @Description:
  */
 package Models
@@ -27,7 +27,7 @@ type OptionResponse struct {
 	IsExist bool   `json:"isexist"`
 	Success bool   `json:"success"`
 
-	Options []Option `json:"Option"`
+	Options []Option `json:"options"`
 }
 
 type OptionResource struct {
