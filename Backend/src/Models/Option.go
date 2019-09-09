@@ -3,7 +3,7 @@
  * @Date: 2019-09-08 21:22:34
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-09 01:55:26
+ * @Last Modified time: 2019-09-10 00:55:15
  * @Description:
  */
 package Models
@@ -27,7 +27,7 @@ type OptionResponse struct {
 	IsExist bool   `json:"isexist"`
 	Success bool   `json:"success"`
 
-	Options []Option `json:"Option"`
+	Options []Option `json:"options"`
 }
 
 type OptionResource struct {
@@ -71,9 +71,14 @@ func (o OptionResource) Incr(request *restful.Request, response *restful.Respons
 		if has, err := db.Engine.Table("option").Where("targetid=?", op.TargetId).Get(&op); err != nil {
 			response.WriteHeaderAndEntity(http.StatusInternalServerError, OptionResponse{Error: err.Error()})
 		} else if !has {
-			o.AddNew(request, response)
+			op.Value = 1
+			if _, err := db.Engine.Insert(&op); err != nil {
+				response.WriteHeaderAndEntity(http.StatusInternalServerError, OptionResponse{Error: err.Error()})
+			} else {
+				response.WriteHeaderAndEntity(http.StatusCreated, OptionResponse{Success: true})
+			}
 		} else {
-			if _, err := db.Engine.Table("option").Where("targetid=? and key=?", op.TargetId, op.Key).Incr("value").Update(&op); err != nil {
+			if _, err := db.Engine.Table("option").Where("optionid=?", op.OptionId).Incr("value").Update(&op); err != nil {
 				response.WriteHeaderAndEntity(http.StatusInternalServerError, OptionResponse{Error: err.Error()})
 			} else {
 				response.WriteHeaderAndEntity(http.StatusCreated, OptionResponse{Success: true})
