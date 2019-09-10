@@ -146,7 +146,7 @@ public class FacebookScript : MonoBehaviour
         FB.ShareLink(new System.Uri(poster.thumbnail), "Check it out!",
             "AR Poster Reader lol!",
             new System.Uri(poster.thumbnail));
-        //Debug.Log(keyid.text);
+        Debug.Log(keyid.text);
     }
 
     #region Inviting
