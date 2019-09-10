@@ -13,16 +13,14 @@ using UnityEngine.UI;
     Yufei Update in 28/04/2019
 **/
 public class UpdateFavouriteButton : MonoBehaviour {
-
-	//public Text favouriteText = null;
-
+    
     public Button favouriteButton = null;
 
     public Image favouriteImage = null;
 
     public Text keyId;
 
-    public bool isFavor = false;
+    bool isFavor = false;
 
     public Sprite disable = null;
 
@@ -47,7 +45,7 @@ public class UpdateFavouriteButton : MonoBehaviour {
         {
             //favouriteText.text = "favourite";
             favouriteImage.sprite = disable;
-            favouriteImage.gameObject.SetActive(false);
+            //favouriteImage.gameObject.SetActive(false);
             favouriteButton.gameObject.SetActive(false);
             favouriteButton.interactable = false;
             favouriteImage.color = new Color(255, 255, 255, 0);
@@ -93,9 +91,6 @@ public class UpdateFavouriteButton : MonoBehaviour {
     void changeButtonStatus(object stobj)
     {
         bool status = (bool)stobj;
-
-
-        Debug.Log("Exec");
 
         if (status)
         {

@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-06 01:15:04
+ * @Last Modified time: 2019-09-10 00:52:22
  * @Description:
  */
 package Models
@@ -18,6 +18,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strconv"
 	"strings"
 	"text/template"
 	"time"
@@ -31,8 +32,7 @@ type Console struct {
 	PageName         string
 
 	// Personal information
-	Username  string
-	Password  string
+	UserInfo  *User
 	AvatarUrl string
 
 	// Dashboard
@@ -179,6 +179,7 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 			return
 		}
 
+		t, _ := strconv.Atoi(req.Form["type"][0])
 		new_poster_info := &Poster{
 			PosTitle:     req.Form["title"][0],
 			PosDate:      req.Form["datetime"][0],
@@ -186,6 +187,7 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 			PosMap:       req.Form["mapurl"][0],
 			PosLink:      req.Form["url"][0],
 			Relevantinfo: req.Form["rvntinfo"][0],
+			Type:         t,
 		}
 		upload_url := "http://" + req.Host + "/files/upload/"
 		file_url_prefix := "http://" + req.Host + "/files/"
@@ -407,7 +409,15 @@ func basicAuthenticate(req *restful.Request, resp *restful.Response, chain *rest
 
 func newConsoleWithStaticFilePrefix(request *restful.Request) *Console {
 	host := request.Request.Host
-	return &Console{StaticFilePrefix: "http://" + host + "/files/res"}
+
+	session, _ := Store.Get(request.Request, "ARPosterCookie")
+	usr, ok := session.Values["userdata"].(*User)
+	if !ok {
+		log.Error("Load user data from session failed.")
+	}
+	usr.Password = ""
+
+	return &Console{StaticFilePrefix: "http://" + host + "/files/res", UserInfo: usr}
 }
 
 func getFileFromRequest(filename string, req *http.Request) ([]byte, *multipart.FileHeader, error) {

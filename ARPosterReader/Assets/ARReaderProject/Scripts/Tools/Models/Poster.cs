@@ -18,6 +18,7 @@ namespace Models {
         public string model;
         public string thumbnail;
         public string relevantinfo;
+        public int type;
 
 		public string GetPoster() {
 			return Get("/posters");
@@ -40,7 +41,6 @@ namespace Models {
 			using (var reader = new StreamReader(response.GetResponseStream())) {
 				var json = reader.ReadToEnd();
 				var pr = JsonUtility.FromJson<PostersResponse>(json);
-                //Debug.Log(json);
                 this.postitle = pr.poster.postitle;
                 this.posdate = pr.poster.posdate;
                 this.poslocation = pr.poster.poslocation;
@@ -50,6 +50,7 @@ namespace Models {
                 this.model = pr.poster.model;
                 this.thumbnail = pr.poster.thumbnail;
                 this.relevantinfo = pr.poster.relevantinfo;
+                this.type = pr.poster.type;
 				return pr.error;
 			}
 		}

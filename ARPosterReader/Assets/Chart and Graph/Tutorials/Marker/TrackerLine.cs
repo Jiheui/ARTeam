@@ -29,7 +29,6 @@ public class TrackerLine : MonoBehaviour {
         {
             if(TrackLast == false)
                 last.y = yPosition;
-            Vector3 pos;
             DoubleRect rect = new DoubleRect(last.x - Chart.DataSource.HorizontalViewSize, last.y - lineThickness * 0.5f, Chart.DataSource.HorizontalViewSize, lineThickness);
             DoubleRect trimRect;
 

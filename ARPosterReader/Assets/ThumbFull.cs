@@ -1,6 +1,7 @@
 ﻿using Models;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 /**this script is used for "Making thumbnail fullsize", 
    When a user touch on thumbnail of a poster in myfavourite scene, it will bring up a larger version of
@@ -25,7 +26,6 @@ public class ThumbFull : MonoBehaviour {
     public void EnlargeImg (GameObject go){
 
         RawImage img = this.GetComponentInChildren<RawImage>();
-        //img.texture = new Texture();
         Favourite f_get = new Favourite();
         f_get.userid = storeLoginSessionId.loginId;
         f_get.GetFavourites();
@@ -42,7 +42,7 @@ public class ThumbFull : MonoBehaviour {
 
             if (s2.Equals(n))
             {
-                string url = p.resurl;
+                string url = p.thumbnail;
                 StartCoroutine(LoadImageFromUrl(url, img));
 
                 timeText.text = p.posdate;
@@ -57,9 +57,25 @@ public class ThumbFull : MonoBehaviour {
 
     private IEnumerator LoadImageFromUrl(string url, RawImage img)
     {
-        WWW wwwLoader = new WWW(url);
+        /*UnityWebRequest wwwLoader = new UnityWebRequestTexture.GetTexture(url));
         yield return wwwLoader;
         Texture2D t = wwwLoader.texture;
-        img.texture = t;
+        img.texture = t;*/
+
+        using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(url))
+        {
+            yield return uwr.SendWebRequest();
+
+            if (uwr.isNetworkError || uwr.isHttpError)
+            {
+                Debug.Log(uwr.error);
+            }
+            else
+            {
+                // Get downloaded Picture
+                var texture = DownloadHandlerTexture.GetContent(uwr);
+                img.texture = texture;
+            }
+        }
     }
 }

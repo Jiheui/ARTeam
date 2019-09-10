@@ -9,7 +9,10 @@ public class personalizePoster3D : MonoBehaviour
     {
         User u = new User();
         u.id = storeLoginSessionId.loginId;
-
+        if (u.id == -1)
+        {
+            return;
+        }
         u.FindUser();
         if (u.authenticated)
         {

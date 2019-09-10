@@ -4,6 +4,7 @@ using System;
 using ChartAndGraph;
 using System.Collections.Generic;
 using System.Globalization;
+using UnityEngine.Networking;
 
 public class GraphDataFiller : MonoBehaviour
 {
@@ -328,17 +329,17 @@ public class GraphDataFiller : MonoBehaviour
 
     IEnumerator GetData(WWWForm postData)
     {
-        WWW request;
+        UnityWebRequest request;
         if (postData != null)
-            request = new WWW(RemoteUrl,postData);
+            request = UnityWebRequest.Post(RemoteUrl, postData);
         else
-            request = new WWW(RemoteUrl);
+            request = new UnityWebRequest(RemoteUrl);
         yield return request;
         if(String.IsNullOrEmpty(request.error))
         {
             try
             {
-                string text = request.text;
+                string text = request.downloadHandler.text;
                 ApplyData(text);
             }
             catch(Exception e)
