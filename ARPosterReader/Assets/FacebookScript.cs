@@ -9,8 +9,9 @@ using System.IO;
 public class FacebookScript : MonoBehaviour
 {
 
-    public Text FriendsText;
-    public Button favouriteButton;
+    Text FriendsText;
+    Button favouriteButton;
+    public Text keyid;
 
     public void Start()
     {
@@ -139,9 +140,13 @@ public class FacebookScript : MonoBehaviour
 
     public void FacebookShare()
     {
-        FB.ShareLink(new System.Uri("https://resocoder.com"), "Check it out!",
+        Poster poster = new Poster();
+        poster.targetid = keyid.text;
+        poster.GetPoster();
+        FB.ShareLink(new System.Uri(poster.thumbnail), "Check it out!",
             "AR Poster Reader lol!",
-            new System.Uri("https://resocoder.com/wp-content/uploads/2017/01/logoRound512.png"));
+            new System.Uri(poster.thumbnail));
+        //Debug.Log(keyid.text);
     }
 
     #region Inviting
