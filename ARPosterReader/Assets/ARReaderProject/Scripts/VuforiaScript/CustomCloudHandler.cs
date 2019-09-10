@@ -58,6 +58,8 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         p.targetid = mTargetId;
         p.GetPoster();
 
+        newImageTarget.GetComponent<CustomImageTargetBehaviour>().setPoster(p);
+
         if (p.type == 2) // 2 is graph type
         {
             Option opt = new Option();
@@ -92,8 +94,6 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
             yield return null;
 
         string assetUrl = p.model;
-
-        ImageTargetObject.GetComponent<CustomImageTargetBehaviour>().setPoster(p);
 
         using (UnityWebRequest www = UnityWebRequestAssetBundle.GetAssetBundle(assetUrl))
         {
@@ -134,14 +134,11 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
         GameObject newGMGraph = Instantiate(GraphTemplate.gameObject) as GameObject;
         return newGMGraph;
     }
-
-
     
-
     // Start is called before the first frame update
     void Start()
     {
-        CloudRecoBehaviour mCloudRecoBehaviour = GetComponent<CloudRecoBehaviour>();
+        mCloudRecoBehaviour = GetComponent<CloudRecoBehaviour>();
 
         if (mCloudRecoBehaviour)
         {

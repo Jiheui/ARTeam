@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Models;
+using UnityEngine.Networking;
 
 public class LoadImage : MonoBehaviour {
 
@@ -46,15 +47,25 @@ public class LoadImage : MonoBehaviour {
 	}
 
 	private IEnumerator LoadImageFromUrl(){
-		
-		WWW wwwLoader = new WWW (url);
-		yield return wwwLoader;
-		//		img = wwwLoader.texture;
 
-		Texture2D t = wwwLoader.texture;
-		img.texture = t;
+        // UnityWebRequest is more efficient than WWW
+        using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture("http://www.my-server.com/myimage.png"))
+        {
+            yield return uwr.SendWebRequest();
+
+            if (uwr.isNetworkError || uwr.isHttpError)
+            {
+                Debug.Log(uwr.error);
+            }
+            else
+            {
+                // Get downloaded asset bundle
+                var texture = DownloadHandlerTexture.GetContent(uwr);
+                img.texture = texture;
+            }
+        }
 
 
 
-	}
+    }
 }

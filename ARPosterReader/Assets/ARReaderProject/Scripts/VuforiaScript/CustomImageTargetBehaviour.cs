@@ -19,7 +19,6 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
     public UpdateFavouriteButton favouriteButton;
     Image favImage;
     Image ZoomImage;
-
     Poster poster;
 
     public void setPoster(Poster p)
@@ -107,6 +106,7 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         if (storeLoginSessionId.loginId != -1)
         {
             favouriteButton.changeText();
+            //favouriteButton.gameObject.SetActive(true);
         }
     }
 
@@ -117,13 +117,14 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         addressText.text = "Address";
         linkText.text = "Web Link";
         addressURL.text = "";
+        keyId.text = "";
         relevantInfo.text = "Relevant Information";
         
         if (favouriteButton != null)
         {
             //favouriteButton.gameObject.SetActive(true);
             favouriteButton.changeText();
-            favouriteButton.gameObject.SetActive(true);
+            //favouriteButton.gameObject.SetActive(false);
         }
     }
 

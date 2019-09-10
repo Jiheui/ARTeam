@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Models;
+using UnityEngine.Networking;
 
 public class Favourite_content : MonoBehaviour {
 
@@ -40,7 +41,7 @@ public class Favourite_content : MonoBehaviour {
         Like_Button heart = originObject.transform.GetChild(1).GetComponent<Like_Button>();
         heart.targetid = pFirst.targetid;
         pFirst.GetPoster ();
-		string urlFirst = pFirst.resurl;
+		string urlFirst = pFirst.thumbnail;
 		RawImage imgFirst = this.GetComponentsInChildren<RawImage> ()[0];
 		StartCoroutine (LoadImageFromUrl (urlFirst, imgFirst));
 		Text tFirst = this.GetComponentsInChildren<Text> () [0];
@@ -53,7 +54,7 @@ public class Favourite_content : MonoBehaviour {
 			Poster p1 = new Poster ();
 			p1.targetid = f_get.favourites[i].targetid;
 			p1.GetPoster ();
-			string url = p1.resurl;
+			string url = p1.thumbnail;
 
 			posters = GameObject.Instantiate(originObject, parentTransForm);
             RawImage[] imgs = posters.GetComponentsInChildren<RawImage> ();
@@ -85,14 +86,30 @@ public class Favourite_content : MonoBehaviour {
 
 	private IEnumerator LoadImageFromUrl(string url, RawImage img){
 
-		WWW wwwLoader = new WWW (url);
+		/*WWW wwwLoader = new WWW (url);
 		yield return wwwLoader;
 		//		img = wwwLoader.texture;
 
 		Texture2D t = wwwLoader.texture;
-		img.texture = t;
+		img.texture = t;*/
 
-	}
+        using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(url))
+        {
+            yield return uwr.SendWebRequest();
+
+            if (uwr.isNetworkError || uwr.isHttpError)
+            {
+                Debug.Log(uwr.error);
+            }
+            else
+            {
+                // Get downloaded asset bundle
+                var texture = DownloadHandlerTexture.GetContent(uwr);
+                img.texture = texture;
+            }
+        }
+
+    }
 
 //	private RawImage[] getRawImages (Favourite[] favourites){
 //		foreach (Favourite f in favourites) {

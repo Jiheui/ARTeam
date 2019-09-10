@@ -6,17 +6,13 @@ using UnityEngine.UI;
 
 public class DetailBehaviour : MonoBehaviour {
 
-    Text timeText;
-    Text addressText;
-    Text linkText;
-    Text addressURL;
+    public Text timeText;
+    public Text addressText;
+    public Text linkText;
+    public Text addressURL;
 
     // Use this for initialization
     void Start () {
-        timeText = GameObject.Find("Time").GetComponent<Text>();
-        addressText = GameObject.Find("Address").GetComponent<Text>();
-        linkText = GameObject.Find("Web Link").GetComponent<Text>();
-        addressURL = GameObject.Find("Address Url").GetComponent<Text>();
         
     }
 
