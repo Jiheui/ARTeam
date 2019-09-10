@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <!-- Google fonts - Poppins -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- Alertify CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/css/themes/default.min.css"/>
     <!-- Favicon-->
     <link rel="shortcut icon" href="{{.StaticFilePrefix}}/arposter.ico">
     <!-- Fontastic Custom icon font-->
@@ -46,7 +49,7 @@
               <!-- Navbar Menu -->
               <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
                 <!-- Logout    -->
-                <li class="nav-item"><a href="/console/logout" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a></li>
+                <li class="nav-item"><a href="logout?r={{.Rand}}" class="nav-link logout"> <span class="d-none d-sm-inline">Log out</span><i class="fa fa-sign-out"></i></a></li>
               </ul>
             </div>
           </div>
@@ -91,9 +94,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/alertify.min.js"></script>
     <script src="{{.StaticFilePrefix}}/popper.min.js"> </script>
     <script src="{{.StaticFilePrefix}}/main.js"> </script>
     <!-- Main File-->
     <script src="{{.StaticFilePrefix}}/front.js"></script>
   </body>
+
+  <script>
+    function codeAddress() {
+      alertify.error('{{.ErrMsg}}');
+    }
+    {{if ne .ErrMsg ""}}
+      window.onload = codeAddress;
+    {{end}}
+  </script>
 </html>

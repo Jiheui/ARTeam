@@ -87,6 +87,23 @@
                                           </div>
                                         </div>
 
+
+										<div class="line"></div>
+										<div class="form-group row has-danger">
+										<label class="col-sm-3 form-control-label">Type</label>
+										<div class="col-sm-9">
+											<label>
+												<input type="radio" name="type" value="1" {{if eq .Pos.Type 1}} checked {{end}}>
+												Normal
+											</label>
+											<br>
+											<label>
+												<input type="radio" name="type" value="2" {{if eq .Pos.Type 2}} checked {{end}}>
+												Graph
+											</label>
+										</div>
+										</div>
+
                         			    <div class="line"></div>
                         			    <div class="form-group row">
                         			      <div class="col-sm-4 offset-sm-3">
