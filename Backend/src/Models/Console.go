@@ -3,23 +3,21 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-10 00:52:22
+ * @Last Modified time: 2019-09-11 00:23:44
  * @Description:
  */
 package Models
 
 import (
-	"Tools"
+	. "Tools"
 	"encoding/gob"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
-	"mime/multipart"
 	"net/http"
 	"os"
 	"path"
 	"strconv"
-	"strings"
 	"text/template"
 	"time"
 
@@ -58,6 +56,8 @@ func (c *ConsoleResource) WebService() *restful.WebService {
 	ws.Route(ws.GET("/login").To(c.Index))
 	ws.Route(ws.POST("/login").To(c.Index))
 
+	ws.Route(ws.GET("/logout").To(c.Logout))
+
 	ws.Route(ws.GET("/dashboard").Filter(basicAuthenticate).To(c.Dashboard))
 	ws.Route(ws.GET("/manage").Filter(basicAuthenticate).To(c.Manage))
 	ws.Route(ws.POST("/manage").Filter(basicAuthenticate).To(c.Manage))
@@ -82,9 +82,9 @@ func init() {
 
 // Index used as login page
 func (c *ConsoleResource) Index(request *restful.Request, response *restful.Response) {
-	if request.Request.Method == "GET" {
-		p := newConsoleWithStaticFilePrefix(request)
+	p := newConsoleWithStaticFilePrefix(request, "login")
 
+	if request.Request.Method == "GET" {
 		t, err := template.ParseFiles("Models/Templates/login.html")
 		if err != nil {
 			log.Fatalf("Template gave: %s", err)
@@ -96,7 +96,7 @@ func (c *ConsoleResource) Index(request *restful.Request, response *restful.Resp
 
 		username := req.Form["username"][0]
 		rawPassword := req.Form["password"][0]
-		password := Tools.EncodePassword(rawPassword)
+		password := EncodePassword(rawPassword)
 		hostURL := "http://" + req.Host + "/users/login"
 
 		if usr, err := sendLoginInfo(username, password, hostURL); err != nil {
@@ -120,17 +120,33 @@ func (c *ConsoleResource) Index(request *restful.Request, response *restful.Resp
 			http.Redirect(response.ResponseWriter,
 				req,
 				"/console/dashboard",
-				303)
+				301)
 		}
 	}
 }
 
+func (c *ConsoleResource) Logout(request *restful.Request, response *restful.Response) {
+	session, err := Store.Get(request.Request, "ARPosterCookie")
+	if err != nil {
+		log.Error(err)
+		response.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	session.Values["authenticated"] = false
+	session.Values["userdata"] = nil
+
+	log.Info(session.Save(request.Request, response.ResponseWriter))
+
+	http.Redirect(response.ResponseWriter,
+		request.Request,
+		"/console/login",
+		301)
+}
+
 // Dashboard page
 func (c *ConsoleResource) Dashboard(request *restful.Request, response *restful.Response) {
-	p := newConsoleWithStaticFilePrefix(request)
-	p.PageName = "dashboard"
-	p.TotalPosters = 25
-	p.TotalResources = 70
+	p := newConsoleWithStaticFilePrefix(request, "dashboard")
 
 	t, err := template.ParseFiles("Models/Templates/layout.tmpl",
 		"Models/Templates/dashboard.tmpl")
@@ -143,18 +159,9 @@ func (c *ConsoleResource) Dashboard(request *restful.Request, response *restful.
 
 // Upload page
 func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Response) {
-	session, _ := Store.Get(request.Request, "ARPosterCookie")
-	usr, ok := session.Values["userdata"].(*User)
-	if !ok {
-		log.Error("Load user data from session failed.")
-	}
+	p := newConsoleWithStaticFilePrefix(request, "upload")
 
 	if request.Request.Method == "GET" {
-		p := newConsoleWithStaticFilePrefix(request)
-		p.PageName = "upload"
-		p.TotalPosters = 25
-		p.TotalResources = 70
-
 		t, err := template.ParseFiles("Models/Templates/layout.tmpl",
 			"Models/Templates/upload.tmpl")
 		if err != nil {
@@ -166,13 +173,13 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		req := request.Request
 		req.ParseMultipartForm(1048576000)
 
-		f, thumbnail, err := getFileFromRequest("thumbnail", req)
+		f, thumbnail, err := GetFileFromRequest("thumbnail", req)
 		if err != nil {
 			log.Error(err)
 			response.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		_, posterModel, err := getFileFromRequest("armodel", req)
+		_, posterModel, err := GetFileFromRequest("armodel", req)
 		if err != nil {
 			log.Error(err)
 			response.WriteHeader(http.StatusBadRequest)
@@ -193,11 +200,11 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		file_url_prefix := "http://" + req.Host + "/files/"
 		fileSuffix := path.Ext(path.Base(thumbnail.Filename))
 
-		thumbnail_filename := "thumbnail_" + usr.Username + "_" + new_poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04") + fileSuffix
+		thumbnail_filename := "thumbnail_" + p.UserInfo.Username + "_" + new_poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04") + fileSuffix
 		new_poster_info.Thumbnail = file_url_prefix + thumbnail_filename
 
 		fileSuffix = path.Ext(path.Base(posterModel.Filename))
-		model_filename := "model_" + usr.Username + "_" + new_poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04") + fileSuffix
+		model_filename := "model_" + p.UserInfo.Username + "_" + new_poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04") + fileSuffix
 		new_poster_info.Model = file_url_prefix + model_filename
 
 		metaDataBytes, err := json.Marshal(new_poster_info)
@@ -206,23 +213,23 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 			return
 		}
 
-		image := Tools.EncodeImageFromBytes(f)
-		vu := Tools.NewVuforiaManager()
-		name := usr.Username + "_" + new_poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04")
-		if targetId, ok, err := vu.AddItem(name, 32.0, image, true, Tools.EncodeBase64FromBytes(metaDataBytes)); err != nil {
+		image := EncodeImageFromBytes(f)
+		vu := NewVuforiaManager()
+		name := p.UserInfo.Username + "_" + new_poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04")
+		if targetId, ok, err := vu.AddItem(name, 32.0, image, true, EncodeBase64FromBytes(metaDataBytes)); err != nil {
 			log.Error(err)
 		} else if !ok {
 			log.Error("sad")
 		} else {
 			new_poster_info.TargetId = targetId
 
-			if err := Tools.UploadPosterFile(upload_url+thumbnail_filename, thumbnail); err != nil {
+			if err := UploadPosterFile(upload_url+thumbnail_filename, thumbnail); err != nil {
 				log.Error(err)
 				response.WriteHeader(http.StatusBadRequest)
 				return
 			}
 
-			if err := Tools.UploadPosterFile(upload_url+model_filename, posterModel); err != nil {
+			if err := UploadPosterFile(upload_url+model_filename, posterModel); err != nil {
 				log.Error(err)
 				response.WriteHeader(http.StatusBadRequest)
 				return
@@ -230,15 +237,15 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		}
 
 		hostURL := "http://" + req.Host + "/posters"
-		if _, err := Tools.PostByStructURL(new_poster_info, hostURL); err != nil {
+		if _, err := PostByStructURL(new_poster_info, hostURL); err != nil {
 			log.Error(err)
 			response.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
-		pub := &Publish{UserId: usr.ID, TargetId: new_poster_info.TargetId}
+		pub := &Publish{UserId: p.UserInfo.ID, TargetId: new_poster_info.TargetId}
 		hostURL = "http://" + req.Host + "/posters/publish"
-		if _, err := Tools.PostByStructURL(pub, hostURL); err != nil {
+		if _, err := PostByStructURL(pub, hostURL); err != nil {
 			log.Error(err)
 			response.WriteHeader(http.StatusBadRequest)
 			return
@@ -253,20 +260,11 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 
 // Manage page
 func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Response) {
-	session, _ := Store.Get(request.Request, "ARPosterCookie")
-	usr, ok := session.Values["userdata"].(*User)
-	if !ok {
-		log.Error("Load user data from session failed.")
-	}
+	p := newConsoleWithStaticFilePrefix(request, "manage")
 
 	if request.Request.Method == "GET" {
-		p := newConsoleWithStaticFilePrefix(request)
-		p.PageName = "manage"
-		p.TotalPosters = 25
-		p.TotalResources = 70
-
 		pub := Publish{}
-		if _, err := db.Engine.Table("publish").Where("userid=?", usr.ID).Get(&pub); err != nil {
+		if _, err := db.Engine.Table("publish").Where("userid=?", p.UserInfo.ID).Get(&pub); err != nil {
 			log.Error(1)
 			log.Error(err)
 			response.WriteHeader(http.StatusInternalServerError)
@@ -306,38 +304,36 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 
 		upload_url := "http://" + req.Host + "/files/upload/"
 		file_url_prefix := "http://" + req.Host + "/files/"
-		f, thumbnail, err := getFileFromRequest("thumbnail", req)
+		f, thumbnail, err := GetFileFromRequest("thumbnail", req)
 		if err != nil {
 			log.Error(err)
-			response.WriteHeader(http.StatusBadRequest)
-			return
-		} else if f != nil {
-			thumbnail_filename := parseFileNameFromURL(poster_info.Thumbnail)
+		}
+		if f != nil {
+			thumbnail_filename := ParseFileNameFromURL(poster_info.Thumbnail)
 			os.Remove("/var/arposter/files/" + thumbnail_filename)
 			// delete original file
-			thumbnail_filename = replaceSuffix(thumbnail_filename, path.Ext(path.Base(thumbnail.Filename)))
+			thumbnail_filename = ReplaceFileSuffix(thumbnail_filename, path.Ext(path.Base(thumbnail.Filename)))
 			poster_info.Thumbnail = file_url_prefix + thumbnail_filename
 			// store new file
-			if err := Tools.UploadPosterFile(upload_url+thumbnail_filename, thumbnail); err != nil {
+			if err := UploadPosterFile(upload_url+thumbnail_filename, thumbnail); err != nil {
 				log.Error(err)
 				response.WriteHeader(http.StatusBadRequest)
 				return
 			}
 		}
 
-		f, posterModel, err := getFileFromRequest("armodel", req)
+		f, posterModel, err := GetFileFromRequest("armodel", req)
 		if err != nil {
 			log.Error(err)
-			response.WriteHeader(http.StatusBadRequest)
-			return
-		} else if f != nil {
-			model_filename := parseFileNameFromURL(poster_info.Model)
+		}
+		if f != nil {
+			model_filename := ParseFileNameFromURL(poster_info.Model)
 			os.Remove("/var/arposter/files/" + model_filename)
 			// delete original file
-			model_filename = replaceSuffix(model_filename, path.Ext(path.Base(posterModel.Filename)))
+			model_filename = ReplaceFileSuffix(model_filename, path.Ext(path.Base(posterModel.Filename)))
 			poster_info.Model = file_url_prefix + model_filename
 			// store new file
-			if err := Tools.UploadPosterFile(upload_url+model_filename, posterModel); err != nil {
+			if err := UploadPosterFile(upload_url+model_filename, posterModel); err != nil {
 				log.Error(err)
 				response.WriteHeader(http.StatusBadRequest)
 				return
@@ -345,36 +341,38 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 		}
 
 		hostURL := "http://" + req.Host + "/posters/update"
-		if _, err := Tools.PostByStructURL(poster_info, hostURL); err != nil {
+		if _, err := PostByStructURL(poster_info, hostURL); err != nil {
 			log.Error(err)
 			response.WriteHeader(http.StatusBadRequest)
 			return
 		}
+
+		http.Redirect(response.ResponseWriter,
+			request.Request,
+			"/console/manage",
+			301)
 	}
 }
 
-func replaceSuffix(filename, suffix string) string {
-	suffix = strings.TrimPrefix(suffix, ".")
-	s := strings.Split(filename, ".")
-	s[len(s)-1] = suffix
-	return strings.Join(s, ".")
-}
-
-func parseFileNameFromURL(urlString string) string {
-	s := strings.Split(urlString, "/")
-	return s[len(s)-1]
+func basicAuthenticate(req *restful.Request, resp *restful.Response, chain *restful.FilterChain) {
+	session, _ := Store.Get(req.Request, "ARPosterCookie")
+	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+		http.Redirect(resp.ResponseWriter, req.Request, "/console/login", http.StatusTemporaryRedirect)
+		return
+	}
+	chain.ProcessFilter(req, resp)
 }
 
 func sendLoginInfo(username, password, hostURL string) (User, error) {
 	usr := &User{}
-	if Tools.CheckEmail(username) {
+	if CheckEmail(username) {
 		usr.Email = username
 	} else {
 		usr.Username = username
 	}
 	usr.Password = password
 
-	res, err := Tools.PostByStructURL(usr, hostURL)
+	res, err := PostByStructURL(usr, hostURL)
 	if err != nil {
 		return User{}, err
 	}
@@ -397,45 +395,31 @@ func sendLoginInfo(username, password, hostURL string) (User, error) {
 	}
 }
 
-func basicAuthenticate(req *restful.Request, resp *restful.Response, chain *restful.FilterChain) {
-	session, _ := Store.Get(req.Request, "ARPosterCookie")
-	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-		log.Info(ok, auth)
-		http.Redirect(resp.ResponseWriter, req.Request, "/console/login", http.StatusTemporaryRedirect)
-		return
-	}
-	chain.ProcessFilter(req, resp)
-}
-
-func newConsoleWithStaticFilePrefix(request *restful.Request) *Console {
+func newConsoleWithStaticFilePrefix(request *restful.Request, pageName string) *Console {
 	host := request.Request.Host
-
-	session, _ := Store.Get(request.Request, "ARPosterCookie")
-	usr, ok := session.Values["userdata"].(*User)
-	if !ok {
-		log.Error("Load user data from session failed.")
+	c := &Console{
+		StaticFilePrefix: "http://" + host + "/files/res",
+		PageName:         pageName,
 	}
-	usr.Password = ""
 
-	return &Console{StaticFilePrefix: "http://" + host + "/files/res", UserInfo: usr}
-}
-
-func getFileFromRequest(filename string, req *http.Request) ([]byte, *multipart.FileHeader, error) {
-	file, handler, err := req.FormFile(filename)
-	if err != nil {
-		return nil, nil, err
-	}
-	defer func() {
-		if err := file.Close(); err != nil {
-			log.Error("Close: ", err.Error())
-			return
+	if pageName != "login" {
+		session, _ := Store.Get(request.Request, "ARPosterCookie")
+		usr, ok := session.Values["userdata"].(*User)
+		if !ok {
+			log.Error("Load user data from session failed.")
 		}
-	}()
-
-	fbytes, err := ioutil.ReadAll(file)
-	if err != nil {
-		log.Error("ReadAll: ", err.Error())
-		return nil, nil, err
+		usr.Password = ""
+		c.UserInfo = usr
 	}
-	return fbytes, handler, err
+
+	if pageName == "dashboard" {
+		if cnt, err := db.Engine.Table("publish").Count(&Publish{UserId: c.UserInfo.ID}); err != nil {
+			log.Error(err)
+		} else {
+			c.TotalPosters = int(cnt)
+			c.TotalResources = int(cnt) * 2
+		}
+	}
+
+	return c
 }
