@@ -108,7 +108,7 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
                 AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(www);
                 mBundleInstance = Instantiate(bundle.LoadAsset(bundle.GetAllAssetNames()[0])) as GameObject;
                 mBundleInstance.transform.localPosition = new Vector3(0, 0, +200);
-                mBundleInstance.transform.localScale = new Vector3(10f, 10f, 10f);
+                mBundleInstance.transform.localScale = new Vector3(5f, 5f, 5f);
                 mBundleInstance.transform.parent = ImageTargetObject.transform;
                 
                 //mBundleInstance.transform.localPosition = new Vector3(0.0f, 0.15f, 0.0f);
