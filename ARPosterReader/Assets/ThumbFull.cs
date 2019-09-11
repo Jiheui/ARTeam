@@ -16,15 +16,20 @@ public class ThumbFull : MonoBehaviour {
     public Text addressText;
     public Text linkText;
     public Text addressURL;
+    public Text keyId;
+    public Text posterTitle;
+    public Text relevantInfo;
+
+    public HideButton shareBtn;
 
     // Use this for initialization
     void Start () {
-
+        shareBtn.changeButtonStatus(true);
     }
 
     //This is called when the user clicks on thumbnail of a poster. It enlarges the poster to fullsize.
     public void EnlargeImg (GameObject go){
-
+        shareBtn.changeButtonStatus(true);
         RawImage img = this.GetComponentInChildren<RawImage>();
         Favourite f_get = new Favourite();
         f_get.userid = storeLoginSessionId.loginId;
@@ -48,11 +53,26 @@ public class ThumbFull : MonoBehaviour {
                 timeText.text = p.posdate;
                 addressText.text = p.poslocation;
                 addressURL.text = p.posmap;
-                linkText.text = p.poslink;
+                linkText.text = p.poslink; 
+                posterTitle.text = p.postitle;
+                keyId.text = p.targetid;
+                relevantInfo.text = p.relevantinfo;
                 return;
             }
         }
         return;
+    }
+
+    public void clearDetail()
+    {
+        posterTitle.text = "Title";
+        timeText.text = "Time";
+        addressText.text = "Address";
+        linkText.text = "Web Link";
+        addressURL.text = "";
+        keyId.text = "";
+        relevantInfo.text = "Relevant Information";
+        shareBtn.changeButtonStatus(false);
     }
 
     private IEnumerator LoadImageFromUrl(string url, RawImage img)

@@ -13,7 +13,6 @@ public class Favourite_content : MonoBehaviour {
     public Text text1;
     public Text text2;
 
-
 	// Use this for initialization
 	void Start () {
 
