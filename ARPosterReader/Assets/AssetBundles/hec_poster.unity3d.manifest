@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3777033552
+CRC: 3471925327
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 62ecdd82c9876ba163a2d6135b558fb2
+    Hash: 3d739e448f833ff2f19a4714231fa0d9
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 2fba0379fd7708a2dda0235e3bfdd12f
+    Hash: 3bc7852de6dae676587f006b4cf264a6
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -25,24 +25,12 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
-- Class: 64
-  Script: {instanceID: 0}
-- Class: 74
-  Script: {instanceID: 0}
-- Class: 90
-  Script: {instanceID: 0}
-- Class: 91
-  Script: {instanceID: 0}
-- Class: 95
+- Class: 65
   Script: {instanceID: 0}
 - Class: 114
-  Script: {fileID: 11500000, guid: 9deeae23adebb91409bf7ecdba63e7e7, type: 3}
+  Script: {fileID: 11500000, guid: 801f7960d79bbc946997d8b20bbec37d, type: 3}
 - Class: 115
   Script: {instanceID: 0}
-- Class: 198
-  Script: {instanceID: 0}
-- Class: 199
-  Script: {instanceID: 0}
 Assets:
-- Assets/ARReaderProject/Prefabs/Rail Poster 1.prefab
+- Assets/ARReaderProject/Prefabs/HecMeshNew.prefab
 Dependencies: []

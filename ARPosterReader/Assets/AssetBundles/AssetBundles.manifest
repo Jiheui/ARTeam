@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1229213429
+CRC: 3903508768
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -9,8 +9,8 @@ AssetBundleManifest:
       Name: hecs poster.unity3d
       Dependencies: {}
     Info_2:
-      Name: hec_mesh.unity3d
+      Name: hec_poster.unity3d
       Dependencies: {}
     Info_3:
-      Name: showcaseposter.unity3d
+      Name: hec_mesh.unity3d
       Dependencies: {}

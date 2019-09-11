@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1863748116
+CRC: 1445856941
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4cb48f176d6e1ee27e6b83b456dc3bac
+    Hash: d0fe606f3af34baca54d26c4b46538f5
   TypeTreeHash:
     serializedVersion: 2
     Hash: f2a7069c44c05ca88ab6b5869b38dd10
@@ -30,5 +30,5 @@ ClassTypes:
 - Class: 95
   Script: {instanceID: 0}
 Assets:
-- Assets/HiAR-Unity/3DModels/HECS Poster.fbx
+- Assets/ARReaderProject/3DModels/HECS Poster.fbx
 Dependencies: []

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2062571273
+CRC: 2179638116
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3d39bded198fd0e36b7fab04305d0fdc
+    Hash: 5c89cd3ffa4fac690c9bbc440123dab8
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3bc7852de6dae676587f006b4cf264a6
@@ -32,5 +32,5 @@ ClassTypes:
 - Class: 115
   Script: {instanceID: 0}
 Assets:
-- Assets/HiAR-Unity/Prefabs/HecMesh.prefab
+- Assets/ARReaderProject/Prefabs/HecMesh.prefab
 Dependencies: []
