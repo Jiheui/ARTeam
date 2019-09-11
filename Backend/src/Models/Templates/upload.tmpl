@@ -1,7 +1,7 @@
 {{define "upload"}}
 <header class="page-header">
 	<div class="container-fluid">
-	  <h2 class="no-margin-bottom">Upload</h2>
+		<h2 class="no-margin-bottom">Upload</h2>
 	</div>
 </header>
 
@@ -9,112 +9,117 @@
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="card-body">
-			  <form class="form-horizontal" action="upload" method="POST" enctype="multipart/form-data">
-			    <div class="form-group row">
-			      <label class="col-sm-3 form-control-label">Physical Poster
-			        <span id="icon_i"><ion-icon name="information-circle-outline"></ion-icon></span>
-			        <div id="hid_info">
-			           <div id="info_ctnt">Only accept the picture ended with .jpg or .png (non-alpha)</div>
-			        </div>
-			      </label>
+				<form class="form-horizontal" action="upload" method="POST" enctype="multipart/form-data">
+					<div class="form-group row">
+						<label class="col-sm-3 form-control-label">Physical Poster
+							<span id="icon_i">
+								<ion-icon name="information-circle-outline"></ion-icon>
+							</span>
+							<div id="hid_info">
+								<div id="info_ctnt">Only accept the picture ended with .jpg or .png (non-alpha)</div>
+							</div>
+						</label>
 
-			      <div class="col-sm-3">
-			      	<input id="fileInput" required="true" name="fileInput" type="file" class="form-control-file">
-			      </div>
-			    </div>
+						<div class="col-sm-3">
+							<input id="fileInput" required="true" name="fileInput" type="file"
+								class="form-control-file">
+						</div>
+					</div>
 
-			    <div class="line"></div>
-			    <div class="form-group row">
-			      <label class="col-sm-3 form-control-label">Thumbnail Image</label>
-			      <div class="col-sm-3">
-			      	<input id="thumbnail" required="true" name="thumbnail" type="file" class="form-control-file">
-			      </div>
-			    </div>
+					<div class="line"></div>
+					<div class="form-group row">
+						<label class="col-sm-3 form-control-label">Thumbnail Image</label>
+						<div class="col-sm-3">
+							<input id="thumbnail" required="true" name="thumbnail" type="file"
+								class="form-control-file">
+						</div>
+					</div>
 
-			    <div class="line"></div>
-			    <div class="form-group row">
-			      <label class="col-sm-3 form-control-label">AR Model</label>
-			      <div class="col-sm-3">
-			      	<input id="armodel" required="true" name="armodel" type="file" class="form-control-file">
-			      </div>
-			    </div>
+					<div class="line"></div>
+					<div class="form-group row">
+						<label class="col-sm-3 form-control-label">AR Model</label>
+						<div class="col-sm-3">
+							<input id="armodel" required="true" name="armodel" type="file" class="form-control-file">
+						</div>
+					</div>
 
-			    <div class="line"></div>
-			    <div class="form-group row has-danger">
-			      <label class="col-sm-3 form-control-label">Title</label>
-			      <div class="col-sm-9">
-			        <input name="title" required="true" type="text" class="form-control">
-			        <div class="invalid-feedback">Please provide title</div>
-			      </div>
-			    </div>
+					<div class="line"></div>
+					<div class="form-group row has-danger">
+						<label class="col-sm-3 form-control-label">Title</label>
+						<div class="col-sm-9">
+							<input name="title" required="true" type="text" class="form-control">
+							<div class="invalid-feedback">Please provide title</div>
+						</div>
+					</div>
 
-			    <div class="line"></div>
-			    <div class="form-group row has-danger">
-			      <label class="col-sm-3 form-control-label">Location</label>
-			      <div class="col-sm-9">
-			        <input id="location" name="location" required="true" type="text" class="form-control" onfocusout="addressConvert()">
+					<div class="line"></div>
+					<div class="form-group row has-danger">
+						<label class="col-sm-3 form-control-label">Location</label>
+						<div class="col-sm-9">
+							<input id="location" name="location" required="true" type="text" class="form-control"
+								onfocusout="addressConvert()">
 
-			        <input id="mapurl" name="mapurl" required="true" type="text" hidden="true" class="form-control">
-			        <div class="invalid-feedback">Please provide location</div>
-			      </div>
-			    </div>
+							<input id="mapurl" name="mapurl" required="true" type="text" hidden="true"
+								class="form-control">
+							<div class="invalid-feedback">Please provide location</div>
+						</div>
+					</div>
 
-			    <div class="line"></div>
-			    <div class="form-group row has-danger">
-			      <label class="col-sm-3 form-control-label">Date and Time</label>
-			      <div class="col-sm-9">
-			        <input name="datetime" required="true" type="datetime-local" class="form-control">
-			        <div class="invalid-feedback">Please provide date and time</div>
-			      </div>
-			    </div>
+					<div class="line"></div>
+					<div class="form-group row has-danger">
+						<label class="col-sm-3 form-control-label">Date and Time</label>
+						<div class="col-sm-9">
+							<input name="datetime" required="true" type="datetime-local" class="form-control">
+							<div class="invalid-feedback">Please provide date and time</div>
+						</div>
+					</div>
 
-			    <div class="line"></div>
-			    <div class="form-group row has-danger">
-			      <label class="col-sm-3 form-control-label">Event Link</label>
-			      <div class="col-sm-9">
-			        <input name="url" required="true" type="text" class="form-control">
-			        <div class="invalid-feedback">Please event link</div>
-			      </div>
-			    </div>
+					<div class="line"></div>
+					<div class="form-group row has-danger">
+						<label class="col-sm-3 form-control-label">Event Link</label>
+						<div class="col-sm-9">
+							<input name="url" required="true" type="text" class="form-control">
+							<div class="invalid-feedback">Please event link</div>
+						</div>
+					</div>
 
-			    <div class="line"></div>
-                <div class="form-group row has-danger">
-                  <label class="col-sm-3 form-control-label">Relevant information</label>
-                  <div class="col-sm-9">
-                	<input name="rvntinfo" required="false" type="text" class="form-control">
-                	<div class="invalid-feedback">Please event relevant information</div>
-                  </div>
-                </div>
+					<div class="line"></div>
+					<div class="form-group row has-danger">
+						<label class="col-sm-3 form-control-label">Relevant information</label>
+						<div class="col-sm-9">
+							<input name="rvntinfo" required="false" type="text" class="form-control">
+							<div class="invalid-feedback">Please event relevant information</div>
+						</div>
+					</div>
 
-			    <div class="line"></div>
-                <div class="form-group row has-danger">
-                  <label class="col-sm-3 form-control-label">Type</label>
-                  <div class="col-sm-9">
-				  	<input type="radio" name="type" value="1"> Normal<br>
-					<input type="radio" name="type" value="2"> Graph<br>
-                  </div>
-                </div>
+					<div class="line"></div>
+					<div class="form-group row has-danger">
+						<label class="col-sm-3 form-control-label">Type</label>
+						<div class="col-sm-9">
+							<input type="radio" name="type" value="1"> Normal<br>
+							<input type="radio" name="type" value="2"> Graph<br>
+						</div>
+					</div>
 
-			    <div class="line"></div>
-			    <div class="form-group row">
-			      <div class="col-sm-4 offset-sm-3">
-			      	<!--
+					<div class="line"></div>
+					<div class="form-group row">
+						<div class="col-sm-4 offset-sm-3">
+							<!--
 			        	<button type="submit" class="btn btn-secondary">Cancel</button>
 			    	-->
-			        <button type="submit" class="btn btn-primary" value="upload">Upload</button>
-			      </div>
-			    </div>
-			  </form>
+							<button type="submit" class="btn btn-primary" value="upload">Upload</button>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
 </section>
 <script type="text/javascript">
-		function addressConvert()
-		{
-			var address = document.getElementById("location").value;
-			var link = "http://maps.google.com/maps?q=" + encodeURIComponent(address);
-			document.getElementById("mapurl").value = link;
-		}
-	</script>
+	function addressConvert() {
+		var address = document.getElementById("location").value;
+		var link = "http://maps.google.com/maps?q=" + encodeURIComponent(address);
+		document.getElementById("mapurl").value = link;
+	}
+</script>
 {{end}}

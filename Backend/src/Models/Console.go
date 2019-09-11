@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-11 04:16:58
+ * @Last Modified time: 2019-09-11 16:08:17
  * @Description:
  */
 package Models
@@ -38,7 +38,7 @@ type Console struct {
 	TotalResources int
 
 	// Manage
-	Pos Poster
+	Posters []Poster
 
 	// Random string
 	Rand string
@@ -89,7 +89,6 @@ func init() {
 // Index used as login page
 func (c *ConsoleResource) Index(request *restful.Request, response *restful.Response) {
 	p := newConsoleWithStaticFilePrefix(request, response, "login")
-
 	if request.Request.Method == "GET" {
 		t, err := template.ParseFiles("Models/Templates/login.html")
 		if err != nil {
@@ -315,8 +314,8 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 	p := newConsoleWithStaticFilePrefix(request, response, "manage")
 
 	if request.Request.Method == "GET" {
-		pub := Publish{}
-		if _, err := db.Engine.Table("publish").Where("userid=?", p.UserInfo.ID).Get(&pub); err != nil {
+		targetIds := []string{}
+		if err := db.Engine.Table("publish").Where("userid=?", p.UserInfo.ID).Select("targetid").Find(&targetIds); err != nil {
 			storeErrMsg(request, response, "Failed to retrieve publish info.")
 			http.Redirect(response.ResponseWriter,
 				request.Request,
@@ -324,13 +323,15 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 				301)
 		}
 
-		if _, err := db.Engine.Table("poster").Where("targetid=?", pub.TargetId).Get(&p.Pos); err != nil {
+		tmp := []Poster{}
+		if err := db.Engine.Table("poster").In("targetid", targetIds).Find(&tmp); err != nil {
 			storeErrMsg(request, response, "Failed to retrieve poster(s).")
 			http.Redirect(response.ResponseWriter,
 				request.Request,
 				"/console/dashboard",
 				301)
 		}
+		p.Posters = tmp
 
 		t, err := template.ParseFiles("Models/Templates/layout.tmpl",
 			"Models/Templates/manage.tmpl")
@@ -396,10 +397,6 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 			// store new file
 			if err := UploadPosterFile(upload_url+thumbnail_filename, thumbnail); err != nil {
 				storeErrMsg(request, response, "Failed to upload new thumbnail.")
-				http.Redirect(response.ResponseWriter,
-					request.Request,
-					"/console/manage",
-					301)
 			}
 		}
 
@@ -422,10 +419,6 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 			// store new file
 			if err := UploadPosterFile(upload_url+model_filename, posterModel); err != nil {
 				storeErrMsg(request, response, "Failed to upload new poster AR model.")
-				http.Redirect(response.ResponseWriter,
-					request.Request,
-					"/console/manage",
-					301)
 			}
 		}
 
@@ -456,9 +449,11 @@ func basicAuthenticate(req *restful.Request, resp *restful.Response, chain *rest
 
 func storeErrMsg(request *restful.Request, response *restful.Response, errMsg string) {
 	session, _ := Store.Get(request.Request, "ARPosterCookie")
-	session.Values["errmsg"] = errMsg
+	session.Values["errMsg"] = errMsg
 
-	log.Info(session.Save(request.Request, response.ResponseWriter))
+	if err := session.Save(request.Request, response.ResponseWriter); err != nil {
+		log.Error("Unable to save session: ", err.Error())
+	}
 }
 
 func sendLoginInfo(username, password, hostURL string) (User, error) {
@@ -515,8 +510,9 @@ func newConsoleWithStaticFilePrefix(request *restful.Request, response *restful.
 	if errMsg, ok := session.Values["errMsg"].(string); !ok {
 	} else {
 		c.ErrMsg = errMsg
-		session.Values["errMsg"] = nil
-		session.Save(request.Request, response.ResponseWriter)
+		//session.Values["errMsg"] = nil
+		//session.Save(request.Request, response.ResponseWriter)
+		storeErrMsg(request, response, "")
 	}
 
 	if pageName == "dashboard" {

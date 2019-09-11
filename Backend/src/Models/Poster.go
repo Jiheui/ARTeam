@@ -3,7 +3,7 @@
  * @Date: 2019-04-11 15:42:37
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-09 21:10:16
+ * @Last Modified time: 2019-09-11 17:00:42
  * @Description: This file is created for store & get poster information
  */
 package Models
@@ -22,6 +22,7 @@ type Publish struct {
 }
 
 type Poster struct {
+	Id           int64  `json:"-" xorm:"id"`
 	TargetId     string `json:"targetid" xorm:"targetid"`
 	PosTitle     string `json:"postitle" xorm:"postitle"`
 	PosDate      string `json:"posdate" xorm:"posdate"`
