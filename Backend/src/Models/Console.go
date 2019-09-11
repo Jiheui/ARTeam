@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-11 16:08:17
+ * @Last Modified time: 2019-09-11 22:43:55
  * @Description:
  */
 package Models
@@ -192,7 +192,16 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		req := request.Request
 		req.ParseMultipartForm(1048576000)
 
-		f, thumbnail, err := GetFileFromRequest("thumbnail", req)
+		f, _, err := GetFileFromRequest("physicalposter", req)
+		if err != nil {
+			storeErrMsg(request, response, err.Error())
+			http.Redirect(response.ResponseWriter,
+				request.Request,
+				"/console/upload",
+				301)
+		}
+
+		_, thumbnail, err := GetFileFromRequest("thumbnail", req)
 		if err != nil {
 			storeErrMsg(request, response, err.Error())
 			http.Redirect(response.ResponseWriter,
@@ -263,6 +272,12 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 				"/console/upload",
 				301)
 
+		} else if targetId == "" {
+			storeErrMsg(request, response, "Bad Image: please check image JPG or PNG(RGB).")
+			http.Redirect(response.ResponseWriter,
+				request.Request,
+				"/console/upload",
+				301)
 		} else {
 			new_poster_info.TargetId = targetId
 
