@@ -3,7 +3,7 @@
  * @Date: 2019-08-11 21:50:37
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-11 00:21:28
+ * @Last Modified time: 2019-09-12 00:55:40
  * @Description: This file contains serveral some tools different usage
  */
 package Tools
@@ -60,6 +60,18 @@ func UploadPosterFile(url string, fileHeader *multipart.FileHeader) error {
 	}
 	defer res.Body.Close()
 	return err
+}
+
+func ExtractStructDataFromResponse(_struct interface{}, responseBody io.ReadCloser) error {
+	rbytes, err := ioutil.ReadAll(responseBody)
+	if err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal(rbytes, _struct); err != nil {
+		return err
+	}
+	return nil
 }
 
 func PostByStructURL(_struct interface{}, hostURL string) (*http.Response, error) {

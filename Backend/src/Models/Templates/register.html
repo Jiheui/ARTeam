@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Console | Login</title>
+    <link rel=icon href="{{.StaticFilePrefix}}/arposter.png">
+    <link rel="stylesheet" href="{{.StaticFilePrefix}}/login.css">
+    <!-- Alertify CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/css/themes/default.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/alertify.min.js"></script>
+</head>
+
+<body>
+    <div class="lowin lowin-blue">
+        <img class="lowin-icon" src="{{.StaticFilePrefix}}/arposter.png" alt="logo">
+        <div class="lowin-wrapper">
+            <div class="lowin-box lowin-login">
+                <div class="lowin-box-inner">
+                    <form method="POST" action="/console/register">
+                        <p>Register</p>
+                        <div class="lowin-group">
+                            <label>Username or Email <a href="#" class="login-back-link">Sign in?</a></label>
+                            <input id="username" name="username" type="text" class="lowin-input"
+                                autocomplete="new-username">
+                        </div>
+                        <div class="lowin-group password-group">
+                            <label>Password</label>
+                            <input id="password" type="password" name="password" autocomplete="new-password"
+                                class="lowin-input">
+                        </div>
+
+                        <div class="lowin-group password-group">
+                            <label>Confirm Password</label>
+                            <input id="confirm-password" type="password" name="confirm-password" autocomplete="new-password"
+                                class="lowin-input">
+                        </div>
+
+                        <button class="lowin-btn login-btn">
+                            Register
+                        </button>
+
+                        <div class="text-foot">
+                            Already have an account? <a href="login" class="register-link">Log in</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{{ if ne .ErrMsg "" }}
+<script>
+  function codeAddress() {
+    alertify.set('notifier', 'position', 'top-right');
+    alertify.error('{{.ErrMsg}}');
+  }
+  window.onload = codeAddress;
+</script>
+{{ end }}
+</html>
