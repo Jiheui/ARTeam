@@ -17,9 +17,11 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
     public CameraManager eventManager;
     public ObserveImageTarget zoomBtn;
     public UpdateFavouriteButton favouriteButton;
+    public HideButton shareBtn;
     Image favImage;
     Image ZoomImage;
     Poster poster;
+    Image share;
 
     public void setPoster(Poster p)
     {
@@ -38,6 +40,9 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
 
         ZoomImage = zoomBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
         ZoomImage.color = new Color32(255, 255, 225, 0);
+
+        share = shareBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
+        share.color = new Color32(255, 255, 225, 0);
     }
 
     protected override void OnTrackingFound()
@@ -70,6 +75,7 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         zoomBtn.imageTargeter = null;
         zoomBtn.UpdateTargetBehaviour();
         clearDetail();
+        shareBtn.changeButtonStatus(false);
         for (var i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).gameObject.SetActive(false);
@@ -78,6 +84,7 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
 
     public bool IsTargetFound()
     {
+        shareBtn.changeButtonStatus(true);
         return targetFound;
     }
 
@@ -106,7 +113,6 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         if (storeLoginSessionId.loginId != -1)
         {
             favouriteButton.changeText();
-            //favouriteButton.gameObject.SetActive(true);
         }
     }
 
@@ -122,9 +128,7 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         
         if (favouriteButton != null)
         {
-            //favouriteButton.gameObject.SetActive(true);
             favouriteButton.changeText();
-            //favouriteButton.gameObject.SetActive(false);
         }
     }
 
