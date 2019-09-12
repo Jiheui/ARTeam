@@ -9,8 +9,8 @@ using System.IO;
 public class FacebookScript : MonoBehaviour
 {
 
-    Text FriendsText;
-    Button favouriteButton;
+    public Text FriendsText;
+    public Button favouriteButton;
     public Text keyid;
 
     public void Start()
