@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-11 22:43:55
+ * @Last Modified time: 2019-09-12 01:50:13
  * @Description:
  */
 package Models
@@ -13,7 +13,6 @@ import (
 	"encoding/gob"
 	"encoding/json"
 	"errors"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"path"
@@ -62,6 +61,9 @@ func (c *ConsoleResource) WebService() *restful.WebService {
 	ws.Route(ws.GET("/login").To(c.Index))
 	ws.Route(ws.POST("/login").To(c.Index))
 
+	ws.Route(ws.GET("/register").To(c.Register))
+	ws.Route(ws.POST("/register").To(c.Register))
+
 	ws.Route(ws.GET("/logout").To(c.Logout))
 
 	ws.Route(ws.GET("/dashboard").Filter(basicAuthenticate).To(c.Dashboard))
@@ -105,19 +107,13 @@ func (c *ConsoleResource) Index(request *restful.Request, response *restful.Resp
 		hostURL := "http://" + req.Host + "/users/login"
 
 		if usr, err := sendLoginInfo(username, password, hostURL); err != nil {
-			storeErrMsg(request, response, err.Error())
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/login",
-				301)
+			storeErrMsgAndRedirect(request, response, err.Error(), "/console/login")
+			return
 		} else {
 			session, err := Store.Get(request.Request, "ARPosterCookie")
 			if err != nil {
-				storeErrMsg(request, response, err.Error())
-				http.Redirect(response.ResponseWriter,
-					request.Request,
-					"/console/login",
-					301)
+				storeErrMsgAndRedirect(request, response, err.Error(), "/console/login")
+				return
 			}
 
 			usr.Password = ""
@@ -125,11 +121,8 @@ func (c *ConsoleResource) Index(request *restful.Request, response *restful.Resp
 			session.Values["userdata"] = usr
 
 			if err := session.Save(req, response.ResponseWriter); err != nil {
-				storeErrMsg(request, response, err.Error())
-				http.Redirect(response.ResponseWriter,
-					request.Request,
-					"/console/login",
-					301)
+				storeErrMsgAndRedirect(request, response, err.Error(), "/console/login")
+				return
 			}
 
 			http.Redirect(response.ResponseWriter,
@@ -137,6 +130,65 @@ func (c *ConsoleResource) Index(request *restful.Request, response *restful.Resp
 				"/console/dashboard",
 				301)
 		}
+	}
+}
+
+func (c *ConsoleResource) Register(request *restful.Request, response *restful.Response) {
+	p := newConsoleWithStaticFilePrefix(request, response, "register")
+
+	if request.Request.Method == "GET" {
+		t, err := template.ParseFiles("Models/Templates/register.html")
+		if err != nil {
+			log.Fatalf("Template gave: %s", err)
+		}
+		t.Execute(response.ResponseWriter, p)
+	} else {
+		req := request.Request
+		req.ParseForm()
+
+		u := User{}
+		if CheckEmail(req.Form["username"][0]) {
+			u.Email = req.Form["username"][0]
+		} else {
+			u.Username = req.Form["username"][0]
+		}
+
+		rawPassword := req.Form["password"][0]
+		confirm_rawPassword := req.Form["confirm-password"][0]
+		if rawPassword != confirm_rawPassword {
+			storeErrMsgAndRedirect(request, response, "Two passwords not match.", "/console/register")
+			return
+		}
+		u.Password = EncodePassword(rawPassword)
+
+		// check existence
+		hostURL := "http://" + req.Host + "/users/checkExist"
+		resp, err := PostByStructURL(u, hostURL)
+		if err != nil {
+			storeErrMsgAndRedirect(request, response, err.Error(), "/console/register")
+			return
+		}
+
+		ur := UsersResponse{}
+		if err := ExtractStructDataFromResponse(&ur, resp.Body); err != nil {
+			storeErrMsgAndRedirect(request, response, err.Error(), "/console/register")
+			return
+		}
+		if ur.Success {
+			storeErrMsgAndRedirect(request, response, "Username/Email already exists.", "/console/register")
+			return
+		} else {
+			hostURL = "http://" + req.Host + "/users"
+			if _, err := PostByStructURL(u, hostURL); err != nil {
+				storeErrMsgAndRedirect(request, response, err.Error(), "/console/register")
+				return
+			}
+		}
+
+		http.Redirect(response.ResponseWriter,
+			request.Request,
+			"/console/login",
+			301)
 	}
 }
 
@@ -153,7 +205,7 @@ func (c *ConsoleResource) Logout(request *restful.Request, response *restful.Res
 		session.Values["userdata"] = nil
 
 		if err := session.Save(request.Request, response.ResponseWriter); err != nil {
-			storeErrMsg(request, response, "Failed to clean user cache when log out.")
+			storeErrMsgAndRedirect(request, response, "Failed to clean user cache when log out.", "")
 		}
 
 		http.Redirect(response.ResponseWriter,
@@ -194,37 +246,25 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 
 		f, _, err := GetFileFromRequest("physicalposter", req)
 		if err != nil {
-			storeErrMsg(request, response, err.Error())
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/upload",
-				301)
+			storeErrMsgAndRedirect(request, response, err.Error(), "/console/upload")
+			return
 		}
 
 		_, thumbnail, err := GetFileFromRequest("thumbnail", req)
 		if err != nil {
-			storeErrMsg(request, response, err.Error())
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/upload",
-				301)
+			storeErrMsgAndRedirect(request, response, err.Error(), "/console/upload")
+			return
 		}
 		_, posterModel, err := GetFileFromRequest("armodel", req)
 		if err != nil {
-			storeErrMsg(request, response, err.Error())
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/upload",
-				301)
+			storeErrMsgAndRedirect(request, response, err.Error(), "/console/upload")
+			return
 		}
 
 		_type, err := strconv.Atoi(req.Form["type"][0])
 		if err != nil {
-			storeErrMsg(request, response, err.Error())
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/upload",
-				301)
+			storeErrMsgAndRedirect(request, response, err.Error(), "/console/upload")
+			return
 		}
 
 		new_poster_info := &Poster{
@@ -249,72 +289,47 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 
 		metaDataBytes, err := json.Marshal(new_poster_info)
 		if err != nil {
-			storeErrMsg(request, response, "Unable to pack poster info.")
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/upload",
-				301)
+			storeErrMsgAndRedirect(request, response, "Unable to pack poster info.", "/console/upload")
+			return
 		}
 
 		image := EncodeImageFromBytes(f)
 		vu := NewVuforiaManager()
 		name := p.UserInfo.Username + "_" + new_poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04")
 		if targetId, ok, err := vu.AddItem(name, 32.0, image, true, EncodeBase64FromBytes(metaDataBytes)); err != nil {
-			storeErrMsg(request, response, "Unable to upload poster to remote server due to some error.")
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/upload",
-				301)
+			storeErrMsgAndRedirect(request, response, "Unable to upload poster to remote server due to some error.", "/console/upload")
+			return
 		} else if !ok {
-			storeErrMsg(request, response, "Unable to upload poster to remote server.")
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/upload",
-				301)
-
+			storeErrMsgAndRedirect(request, response, "Unable to upload poster to remote server.", "/console/upload")
+			return
 		} else if targetId == "" {
-			storeErrMsg(request, response, "Bad Image: please check image JPG or PNG(RGB).")
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/upload",
-				301)
+			storeErrMsgAndRedirect(request, response, "Bad Image: please check image JPG or PNG(RGB).", "/console/upload")
+			return
 		} else {
 			new_poster_info.TargetId = targetId
 
 			if err := UploadPosterFile(upload_url+thumbnail_filename, thumbnail); err != nil {
-				storeErrMsg(request, response, "Failed to upload thumnail.")
-				http.Redirect(response.ResponseWriter,
-					request.Request,
-					"/console/upload",
-					301)
+				storeErrMsgAndRedirect(request, response, "Failed to upload thumnail.", "/console/upload")
+				return
 			}
 
 			if err := UploadPosterFile(upload_url+model_filename, posterModel); err != nil {
-				storeErrMsg(request, response, "Failed to upload poster AR model.")
-				http.Redirect(response.ResponseWriter,
-					request.Request,
-					"/console/upload",
-					301)
+				storeErrMsgAndRedirect(request, response, "Failed to upload poster AR model.", "/console/upload")
+				return
 			}
 		}
 
 		hostURL := "http://" + req.Host + "/posters"
 		if _, err := PostByStructURL(new_poster_info, hostURL); err != nil {
-			storeErrMsg(request, response, "Failed to store poster info.")
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/upload",
-				301)
+			storeErrMsgAndRedirect(request, response, "Failed to store poster info.", "/console/upload")
+			return
 		}
 
 		pub := &Publish{UserId: p.UserInfo.ID, TargetId: new_poster_info.TargetId}
 		hostURL = "http://" + req.Host + "/posters/publish"
 		if _, err := PostByStructURL(pub, hostURL); err != nil {
-			storeErrMsg(request, response, "Failed to store publish info.")
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/upload",
-				301)
+			storeErrMsgAndRedirect(request, response, "Failed to store publish info.", "/console/upload")
+			return
 		}
 
 		http.Redirect(response.ResponseWriter,
@@ -331,20 +346,14 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 	if request.Request.Method == "GET" {
 		targetIds := []string{}
 		if err := db.Engine.Table("publish").Where("userid=?", p.UserInfo.ID).Select("targetid").Find(&targetIds); err != nil {
-			storeErrMsg(request, response, "Failed to retrieve publish info.")
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/dashboard",
-				301)
+			storeErrMsgAndRedirect(request, response, "Failed to retrieve publish info.", "/console/dashboard")
+			return
 		}
 
 		tmp := []Poster{}
 		if err := db.Engine.Table("poster").In("targetid", targetIds).Find(&tmp); err != nil {
-			storeErrMsg(request, response, "Failed to retrieve poster(s).")
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/dashboard",
-				301)
+			storeErrMsgAndRedirect(request, response, "Failed to retrieve poster(s).", "/console/dashboard")
+			return
 		}
 		p.Posters = tmp
 
@@ -362,25 +371,16 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 		targetId := req.Form["targetid"][0]
 		poster_info := &Poster{}
 		if has, err := db.Engine.Table("poster").Where("targetid = ?", targetId).Get(poster_info); err != nil {
-			storeErrMsg(request, response, "Failed to retrieve original poster info.")
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/manage",
-				301)
+			storeErrMsgAndRedirect(request, response, "Failed to retrieve original poster info.", "/console/manage")
+			return
 		} else if !has {
-			storeErrMsg(request, response, "Target poster not exist.")
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/manage",
-				301)
+			storeErrMsgAndRedirect(request, response, "Target poster not exist.", "/console/manage")
+			return
 		} else {
 			_type, err := strconv.Atoi(req.Form["type"][0])
 			if err != nil {
-				storeErrMsg(request, response, err.Error())
-				http.Redirect(response.ResponseWriter,
-					request.Request,
-					"/console/manage",
-					301)
+				storeErrMsgAndRedirect(request, response, err.Error(), "/console/manage")
+				return
 			}
 			poster_info.PosTitle = req.Form["title"][0]
 			poster_info.PosDate = req.Form["datetime"][0]
@@ -397,11 +397,8 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 		if err != nil {
 			if err == http.ErrMissingFile {
 			} else {
-				storeErrMsg(request, response, err.Error())
-				http.Redirect(response.ResponseWriter,
-					request.Request,
-					"/console/manage",
-					301)
+				storeErrMsgAndRedirect(request, response, err.Error(), "/console/manage")
+				return
 			}
 		} else {
 			thumbnail_filename := ParseFileNameFromURL(poster_info.Thumbnail)
@@ -411,7 +408,7 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 			poster_info.Thumbnail = file_url_prefix + thumbnail_filename
 			// store new file
 			if err := UploadPosterFile(upload_url+thumbnail_filename, thumbnail); err != nil {
-				storeErrMsg(request, response, "Failed to upload new thumbnail.")
+				storeErrMsgAndRedirect(request, response, "Failed to upload new thumbnail.", "")
 			}
 		}
 
@@ -419,11 +416,8 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 		if err != nil {
 			if err == http.ErrMissingFile {
 			} else {
-				storeErrMsg(request, response, err.Error())
-				http.Redirect(response.ResponseWriter,
-					request.Request,
-					"/console/manage",
-					301)
+				storeErrMsgAndRedirect(request, response, err.Error(), "/console/manage")
+				return
 			}
 		} else {
 			model_filename := ParseFileNameFromURL(poster_info.Model)
@@ -433,17 +427,14 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 			poster_info.Model = file_url_prefix + model_filename
 			// store new file
 			if err := UploadPosterFile(upload_url+model_filename, posterModel); err != nil {
-				storeErrMsg(request, response, "Failed to upload new poster AR model.")
+				storeErrMsgAndRedirect(request, response, "Failed to upload new poster AR model.", "")
 			}
 		}
 
 		hostURL := "http://" + req.Host + "/posters/update"
 		if _, err := PostByStructURL(poster_info, hostURL); err != nil {
-			storeErrMsg(request, response, "Failed to update poster info.")
-			http.Redirect(response.ResponseWriter,
-				request.Request,
-				"/console/manage",
-				301)
+			storeErrMsgAndRedirect(request, response, "Failed to update poster info.", "/console/manage")
+			return
 		}
 
 		http.Redirect(response.ResponseWriter,
@@ -462,12 +453,19 @@ func basicAuthenticate(req *restful.Request, resp *restful.Response, chain *rest
 	chain.ProcessFilter(req, resp)
 }
 
-func storeErrMsg(request *restful.Request, response *restful.Response, errMsg string) {
+func storeErrMsgAndRedirect(request *restful.Request, response *restful.Response, errMsg, redirectTarget string) {
 	session, _ := Store.Get(request.Request, "ARPosterCookie")
 	session.Values["errMsg"] = errMsg
 
 	if err := session.Save(request.Request, response.ResponseWriter); err != nil {
 		log.Error("Unable to save session: ", err.Error())
+	}
+
+	if redirectTarget != "" {
+		http.Redirect(response.ResponseWriter,
+			request.Request,
+			redirectTarget,
+			301)
 	}
 }
 
@@ -486,13 +484,8 @@ func sendLoginInfo(username, password, hostURL string) (User, error) {
 	}
 	defer res.Body.Close()
 
-	rbytes, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return User{}, err
-	}
-
-	ur := &UsersResponse{}
-	if err := json.Unmarshal(rbytes, ur); err != nil {
+	ur := UsersResponse{}
+	if err := ExtractStructDataFromResponse(&ur, res.Body); err != nil {
 		return User{}, err
 	}
 
@@ -513,7 +506,7 @@ func newConsoleWithStaticFilePrefix(request *restful.Request, response *restful.
 		Rand:             RandString(8),
 	}
 
-	if pageName != "login" {
+	if pageName != "login" && pageName != "register" {
 		usr, ok := session.Values["userdata"].(*User)
 		if !ok {
 			c.ErrMsg = "Load user data from session failed."
@@ -525,9 +518,7 @@ func newConsoleWithStaticFilePrefix(request *restful.Request, response *restful.
 	if errMsg, ok := session.Values["errMsg"].(string); !ok {
 	} else {
 		c.ErrMsg = errMsg
-		//session.Values["errMsg"] = nil
-		//session.Save(request.Request, response.ResponseWriter)
-		storeErrMsg(request, response, "")
+		storeErrMsgAndRedirect(request, response, "", "")
 	}
 
 	if pageName == "dashboard" {

@@ -4,7 +4,12 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>Console | Login</title>
+    <link rel=icon href="{{.StaticFilePrefix}}/arposter.png">
 	<link rel="stylesheet" href="{{.StaticFilePrefix}}/login.css">
+    <!-- Alertify CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/css/themes/default.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/alertify.min.js"></script>
 </head>
 
 <body>
@@ -28,7 +33,7 @@
 						</button>
 
 						<div class="text-foot">
-							Don't have an account? <a href="" class="register-link">Register</a>
+							Don't have an account? <a href="register" class="register-link">Register</a>
 						</div>
 					</form>
 				</div>
@@ -36,4 +41,13 @@
 		</div>
 	</div>
 </body>
+{{ if ne .ErrMsg "" }}
+<script>
+  function codeAddress() {
+    alertify.set('notifier', 'position', 'top-right');
+    alertify.error('{{.ErrMsg}}');
+  }
+  window.onload = codeAddress;
+</script>
+{{ end }}
 </html>
