@@ -3,7 +3,7 @@
  * @Date: 2019-08-11 21:50:37
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-12 00:55:40
+ * @Last Modified time: 2019-09-14 18:13:39
  * @Description: This file contains serveral some tools different usage
  */
 package Tools
@@ -33,6 +33,9 @@ func ReplaceFileSuffix(filename, suffix string) string {
 	suffix = strings.TrimPrefix(suffix, ".")
 	s := strings.Split(filename, ".")
 	s[len(s)-1] = suffix
+	if suffix == "" {
+		return filename
+	}
 	return strings.Join(s, ".")
 }
 
