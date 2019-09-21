@@ -110,7 +110,7 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
                 mBundleInstance.transform.localPosition = new Vector3(0, 0, +200);
                 mBundleInstance.transform.localScale = new Vector3(5f, 5f, 5f);
                 mBundleInstance.transform.parent = ImageTargetObject.transform;
-                
+                bundle.Unload(false);
                 //mBundleInstance.transform.localPosition = new Vector3(0.0f, 0.15f, 0.0f);
                 //mBundleInstance.transform.gameObject.SetActive(true);
             }
