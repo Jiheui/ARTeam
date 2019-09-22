@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 /**this script is used for "Making thumbnail fullsize", 
    When a user touch on thumbnail of a poster in myfavourite scene, it will bring up a larger version of
@@ -21,6 +22,8 @@ public class ThumbFull : MonoBehaviour {
     public Text relevantInfo;
 
     public HideButton shareBtn;
+
+    public static string planeDetectModelString;
 
     // Use this for initialization
     void Start () {
@@ -49,6 +52,7 @@ public class ThumbFull : MonoBehaviour {
             {
                 string url = p.thumbnail;
                 StartCoroutine(LoadImageFromUrl(url, img));
+                planeDetectModelString = p.targetid;
 
                 timeText.text = p.posdate;
                 addressText.text = p.poslocation;
@@ -73,6 +77,8 @@ public class ThumbFull : MonoBehaviour {
         keyId.text = "";
         relevantInfo.text = "Relevant Information";
         shareBtn.changeButtonStatus(false);
+        //planeDetectModelString = "";
+        SceneManager.LoadScene("PlaneDetection");
     }
 
     private IEnumerator LoadImageFromUrl(string url, RawImage img)
