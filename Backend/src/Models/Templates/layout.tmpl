@@ -43,7 +43,7 @@
           <div class="navbar-holder d-flex align-items-center justify-content-between">
             <!-- Navbar Header-->
             <div class="navbar-header">
-              <!-- Navbar Brand --><a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+              <!-- Navbar Brand --><a href="{{.Origin}}/dashboard" class="navbar-brand d-none d-sm-inline-block">
                 <div class="brand-text d-none d-lg-inline-block"><span>ARPoster </span>
                   <strong>&nbsp;Console</strong></div>
                 <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>Console</strong></div>
@@ -54,7 +54,7 @@
             <!-- Navbar Menu -->
             <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
               <!-- Logout    -->
-              <li class="nav-item"><a href="logout?r={{.Rand}}" class="nav-link logout"> <span
+              <li class="nav-item"><a href="{{.Origin}}/logout?r={{.Rand}}" class="nav-link logout"> <span
                     class="d-none d-sm-inline">Log out</span><i class="fa fa-sign-out"></i></a></li>
             </ul>
           </div>
@@ -75,9 +75,9 @@
         </div>
         <!-- Sidebar Navidation Menus--><span class="heading">Console</span>
         <ul class="list-unstyled">
-          <li><a href="dashboard"> <i class="icon-home"></i>Dashboard </a></li>
-          <li><a href="upload"> <i class="fas fa-upload"></i> Upload </a></li>
-          <li><a href="manage"> <i class="far fa-folder-open"></i></i> My Posters </a></li>
+          <li><a href="{{.Origin}}/dashboard"> <i class="icon-home"></i>Dashboard </a></li>
+          <li><a href="{{.Origin}}/upload"> <i class="fas fa-upload"></i> Upload </a></li>
+          <li><a href="{{.Origin}}/manage"> <i class="far fa-folder-open"></i></i> My Posters </a></li>
         </ul>
       </nav>
 
