@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 public class SelfRegister : MonoBehaviour {
 
-	public InputField _name;
+	public InputField _username;
 	public InputField _birthday;
 	public InputField _email;
 	public InputField _password;
@@ -19,7 +19,7 @@ public class SelfRegister : MonoBehaviour {
 
 	public void Update()
 	{
-		bool empty = string.IsNullOrEmpty(_name.text) ||
+		bool empty = string.IsNullOrEmpty(_username.text) ||
 			string.IsNullOrEmpty(_birthday.text) ||
 			string.IsNullOrEmpty(_password.text) ||
 			string.IsNullOrEmpty(_password.text) ||
@@ -60,7 +60,7 @@ public class SelfRegister : MonoBehaviour {
 			//                return;
 			//			}
 
-			if (_password.text.Contains (_name.text)) {
+			if (_password.text.Contains (_username.text)) {
 				//				bool yesWasClicked = EditorUtility.DisplayDialog("Title", "Content", "I Got it");
 				//				Debug.Log("yesWasClicked="+yesWasClicked);	
 
@@ -90,9 +90,9 @@ public class SelfRegister : MonoBehaviour {
 
 			User u = new User ();
 			u.password = _password.text;
-			u.username = _email.text;
+            u.email = _email.text;
 			u.dob = _birthday.text;
-			u.name = _name.text;
+			u.username = _username.text;
 			u.CheckExist();
 			if (u.exist)
 			{

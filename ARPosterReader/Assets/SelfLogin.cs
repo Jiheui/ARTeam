@@ -14,14 +14,14 @@ public static class storeLoginSessionId{
 public class SelfLogin : MonoBehaviour {
 
 
-	public InputField _email;
+	public InputField _usernameOrEmail;
 	public InputField _password;
     public Button loginButton;
     public Text warning;
 
     public void Update()
     {
-        bool empty = string.IsNullOrEmpty(_email.text) || string.IsNullOrEmpty(_password.text);
+        bool empty = string.IsNullOrEmpty(_usernameOrEmail.text) || string.IsNullOrEmpty(_password.text);
 
         loginButton.interactable = !empty;
         if (!empty)
@@ -34,7 +34,7 @@ public class SelfLogin : MonoBehaviour {
     public void checkPassword()
 	{
 		User u = new User ();
-		u.username = _email.text;
+		u.username = _usernameOrEmail.text;
 		u.password = _password.text;
 		u.Login();
         if (u.authenticated)

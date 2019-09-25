@@ -105,7 +105,7 @@ namespace Models {
 					this.dob = ur.user.dob;
 					this.facebook = ur.user.facebook;
 					this.google = ur.user.google;
-                        this.authenticated = ur.isexist;
+                    this.authenticated = ur.isexist;
 					return ur.error;
 				}
 			}
@@ -128,6 +128,7 @@ namespace Models {
 				var json = reader.ReadToEnd ();
 				var ur = JsonUtility.FromJson<UsersResponse> (json);
 				this.exist = ur.success;
+                this.authenticated = ur.success;
 				return ur.error;
 			}
 		}
