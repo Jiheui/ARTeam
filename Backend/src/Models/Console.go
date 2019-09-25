@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-12 01:50:13
+ * @Last Modified time: 2019-09-23 23:27:10
  * @Description:
  */
 package Models
@@ -41,6 +41,9 @@ type Console struct {
 
 	// Random string
 	Rand string
+
+	// Origin host with protocol
+	Origin string
 
 	// Error message
 	ErrMsg string
@@ -501,6 +504,7 @@ func newConsoleWithStaticFilePrefix(request *restful.Request, response *restful.
 
 	host := request.Request.Host
 	c := &Console{
+		Origin:           "http://" + host + "/console",
 		StaticFilePrefix: "http://" + host + "/files/res",
 		PageName:         pageName,
 		Rand:             RandString(8),
