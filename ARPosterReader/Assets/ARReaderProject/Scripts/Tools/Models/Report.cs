@@ -14,6 +14,7 @@ namespace Models
 
         public int userid;
         public string targetid;
+        public int type;
 
         [NonSerialized]
         public Report[] reports;

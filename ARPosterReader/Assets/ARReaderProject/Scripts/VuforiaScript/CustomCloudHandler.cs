@@ -16,6 +16,8 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
 
     public GameObject GraphTemplate;
 
+    public string poster_id;
+
     public void OnInitialized(TargetFinder targetFinder)
     {
         Debug.Log("Cloud Reco initialized");
@@ -56,7 +58,9 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
 
         Poster p = new Poster();
         p.targetid = mTargetId;
+        poster_id = mTargetId;
         p.GetPoster();
+
 
         newImageTarget.GetComponent<CustomImageTargetBehaviour>().setPoster(p);
 

@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Models;
 using UnityEngine;
 using UnityEngine.UI;
+using Vuforia;
 
 public class ReportSystem : MonoBehaviour
 {
@@ -40,20 +42,36 @@ public class ReportSystem : MonoBehaviour
     {
         
         whichIsOn = ActivityToggle();
+        Poster poster = new Poster();
+        
+        Report r = new Report();
+        CustomCloudHandler customCloudHandler = new CustomCloudHandler();
+
+
+        r.targetid = customCloudHandler.poster_id;
+        r.userid = storeLoginSessionId.loginId;
+        r.detail = report.text;
+
+
+
+
         // did not click any toggle
         if (whichIsOn == 0)
         {
+            r.type = whichIsOn;
             Debug.Log("which is on:   " + whichIsOn);
             Debug.Log("Report text is:   "+ report.text);
         }
         else
         {
+            r.type = whichIsOn;
             // DataBase operation
             Debug.Log("which is on:   " + whichIsOn);
             Debug.Log("Report text is:   " + report.text);
 
 
         }
+        r.SendReport();
 
 
     }
