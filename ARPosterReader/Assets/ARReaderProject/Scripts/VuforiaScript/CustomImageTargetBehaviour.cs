@@ -109,7 +109,6 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         keyId.text = detailPos.targetid;
         relevantInfo.text = detailPos.relevantinfo;
         
-        
         if (storeLoginSessionId.loginId != -1)
         {
             favouriteButton.changeText();
