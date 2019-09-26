@@ -3,7 +3,7 @@
  * @Date: 2019-09-07 12:52:00
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-09 00:29:36
+ * @Last Modified time: 2019-09-26 10:38:09
  * @Description:
  */
 
@@ -18,6 +18,7 @@ import (
 type Report struct {
 	ReportId int    `json:"reportid" xorm:"reportid"`
 	Detail   string `json:"detail" xorm:"detail"`
+	Type     int    `json:"type" xorm:"type"`
 
 	UserId   int    `json:"userid" xorm:"userid"`
 	TargetId string `json:"targetid" xorm:"targetid"`
