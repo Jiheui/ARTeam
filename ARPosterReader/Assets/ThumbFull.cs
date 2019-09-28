@@ -77,8 +77,7 @@ public class ThumbFull : MonoBehaviour {
         keyId.text = "";
         relevantInfo.text = "Relevant Information";
         shareBtn.changeButtonStatus(false);
-        //planeDetectModelString = "";
-        SceneManager.LoadScene("PlaneDetection");
+        planeDetectModelString = "";
     }
 
     private IEnumerator LoadImageFromUrl(string url, RawImage img)
