@@ -3,7 +3,7 @@
  * @Date: 2019-04-11 15:42:37
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-11 17:00:42
+ * @Last Modified time: 2019-09-29 00:11:00
  * @Description: This file is created for store & get poster information
  */
 package Models
@@ -34,6 +34,8 @@ type Poster struct {
 	Thumbnail    string `json:"thumbnail" xorm:"thumbnail"`
 	Relevantinfo string `json:"relevantinfo" xorm:"relevantinfo"`
 	Type         int    `json:"type" xorm:"type"`
+
+	Questions []Question `json:"questions" xorm:"-"`
 }
 
 type PosterResponse struct {

@@ -55,3 +55,7 @@ info_ctnt1{
 .hideButton {
     visibility: hidden;
 }
+
+.pt-3-half {
+    padding-top: 1.4rem;
+}

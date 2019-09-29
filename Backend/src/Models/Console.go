@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-23 23:27:10
+ * @Last Modified time: 2019-09-30 01:58:39
  * @Description:
  */
 package Models
@@ -345,19 +345,39 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 // Manage page
 func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Response) {
 	p := newConsoleWithStaticFilePrefix(request, response, "manage")
+	session := db.Engine.NewSession()
+	defer session.Close()
 
 	if request.Request.Method == "GET" {
 		targetIds := []string{}
-		if err := db.Engine.Table("publish").Where("userid=?", p.UserInfo.ID).Select("targetid").Find(&targetIds); err != nil {
+
+		if err := session.Table("publish").Where("userid=?", p.UserInfo.ID).Select("targetid").Find(&targetIds); err != nil {
 			storeErrMsgAndRedirect(request, response, "Failed to retrieve publish info.", "/console/dashboard")
 			return
 		}
 
 		tmp := []Poster{}
-		if err := db.Engine.Table("poster").In("targetid", targetIds).Find(&tmp); err != nil {
+		if err := session.Table("poster").In("targetid", targetIds).Find(&tmp); err != nil {
 			storeErrMsgAndRedirect(request, response, "Failed to retrieve poster(s).", "/console/dashboard")
 			return
 		}
+
+		for i, tp := range tmp {
+			qid := []int64{}
+			if err := session.Table("qlist").Where("targetid = ?", tp.TargetId).Select("qid").Find(&qid); err != nil {
+				storeErrMsgAndRedirect(request, response, "Failed to retrieve question list.", "/console/dashboard")
+				return
+			} else if len(qid) > 0 {
+				q := []Question{}
+				if err := session.Table("question").In("id", qid).Find(&q); err != nil {
+					storeErrMsgAndRedirect(request, response, "Failed to retrieve question(s).", "/console/dashboard")
+					return
+				} else if len(q) > 0 {
+					tmp[i].Questions = q
+				}
+			}
+		}
+
 		p.Posters = tmp
 
 		t, err := template.ParseFiles("Models/Templates/layout.tmpl",
@@ -373,7 +393,7 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 
 		targetId := req.Form["targetid"][0]
 		poster_info := &Poster{}
-		if has, err := db.Engine.Table("poster").Where("targetid = ?", targetId).Get(poster_info); err != nil {
+		if has, err := session.Table("poster").Where("targetid = ?", targetId).Get(poster_info); err != nil {
 			storeErrMsgAndRedirect(request, response, "Failed to retrieve original poster info.", "/console/manage")
 			return
 		} else if !has {

@@ -12,20 +12,26 @@
 			<div class="card">
 				<div class="card-body">
 					<div class="form-group row has-success">
-						<label class="col-sm-3 form-control-label">A Poster</label>
-						<div class="col-sm-7">
+						<div class="col-sm-8">
 							<input name="targetid" type="hidden" class="form-control" value="{{.TargetId}}">
-							<input name="title" required="true" type="text" class="form-control"
-								value="{{.PosTitle}}">
+							<input name="title" required="true" type="text" class="form-control" value="{{.PosTitle}}">
 							<div class="invalid-feedback">Please provide title</div>
 						</div>
 						<div class="col-sm-2">
-							<button type="button" onclick="showPanel('{{.TargetId}}')" class="btn btn-secondary" id="btn_{{.TargetId}}">
-								Show
+							<button type="button" onclick="showPanel('{{.TargetId}}')" class="btn btn-secondary float-left"
+								id="btn_{{.TargetId}}">
+								Detail Info
+							</button>
+						</div>
+						<div class="col-sm-2">
+							<button type="button" onclick="showPanel('q_{{.TargetId}}')" class="btn btn-secondary float-left"
+								id="btn_q_{{.TargetId}}">
+								Input Option
 							</button>
 						</div>
 					</div>
 
+					<!-- Detail info table -->
 					<div class="panel panel-default infoPanel" id="{{.TargetId}}">
 						<div class="panel-body">
 							<div class="line"></div>
@@ -116,7 +122,71 @@
 							</div>
 						</div>
 					</div>
+					<!-- End Detail info table -->
 
+
+
+					<!-- Editable table -->
+					<div class="col-lg-12 infoPanel" id="q_{{.TargetId}}">
+						<div class="card">
+							<div class="card-body">
+								<span class="table-add float-right mb-3 mr-2">
+									<a href="#!" class="text-success" onclick="AddNewRow('{{.TargetId}}')">
+										<i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+									</a>
+								</span>
+								<div id="table" class="table-editable table_{{.TargetId}}">
+									<table class="table table-bordered table-responsive-md table-striped text-center">
+										<thead>
+											<tr>
+												<th class="text-center" style="display: none">QuestionId</th>
+												<th class="text-center">Name</th>
+												<th class="text-center">Type</th>
+												<th class="text-center">Options</th>
+												<th class="text-center"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr class="hide" style="display: none">
+												<td>{{.TargetId}}</td>
+											</tr>
+											{{range .Questions}}
+											<tr>
+												<td class="pt-3-half" contenteditable="false" style="display:none">
+													{{.Id}}
+												</td>
+												<td class="pt-3-half" contenteditable="true">
+													{{.Name}}
+												</td>
+												<td class="pt-3-half" contenteditable="true">
+													<select>
+														<option value="1" {{if eq .Tid 1}} selected {{end}}>Text Area</option>
+														<option value="2" {{if eq .Tid 2}} selected {{end}}>Radio Button</option>
+														<option value="3" {{if eq .Tid 3}} selected {{end}}>Check Box</option>
+													</select>
+												</td>
+												<td class="pt-3-half" contenteditable="true">
+													{{.OptionString}}
+												</td>
+												<td>
+													<span class="table-save">
+														<a onclick="SaveRow(event)"><i class="far fa-save"></i></a>
+													</span>
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													<span class="table-remove">
+														<a onclick="DeleteRow(event)"><i class="far fa-trash-alt"></i></a>
+													</span>
+												</td>
+											</tr>
+											{{end}}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- End Editable table -->
+					
 				</div>
 			</div>
 		</div>
