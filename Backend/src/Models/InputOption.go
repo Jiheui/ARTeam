@@ -3,7 +3,7 @@
  * @Date: 2019-09-20 02:21:18
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-30 02:48:41
+ * @Last Modified time: 2019-09-30 03:21:44
  * @Description:
  */
 package Models
@@ -33,7 +33,7 @@ type Question struct {
 	Name string `json:"name" xorm:"name"`
 
 	// Options is only used for checkbox and radio button
-	OptionString string `json:"text_options" xorm:"text_options"`
+	OptionString string `json:"option_string" xorm:"option_string"`
 
 	// we combine the options into a string and store it in database
 	Options []string `json:"options" xorm:"-"`
