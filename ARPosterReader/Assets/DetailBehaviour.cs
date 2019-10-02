@@ -5,9 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class DetailBehaviour : MonoBehaviour {
-
-    public Text timeText;
-    public Text addressText;
+    
     public Text linkText;
     public Text addressURL;
 
