@@ -4,6 +4,7 @@ using Models;
 using UnityEngine;
 using UnityEngine.UI;
 using Vuforia;
+using static CustomCloudHandler;
 
 public class ReportSystem : MonoBehaviour
 {
@@ -40,15 +41,14 @@ public class ReportSystem : MonoBehaviour
 
     public void onSubmit()
     {
-        
+
         whichIsOn = ActivityToggle();
-        Poster poster = new Poster();
         
         Report r = new Report();
-        CustomCloudHandler customCloudHandler = new CustomCloudHandler();
+       
 
 
-        r.targetid = customCloudHandler.poster_id;
+        r.targetid = posterSessionId.posterId;
         r.userid = storeLoginSessionId.loginId;
         r.detail = report.text;
 

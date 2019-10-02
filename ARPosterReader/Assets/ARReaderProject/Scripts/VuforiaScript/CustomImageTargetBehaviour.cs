@@ -23,9 +23,13 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
     Poster poster;
     Image share;
 
+    
+
+
     public void setPoster(Poster p)
     {
         poster = p;
+        Debug.Log("From CustomImageTargetBehavoir"+ poster.targetid);
     }
 
     // Start is called before the first frame update
@@ -136,4 +140,6 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
     {
         
     }
+
+   
 }
