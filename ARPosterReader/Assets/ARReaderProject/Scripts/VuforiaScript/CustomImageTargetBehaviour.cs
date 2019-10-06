@@ -17,14 +17,11 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
     public CameraManager eventManager;
     public ObserveImageTarget zoomBtn;
     public UpdateFavouriteButton favouriteButton;
-    public HideButton shareBtn;
+    //public HideButton shareBtn;
     Image favImage;
     Image ZoomImage;
     Poster poster;
     Image share;
-
-    
-
 
     public void setPoster(Poster p)
     {
@@ -40,21 +37,23 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         favouriteButton.gameObject.GetComponent<Button>().interactable = false;
 
         favImage = favouriteButton.transform.GetChild(0).gameObject.GetComponent<Image>();
-        favImage.color = new Color32(255, 255, 225, 0);
 
         ZoomImage = zoomBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
         ZoomImage.color = new Color32(255, 255, 225, 0);
 
-        share = shareBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
-        share.color = new Color32(255, 255, 225, 0);
+        //shareBtn.changeButtonStatus(false);
+        //share = shareBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
+        //share.color = new Color32(255, 255, 225, 0);
     }
 
     protected override void OnTrackingFound()
     {
         base.OnTrackingFound();
         targetFound = true;
+
         zoomBtn.imageTargeter = this.gameObject;
         zoomBtn.UpdateTargetBehaviour();
+        favouriteButton.changeText();
         eventManager.aimImageTarget = this.gameObject;
         for (var i = 0; i < transform.childCount; i++)
         {
@@ -76,10 +75,12 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         Debug.Log("Enter Tracking Lost");
         base.OnTrackingLost();
         targetFound = false;
+
         zoomBtn.imageTargeter = null;
         zoomBtn.UpdateTargetBehaviour();
         clearDetail();
-        shareBtn.changeButtonStatus(false);
+        favouriteButton.changeText();
+        //shareBtn.changeButtonStatus(false);
         for (var i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).gameObject.SetActive(false);
@@ -88,7 +89,6 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
 
     public bool IsTargetFound()
     {
-        shareBtn.changeButtonStatus(true);
         return targetFound;
     }
 
@@ -134,12 +134,4 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
             favouriteButton.changeText();
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-   
 }

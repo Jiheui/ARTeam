@@ -4,35 +4,32 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 /**this script is used for "favorite", 
-    when first click the button, it changes to red, then add to favourite
-    second click the botton, it turns into write, remove from favorite
-    Take turns to happen this
+    When first clicking the button, it turns red, and then is added to favourites
+    the second click of the button, it turns grey, and then is removed from favourites
+    The button state keeps alternating
 
     Author: Daniel
     Date: 11/04/2019
-    Yufei Update in 28/04/2019
+
+    Updated on 28/04/2019 by Yufei
 **/
 public class UpdateFavouriteButton : MonoBehaviour {
     
     public Button favouriteButton = null;
-
     public Image favouriteImage = null;
-
     public Text keyId;
 
     bool isFavor = false;
 
     public Sprite disable = null;
-
     public Sprite like = null;
-
     public Sprite dislike = null;
 
+    // Change the favourite button status to disabled
     public void Start()
     {
-        // change the favourite button status default set to disable
         favouriteImage.sprite = disable;
-        favouriteButton.gameObject.SetActive(false);
+        favouriteButton.interactable = false;
     }
 
     // Update the text on the Button
@@ -44,9 +41,7 @@ public class UpdateFavouriteButton : MonoBehaviour {
         if (!hasPoster)
         {
             favouriteImage.sprite = disable;
-            favouriteButton.gameObject.SetActive(false);
             favouriteButton.interactable = false;
-            favouriteImage.color = new Color(255, 255, 255, 0);
         }
         else
         {
@@ -81,30 +76,18 @@ public class UpdateFavouriteButton : MonoBehaviour {
 
     }
 
-    // Set Button Text by Status
+    // Set button details by status
     void changeButtonStatus(object stobj)
     {
         bool status = (bool)stobj;
 
-        if (status)
-        {
-            favouriteImage.sprite = like;
-            favouriteButton.interactable = true;
-            favouriteImage.color = new Color(255, 255, 255, 255);
-            favouriteButton.gameObject.SetActive(true);
-            isFavor = true;
-        }
-        else
-        {
-            favouriteImage.sprite = dislike;
-            favouriteButton.interactable = true;
-            favouriteImage.color = new Color(255, 255, 255, 255);
-            favouriteButton.gameObject.SetActive(true);
-            isFavor = false;
-        }
+        favouriteButton.interactable = true;
+        favouriteButton.gameObject.SetActive(true);
+        isFavor = status;
+        favouriteImage.sprite = status ? like : dislike;
     }
 
-    // When button click send the like or dislike request
+    // When button clicked send the like or dislike request
     public void updateCurPosterFavourite()
     {
         bool hasPoster = !(string.IsNullOrEmpty(keyId.text));
