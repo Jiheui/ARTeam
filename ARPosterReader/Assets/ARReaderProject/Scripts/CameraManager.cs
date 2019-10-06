@@ -1,46 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Vuforia;
 
 public enum CameraState{
-	HiAR,
+	AR,
 	Zoom
 }
 
 public class CameraManager : MonoBehaviour {
 
-	public GameObject HiARCameraManager;
-	//private HiAREngineBehaviour HiAREngineBehaviour;
-	private Camera HiARMainCamera;
-	private Camera HiARBackgroundCamera;
-	private AudioListener HiARAudioListener;
+    //private HiAREngineBehaviour HiAREngineBehaviour;
+    public Camera ARCamera;
+    public Camera zoomCamera;
+    private GameObject aimObject = null;
 
-	public GameObject zoomObject;
-	private Camera zoomCamera;
-	private AudioListener zoomAudioListener;
+    public GameObject aimImageTarget = null;
 
-	private CameraState cameraState = CameraState.HiAR;
+    private CameraState cameraState = CameraState.AR;
 
 	public float zoomSpeed = 0.9f;
     
     private Touch oldTouch1; // store the finger touch point
     private Touch oldTouch2; // store the finger touch point
 
-    public GameObject aimImageTarget = null;
+    
     
     void Start () {
-		/*HiAREngineBehaviour = HiARCameraManager.GetComponent<HiAREngineBehaviour>();
-		HiARMainCamera = HiARCameraManager.GetComponentInChildren<Camera>();
-		HiARAudioListener = HiARCameraManager.GetComponentInChildren<AudioListener>();
-
-		zoomCamera = zoomObject.GetComponent<Camera>();
-		zoomAudioListener = zoomObject.GetComponent<AudioListener>();*/
-	}
+        zoomCamera.enabled = false;
+    }
 
 	void Update () {
 		if (cameraState == CameraState.Zoom) {
 			if (Input.mouseScrollDelta.y > 0) {
+                Debug.Log("Enter");
 				zoomCamera.orthographicSize -= zoomSpeed;
 			}
 			else if (Input.mouseScrollDelta.y < 0) {
@@ -66,9 +58,9 @@ public class CameraManager : MonoBehaviour {
                     direction = Vector3.down;
                 }
 
-                for (var i = 0; i < aimImageTarget.transform.childCount; i++)
+                for (var i = 0; i < aimObject.transform.childCount; i++)
                 {
-                    aimImageTarget.transform.GetChild(i).transform.Rotate(direction * deltaPos.x, Space.World);
+                    aimObject.transform.GetChild(i).transform.Rotate(direction * deltaPos.x, Space.World);
 
                 }
             }
@@ -112,30 +104,29 @@ public class CameraManager : MonoBehaviour {
 		}
 	}
 
-	new void SendMessage(string str) {
-		if (HiARBackgroundCamera == null) {
-			HiARBackgroundCamera = GameObject.Find ("camera background").GetComponent<Camera> ();
-		}
-		cameraState = (cameraState == CameraState.HiAR) ? CameraState.Zoom : CameraState.HiAR;
+    new void SendMessage(string str) {
+		cameraState = (cameraState == CameraState.AR) ? CameraState.Zoom : CameraState.AR;
 		SetCameras(cameraState);
 		Debug.Log ("Test " + str);
 	}
 
 	void SetCameras(CameraState state){
-		/*bool isHiAR = state == CameraState.HiAR;
+        bool isAR = state == CameraState.AR;
 
-		HiAREngineBehaviour.enabled = isHiAR;
-		HiARMainCamera.enabled = isHiAR;
-		HiARBackgroundCamera.enabled = isHiAR;
-		HiARAudioListener.enabled = isHiAR;
-
-        if(aimImageTarget != null)
+        if (!isAR)
         {
-            zoomObject.transform.position = aimImageTarget.transform.position + new Vector3(0,0,-10);
+            aimObject = Instantiate(aimImageTarget.transform.GetChild(2)).gameObject;
+            aimObject.transform.parent = zoomCamera.transform.GetChild(0).gameObject.transform;
+            aimObject.transform.localPosition = new Vector3(0, 0, 0);
+            aimObject.transform.localRotation = Quaternion.Euler(-90, 0, 0);
+        }
+        else
+        {
+            if(aimObject != null)
+                Destroy(aimObject);
         }
 
-        zoomObject.SetActive(!isHiAR);
-		zoomCamera.enabled = !isHiAR;
-		zoomAudioListener.enabled = !isHiAR;*/
+        ARCamera.enabled = isAR;
+        zoomCamera.enabled = !isAR;
 	}
 }

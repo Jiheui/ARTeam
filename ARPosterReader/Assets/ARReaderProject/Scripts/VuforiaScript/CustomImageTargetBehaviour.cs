@@ -22,10 +22,7 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
     Image ZoomImage;
     Poster poster;
     Image share;
-
     
-
-
     public void setPoster(Poster p)
     {
         poster = p;
