@@ -42,8 +42,9 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         ZoomImage = zoomBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
         ZoomImage.color = new Color32(255, 255, 225, 0);
 
-        share = shareBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
-        share.color = new Color32(255, 255, 225, 0);
+        //shareBtn.changeButtonStatus(false);
+        //share = shareBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
+        //share.color = new Color32(255, 255, 225, 0);
     }
 
     protected override void OnTrackingFound()
@@ -52,6 +53,7 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         targetFound = true;
         zoomBtn.imageTargeter = this.gameObject;
         zoomBtn.UpdateTargetBehaviour();
+        //favouriteButton.changeText();
         eventManager.aimImageTarget = this.gameObject;
         for (var i = 0; i < transform.childCount; i++)
         {
@@ -76,6 +78,7 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         zoomBtn.imageTargeter = null;
         zoomBtn.UpdateTargetBehaviour();
         clearDetail();
+        favouriteButton.changeText();
         shareBtn.changeButtonStatus(false);
         for (var i = 0; i < transform.childCount; i++)
         {
@@ -85,7 +88,6 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
 
     public bool IsTargetFound()
     {
-        shareBtn.changeButtonStatus(true);
         return targetFound;
     }
 
@@ -131,12 +133,4 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
             favouriteButton.changeText();
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-   
 }
