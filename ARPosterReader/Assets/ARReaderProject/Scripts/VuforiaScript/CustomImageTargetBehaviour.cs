@@ -17,9 +17,7 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
     public CameraManager eventManager;
     public ObserveImageTarget zoomBtn;
     public UpdateFavouriteButton favouriteButton;
-    public HideButton shareBtn;
     Image favImage;
-    Image ZoomImage;
     Poster poster;
     Image share;
     
@@ -38,9 +36,6 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
 
         favImage = favouriteButton.transform.GetChild(0).gameObject.GetComponent<Image>();
         favImage.color = new Color32(255, 255, 225, 0);
-
-        ZoomImage = zoomBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
-        ZoomImage.color = new Color32(255, 255, 225, 0);
 
         //shareBtn.changeButtonStatus(false);
         //share = shareBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
@@ -79,7 +74,6 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         zoomBtn.UpdateTargetBehaviour();
         clearDetail();
         favouriteButton.changeText();
-        shareBtn.changeButtonStatus(false);
         for (var i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).gameObject.SetActive(false);

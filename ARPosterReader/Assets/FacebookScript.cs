@@ -140,6 +140,10 @@ public class FacebookScript : MonoBehaviour
 
     public void FacebookShare()
     {
+        if (string.IsNullOrEmpty(keyid.text))
+        {
+            return;
+        }
         Poster poster = new Poster();
         poster.targetid = keyid.text;
         poster.GetPoster();

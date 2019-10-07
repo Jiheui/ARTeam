@@ -32,6 +32,11 @@ public class UpdateFavouriteButton : MonoBehaviour {
     {
         // change the favourite button status default set to disable
         favouriteImage.sprite = disable;
+        bool hasPoster = !(string.IsNullOrEmpty(keyId.text));
+        if (hasPoster)
+            favouriteImage.color = new Color32(255, 255, 225, 255);
+        else
+            favouriteImage.color = new Color32(255, 255, 225, 0);
         //favouriteButton.interactable = false;
     }
 

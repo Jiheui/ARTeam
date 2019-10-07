@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class UpdateAvatarPanel : MonoBehaviour {
@@ -14,6 +12,7 @@ public class UpdateAvatarPanel : MonoBehaviour {
         if(storeLoginSessionId.loginId != -1)
         {
             username.text = storeLoginSessionId.name;
+            email.text = storeLoginSessionId.email;
         }
     }
 }

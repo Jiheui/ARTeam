@@ -22,8 +22,6 @@ public class CameraManager : MonoBehaviour {
     
     private Touch oldTouch1; // store the finger touch point
     private Touch oldTouch2; // store the finger touch point
-
-    
     
     void Start () {
         zoomCamera.enabled = false;
@@ -105,7 +103,11 @@ public class CameraManager : MonoBehaviour {
 	}
 
     new void SendMessage(string str) {
-		cameraState = (cameraState == CameraState.AR) ? CameraState.Zoom : CameraState.AR;
+        if (aimImageTarget == null)
+        {
+            return;
+        }
+        cameraState = (cameraState == CameraState.AR) ? CameraState.Zoom : CameraState.AR;
 		SetCameras(cameraState);
 		Debug.Log ("Test " + str);
 	}
