@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,15 +7,12 @@ public class DetailBehaviour : MonoBehaviour {
     public Text linkText;
     public Text addressURL;
 
-    // Use this for initialization
-    void Start () {
-        
-    }
-
     public void OpenMapOnClick()
     {
-        if (addressURL.Equals(""))
+        if (string.IsNullOrEmpty(addressURL.text) || !addressURL.text.StartsWith("http"))
+        {
             return;
+        }
         bool fail = false;
         AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject ca = up.GetStatic<AndroidJavaObject>("currentActivity");
@@ -56,6 +51,9 @@ public class DetailBehaviour : MonoBehaviour {
     public void OpenWebOnClick()
     {
         //open the URL
-        Application.OpenURL(linkText.text);
+        if (linkText.text.StartsWith("http"))
+        {
+            Application.OpenURL(linkText.text);
+        }
     }
 }

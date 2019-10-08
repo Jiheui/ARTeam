@@ -36,10 +36,6 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
 
         favImage = favouriteButton.transform.GetChild(0).gameObject.GetComponent<Image>();
         favImage.color = new Color32(255, 255, 225, 0);
-
-        //shareBtn.changeButtonStatus(false);
-        //share = shareBtn.transform.GetChild(0).gameObject.GetComponent<Image>();
-        //share.color = new Color32(255, 255, 225, 0);
     }
 
     protected override void OnTrackingFound()
