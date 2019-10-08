@@ -3,13 +3,17 @@
  * @Date: 2019-08-11 21:42:07
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-05 22:13:19
+ * @Last Modified time: 2019-10-09 05:17:48
  * @Description:  This file is created for backend to connect to Vuforia server via REST api.
  *
  * @About Vuforia: Vuforia Engine is a software platform for creating Augmented Reality apps.
  *				Developers can easily add advanced computer vision functionality to any application,
  *				allowing it to recognize images and objects, and interact with spaces in the real world.
  *				link: https://developer.vuforia.com/
+ *
+ *
+ *
+ * @Comment: Using Fox-0390's package, integrated it for future extension.
  */
 package Tools
 

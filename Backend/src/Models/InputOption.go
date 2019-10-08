@@ -3,7 +3,7 @@
  * @Date: 2019-09-20 02:21:18
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-30 03:21:44
+ * @Last Modified time: 2019-09-30 03:43:40
  * @Description:
  */
 package Models
@@ -40,11 +40,21 @@ type Question struct {
 }
 
 type Answer struct {
-	Id  int64 `json:"id" xorm:"id"`
-	Uid int   `json:"uid" xorm:"uid"` // User Id
-	Qid int64 `json:"qid" xorm:"qid"` // Question Id
+	Id       int64  `json:"id" xorm:"id"`
+	Uid      int    `json:"uid" xorm:"uid"`           // User Id
+	TargetId string `json:"targetid" xorm:"targetid"` // Question Id
 
 	Content string `json:"content" xorm:"content"`
+}
+
+type AjaxItem struct {
+	Qid          int64  `json:"qid"`
+	Name         string `json:"name"`
+	TargetId     string `json:"targetid"`
+	Type         int    `json:"type"`
+	OptionString string `json:"option_string"`
+
+	Error string `json:"error" xorm:"-"`
 }
 
 type InputOptionResponse struct {
@@ -82,30 +92,12 @@ func (i *InputOptionResource) GetQuestion(request *restful.Request, response *re
 	defer session.Close()
 
 	qs := []Question{}
-	err := session.Sql(`
-		SELECT * 
-		FROM question
-		WHERE id IN (
-			SELECT qid
-			FROM qlist
-			WHERE targetid = ?
-		)
-	`, targetid).Find(&qs)
+	err := session.Sql(`SELECT * FROM question WHERE id IN (SELECT qid FROM qlist WHERE targetid = ?)`, targetid).Find(&qs)
 	if err != nil {
 		response.WriteHeaderAndEntity(http.StatusInternalServerError, &InputOptionResponse{Error: err.Error()})
 	} else {
 		response.WriteHeaderAndEntity(http.StatusOK, &InputOptionResponse{Questions: qs})
 	}
-}
-
-type AjaxItem struct {
-	Qid          int64  `json:"qid"`
-	Name         string `json:"name"`
-	TargetId     string `json:"targetid"`
-	Type         int    `json:"type"`
-	OptionString string `json:"option_string"`
-
-	Error string `json:"error" xorm:"-"`
 }
 
 func (i *InputOptionResource) StoreQuestion(request *restful.Request, response *restful.Response) {

@@ -36,6 +36,20 @@
 						<div class="panel-body">
 							<div class="line"></div>
 							<div class="form-group row">
+								<label class="col-sm-3 form-control-label">
+									Physical Poster
+								</label>
+								<!--Show the original Physical Poster-->
+								<div class="col-sm-3"><img src="{{.Physical}}" class="img-physical original_pic">
+								</div>
+
+								<div class="col-sm-3">
+									<input id="physical" name="physical" type="file" class="form-control-file">
+								</div>
+							</div>
+
+							<div class="line"></div>
+							<div class="form-group row">
 								<label class="col-sm-3 form-control-label">Thumbnail Image</label>
 
 								<!--Show the original thumbnail image-->
@@ -49,7 +63,12 @@
 
 							<div class="line"></div>
 							<div class="form-group row">
-								<label class="col-sm-3 form-control-label">AR Model</label>
+								<label class="col-sm-3 form-control-label">
+									AR Model <br>
+									<small>
+										Preview not available.
+									</small>
+								</label>
 								<div class="col-sm-3">
 									<input id="armodel" name="armodel" type="file" class="form-control-file">
 								</div>
@@ -130,6 +149,9 @@
 					<div class="col-lg-12 infoPanel" id="q_{{.TargetId}}">
 						<div class="card">
 							<div class="card-body">
+								<small>
+									Radio Button and Check Box options are separated by semicolon.
+								</small>
 								<span class="table-add float-right mb-3 mr-2">
 									<a href="#!" class="text-success" onclick="AddNewRow('{{.TargetId}}')">
 										<i class="fas fa-plus fa-2x" aria-hidden="true"></i>
@@ -140,7 +162,7 @@
 										<thead>
 											<tr>
 												<th class="text-center" style="display: none">QuestionId</th>
-												<th class="text-center">Name</th>
+												<th class="text-center">Question</th>
 												<th class="text-center">Type</th>
 												<th class="text-center">Options</th>
 												<th class="text-center"></th>

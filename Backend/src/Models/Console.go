@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-30 01:58:39
+ * @Last Modified time: 2019-10-09 05:37:05
  * @Description:
  */
 package Models
@@ -247,7 +247,7 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		req := request.Request
 		req.ParseMultipartForm(1048576000)
 
-		f, _, err := GetFileFromRequest("physicalposter", req)
+		f, physical, err := GetFileFromRequest("physicalposter", req)
 		if err != nil {
 			storeErrMsgAndRedirect(request, response, err.Error(), "/console/upload")
 			return
@@ -281,8 +281,12 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		}
 		upload_url := "http://" + req.Host + "/files/upload/"
 		file_url_prefix := "http://" + req.Host + "/files/"
-		fileSuffix := path.Ext(path.Base(thumbnail.Filename))
 
+		fileSuffix := path.Ext(path.Base(physical.Filename))
+		physical_filename := "physical_" + p.UserInfo.Username + "_" + new_poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04") + fileSuffix
+		new_poster_info.Physical = file_url_prefix + physical_filename
+
+		fileSuffix = path.Ext(path.Base(thumbnail.Filename))
 		thumbnail_filename := "thumbnail_" + p.UserInfo.Username + "_" + new_poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04") + fileSuffix
 		new_poster_info.Thumbnail = file_url_prefix + thumbnail_filename
 
@@ -311,8 +315,13 @@ func (c *ConsoleResource) Upload(request *restful.Request, response *restful.Res
 		} else {
 			new_poster_info.TargetId = targetId
 
+			if err := UploadPosterFile(upload_url+physical_filename, physical); err != nil {
+				storeErrMsgAndRedirect(request, response, "Failed to upload physical poster.", "/console/upload")
+				return
+			}
+
 			if err := UploadPosterFile(upload_url+thumbnail_filename, thumbnail); err != nil {
-				storeErrMsgAndRedirect(request, response, "Failed to upload thumnail.", "/console/upload")
+				storeErrMsgAndRedirect(request, response, "Failed to upload thumbnail.", "/console/upload")
 				return
 			}
 
@@ -363,19 +372,13 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 		}
 
 		for i, tp := range tmp {
-			qid := []int64{}
-			if err := session.Table("qlist").Where("targetid = ?", tp.TargetId).Select("qid").Find(&qid); err != nil {
-				storeErrMsgAndRedirect(request, response, "Failed to retrieve question list.", "/console/dashboard")
+			q := []Question{}
+			err := session.Sql(`SELECT * FROM question WHERE id IN (SELECT qid FROM qlist WHERE targetid = ?)`, tp.TargetId).Find(&q)
+			if err != nil {
+				storeErrMsgAndRedirect(request, response, "Failed to retrieve question(s).", "/console/dashboard")
 				return
-			} else if len(qid) > 0 {
-				q := []Question{}
-				if err := session.Table("question").In("id", qid).Find(&q); err != nil {
-					storeErrMsgAndRedirect(request, response, "Failed to retrieve question(s).", "/console/dashboard")
-					return
-				} else if len(q) > 0 {
-					tmp[i].Questions = q
-				}
 			}
+			tmp[i].Questions = q
 		}
 
 		p.Posters = tmp
@@ -416,6 +419,26 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 
 		upload_url := "http://" + req.Host + "/files/upload/"
 		file_url_prefix := "http://" + req.Host + "/files/"
+
+		f, physical, err := GetFileFromRequest("physical", req)
+		if err != nil {
+			if err == http.ErrMissingFile {
+			} else {
+				storeErrMsgAndRedirect(request, response, err.Error(), "/console/manage")
+				return
+			}
+		} else {
+			physical_filename := ParseFileNameFromURL(poster_info.Physical)
+			os.Remove("/var/arposter/files/" + physical_filename)
+			// delete original file
+			physical_filename = ReplaceFileSuffix(physical_filename, path.Ext(path.Base(physical.Filename)))
+			poster_info.Physical = file_url_prefix + physical_filename
+			// store new file
+			if err := UploadPosterFile(upload_url+physical_filename, physical); err != nil {
+				storeErrMsgAndRedirect(request, response, "Failed to update new physical poster.", "")
+			}
+		}
+
 		_, thumbnail, err := GetFileFromRequest("thumbnail", req)
 		if err != nil {
 			if err == http.ErrMissingFile {
@@ -452,6 +475,21 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 			if err := UploadPosterFile(upload_url+model_filename, posterModel); err != nil {
 				storeErrMsgAndRedirect(request, response, "Failed to upload new poster AR model.", "")
 			}
+		}
+
+		metaDataBytes, err := json.Marshal(poster_info)
+		if err != nil {
+			storeErrMsgAndRedirect(request, response, "Unable to pack poster info.", "/console/upload")
+			return
+		}
+
+		image := EncodeImageFromBytes(f)
+		vu := NewVuforiaManager()
+		name := p.UserInfo.Username + "_" + poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04")
+		if ok, err := vu.UpdateItem(poster_info.TargetId, name, 32.0, image, true, EncodeBase64FromBytes(metaDataBytes)); err != nil {
+			storeErrMsgAndRedirect(request, response, "Failed to update vuforia metafile: "+err.Error(), "")
+		} else if !ok {
+			storeErrMsgAndRedirect(request, response, "Failed to update vuforia metafile.", "")
 		}
 
 		hostURL := "http://" + req.Host + "/posters/update"
