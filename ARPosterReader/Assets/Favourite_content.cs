@@ -28,8 +28,12 @@ public class Favourite_content : MonoBehaviour {
         if (f_get.favourites.Length == 0)
         {
             originObject.SetActive(false);
+            if (storeLoginSessionId.loginId == -1)
+            {
+                text2.GetComponent<Text>().color = new Color(133 / 255.0f, 36 / 255.0f, 213 / 255.0f, 1f);
+            }
             text1.GetComponent<Text>().color = new Color(133/255.0f, 36/255.0f, 213/255.0f, 1f);
-            text2.GetComponent<Text>().color = new Color(133 / 255.0f, 36 / 255.0f, 213 / 255.0f, 1f);
+            
             return;
         }
 

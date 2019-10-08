@@ -1,16 +1,19 @@
 ManifestFileVersion: 0
-CRC: 3903508768
+CRC: 2564262582
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: railposte.unity3d
-      Dependencies: {}
-    Info_1:
       Name: hecs poster.unity3d
       Dependencies: {}
+    Info_1:
+      Name: railposte.unity3d
+      Dependencies: {}
     Info_2:
-      Name: hec_poster.unity3d
+      Name: hec_mesh.unity3d
       Dependencies: {}
     Info_3:
-      Name: hec_mesh.unity3d
+      Name: hec_poster.unity3d
+      Dependencies: {}
+    Info_4:
+      Name: raider.unity3d
       Dependencies: {}
