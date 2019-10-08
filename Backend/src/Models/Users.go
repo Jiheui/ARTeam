@@ -3,7 +3,7 @@
  * @Date: 2019-03-31 19:00:29
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-29 00:08:24
+ * @Last Modified time: 2019-10-09 06:03:49
  * @Description: This file is created for user related functions
  */
 package Models
@@ -11,6 +11,7 @@ package Models
 import (
 	"net/http"
 	"strconv"
+	"text/template"
 
 	"Tools"
 
@@ -142,18 +143,19 @@ func (u *UserResource) updateUser(request *restful.Request, response *restful.Re
 //
 func (u *UserResource) confirm(request *restful.Request, response *restful.Response) {
 	token := request.PathParameter("confirm-token") // currently using email as the token
+	p := newConsoleWithStaticFilePrefix(request, response, "confirmed")
 	if err == nil {
 		db.WLock()
 		defer db.WUnlock() //unlock when exit this method
 
-		if _, err := db.Engine.Exec("update user set activated=1 where email=\"" + token + "\";"); err != nil {
-			response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
-		} else {
-			response.WriteEntity(UsersResponse{Success: true})
-		}
-	} else {
-		response.WriteHeaderAndEntity(http.StatusInternalServerError, UsersResponse{Error: err.Error()})
+		_, err = db.Engine.Exec("update user set activated=1 where email=\"" + token + "\";")
 	}
+
+	t, err := template.ParseFiles("Models/Templates/confirmed.html")
+	if err != nil {
+		log.Fatalf("Template gave: %s", err)
+	}
+	t.Execute(response.ResponseWriter, p)
 }
 
 // PUT http://localhost:8080/users/

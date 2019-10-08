@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-10-09 05:37:05
+ * @Last Modified time: 2019-10-09 06:14:27
  * @Description:
  */
 package Models
@@ -26,6 +26,7 @@ import (
 
 type Console struct {
 	StaticFilePrefix string
+	FilePrefix       string
 	PageName         string
 
 	// Personal information
@@ -563,12 +564,13 @@ func newConsoleWithStaticFilePrefix(request *restful.Request, response *restful.
 	host := request.Request.Host
 	c := &Console{
 		Origin:           "http://" + host + "/console",
+		FilePrefix:       "http://" + host + "/files",
 		StaticFilePrefix: "http://" + host + "/files/res",
 		PageName:         pageName,
 		Rand:             RandString(8),
 	}
 
-	if pageName != "login" && pageName != "register" {
+	if pageName != "login" && pageName != "register" && pageName != "confirmed" {
 		usr, ok := session.Values["userdata"].(*User)
 		if !ok {
 			c.ErrMsg = "Load user data from session failed."

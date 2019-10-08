@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Console | Confirm</title>
+    <link rel=icon href="{{.StaticFilePrefix}}/arposter.png">
+	<link rel="stylesheet" href="{{.StaticFilePrefix}}/login.css">
+    <!-- Alertify CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/css/themes/default.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/alertify.min.js"></script>
+</head>
+
+<body>
+	<div class="lowin lowin-blue">
+			<img class="lowin-icon" src="{{.StaticFilePrefix}}/arposter.png" alt="logo">
+		<div class="lowin-wrapper">
+			<div class="lowin-box lowin-login">
+				<div class="lowin-box-inner">
+                    {{if eq .ErrMsg ""}}
+                        <strong>
+                            Your email address has been confirmed.
+                        </strong>
+                    {{else}}
+                        <strong>
+                            Unfortunately, we cannot validate your email address now, please try again later, 
+                            but you can still enjoy the full function.
+                        </strong>
+                    {{end}}
+                    <br>
+                    <br>
+                    Your can provide your own poster on the <a href="{{.Origin}}">poster provider website.</a>
+                    <br>
+                    <br>
+                    Or
+                    <br>
+                    <br>
+                    Your can download our Android app <a href="{{.FilePrefix}}/ARPoster.apk">here.</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
