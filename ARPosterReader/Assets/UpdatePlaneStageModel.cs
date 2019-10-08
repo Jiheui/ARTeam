@@ -41,7 +41,7 @@ public class UpdatePlaneStageModel : MonoBehaviour
                 AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(www);
                 GameObject mBundleInstance = Instantiate(bundle.LoadAsset(bundle.GetAllAssetNames()[0])) as GameObject;
                 mBundleInstance.transform.localPosition = new Vector3(0, 0.072f,0);
-                mBundleInstance.transform.rotation = Quaternion.Euler(-90, -180, 0);
+                mBundleInstance.transform.rotation = Quaternion.Euler(-90,0, 0);
                 mBundleInstance.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
                 mBundleInstance.transform.parent = ImageTargetObject.transform;
                 //mBundleInstance.SetActive(false);

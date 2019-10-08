@@ -21,18 +21,14 @@ public class ThumbFull : MonoBehaviour {
     public Text posterTitle;
     public Text relevantInfo;
 
-    public HideButton shareBtn;
-
     public static string planeDetectModelString;
 
     // Use this for initialization
     void Start () {
-        shareBtn.changeButtonStatus(true);
     }
 
     //This is called when the user clicks on thumbnail of a poster. It enlarges the poster to fullsize.
     public void EnlargeImg (GameObject go){
-        shareBtn.changeButtonStatus(true);
         RawImage img = this.GetComponentInChildren<RawImage>();
         Favourite f_get = new Favourite();
         f_get.userid = storeLoginSessionId.loginId;
@@ -76,7 +72,6 @@ public class ThumbFull : MonoBehaviour {
         addressURL.text = "";
         keyId.text = "";
         relevantInfo.text = "Relevant Information";
-        shareBtn.changeButtonStatus(false);
         planeDetectModelString = "";
     }
 
