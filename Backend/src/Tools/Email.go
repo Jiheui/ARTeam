@@ -3,7 +3,7 @@
  * @Date: 2019-04-22 20:38:53
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-08-28 17:56:01
+ * @Last Modified time: 2019-10-09 06:21:52
  * @Description: This file is created for handling email
  */
 package Tools
@@ -21,7 +21,7 @@ func SendConfirmLink(email string) {
 	if !CheckEmail(email) {
 		return
 	}
-	body := "shmily.me:8080/users/confirm/" + email
+	body := "ar.shmily.tk:8080/users/confirm/" + email
 	subject := "Subject: Please click the link below to complete registration\n\n"
 	mailBase(email, subject, body)
 }
