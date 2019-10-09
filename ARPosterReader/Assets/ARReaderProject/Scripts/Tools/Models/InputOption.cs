@@ -18,7 +18,7 @@ namespace Models
             public long id;
             public int tid; // 1 - text; 2 - radio button; 3 - check box
             public string name;
-            public string option_string;
+            public string option_string; // options are separated by semicolon
         }
                
         [NonSerialized]
