@@ -12,47 +12,46 @@ public class ActiveRayCastForShowcase : MonoBehaviour
 {
 
     GameObject Poster;
+    //If Displayed is 0 then it means false and if it is 1 then it is true.
+    int displayed;
+    
 
     // Use this for initialization
     void Start()
     {
-        //Title = GameObject.Find("PosterTitle").GetComponent<Text>();
-        //Poster = GameObject.Find("HECS_Poster").GetComponent<GameObject>();
         Poster = transform.parent.transform.GetChild(1).gameObject;
+        displayed = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //for (int i = 0; i < Input.touchCount; ++i){
-        //Debug.Log("Start Ray Cast");
-        //if (Input.GetTouch(i).phase == TouchPhase.Began){
         if (Input.touchCount == 1)
         {
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                //if (Input.GetMouseButton (0)){
                 RaycastHit hit;
 
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                //Ray ray = c.ScreenPointToRay(Input.GetTouch(i).position);
                 if (Physics.Raycast(ray, out hit))
                 {
-                    //Debug.Log("Start Ray Cast");
                     Collider objectHit2 = hit.collider;
                     GameObject g = objectHit2.gameObject;
-                    //if (Title.name.Equals("HECS_Poster_Front")){
-                    rotatePoster();
-                    //}
+                    if (displayed == 0){
+                        displayAR();
+                        displayed = 1;
+                    }
+                    else {
+                        displayed = 0;
+                        hideAR();
+                    }
                 }
-                //}
             }
         }
     }
 
     //Remove the button
-    void Remove(GameObject g)
-    {
+    void Remove(GameObject g){
         Transform objectHit = g.transform;
         g.SetActive(false);
     }
@@ -62,7 +61,18 @@ public class ActiveRayCastForShowcase : MonoBehaviour
     {
         Transform tr = Poster.transform;
         tr.Rotate(0, 0, 120);
-        //tr.Translate(-7,3,0);
+    }
 
+    //Display the AR of the poster.
+    void displayAR()
+    {
+        GameObject go = transform.parent.transform.GetChild(2).gameObject;
+        go.SetActive(true);
+    }
+
+    //Hide the AR of the poster.
+    void hideAR(){
+        GameObject go = transform.parent.transform.GetChild(2).gameObject;
+        go.SetActive(false);
     }
 }
