@@ -3,7 +3,7 @@
  * @Date: 2019-09-20 02:21:18
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-30 03:43:40
+ * @Last Modified time: 2019-10-09 19:11:32
  * @Description:
  */
 package Models
@@ -94,9 +94,9 @@ func (i *InputOptionResource) GetQuestion(request *restful.Request, response *re
 	qs := []Question{}
 	err := session.Sql(`SELECT * FROM question WHERE id IN (SELECT qid FROM qlist WHERE targetid = ?)`, targetid).Find(&qs)
 	if err != nil {
-		response.WriteHeaderAndEntity(http.StatusInternalServerError, &InputOptionResponse{Error: err.Error()})
+		response.WriteHeaderAndEntity(http.StatusInternalServerError, InputOptionResponse{Error: err.Error()})
 	} else {
-		response.WriteHeaderAndEntity(http.StatusOK, &InputOptionResponse{Questions: qs})
+		response.WriteHeaderAndEntity(http.StatusOK, InputOptionResponse{Questions: qs})
 	}
 }
 
@@ -220,12 +220,12 @@ func (i *InputOptionResource) StoreAnswer(request *restful.Request, response *re
 	defer session.Close()
 
 	if err != nil {
-		response.WriteHeaderAndEntity(http.StatusBadRequest, &InputOptionResponse{Error: err.Error()})
+		response.WriteHeaderAndEntity(http.StatusBadRequest, InputOptionResponse{Error: err.Error()})
 	} else {
 		if affected, err := session.Table("answer").Insert(&a); err != nil {
-			response.WriteHeaderAndEntity(http.StatusInternalServerError, &InputOptionResponse{Error: err.Error()})
+			response.WriteHeaderAndEntity(http.StatusInternalServerError, InputOptionResponse{Error: err.Error()})
 		} else if affected == 0 {
-			response.WriteHeaderAndEntity(http.StatusNotModified, &InputOptionResponse{Error: "Unable to store answers: no rows affected."})
+			response.WriteHeaderAndEntity(http.StatusNotModified, InputOptionResponse{Error: "Unable to store answers: no rows affected."})
 		} else {
 			response.WriteHeader(http.StatusOK)
 		}
