@@ -3,7 +3,7 @@
  * @Date: 2019-09-08 21:22:34
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-09-10 00:55:15
+ * @Last Modified time: 2019-10-09 18:39:32
  * @Description:
  */
 package Models
@@ -56,7 +56,7 @@ func (o OptionResource) GetAll(request *restful.Request, response *restful.Respo
 	op := []Option{}
 	targetid := request.PathParameter("target-id")
 
-	if err := db.Engine.Table("option").Where("targetid=?", targetid).Find(&op); err != nil {
+	if err := db.Engine.Table("choices").Where("targetid=?", targetid).Find(&op); err != nil {
 		response.WriteHeaderAndEntity(http.StatusInternalServerError, OptionResponse{Error: err.Error()})
 	} else {
 		response.WriteHeaderAndEntity(http.StatusOK, OptionResponse{Options: op})
@@ -68,7 +68,7 @@ func (o OptionResource) Incr(request *restful.Request, response *restful.Respons
 	err := request.ReadEntity(&op)
 
 	if err == nil {
-		if has, err := db.Engine.Table("option").Where("targetid=?", op.TargetId).Get(&op); err != nil {
+		if has, err := db.Engine.Table("choices").Get(&op); err != nil {
 			response.WriteHeaderAndEntity(http.StatusInternalServerError, OptionResponse{Error: err.Error()})
 		} else if !has {
 			op.Value = 1
@@ -78,7 +78,7 @@ func (o OptionResource) Incr(request *restful.Request, response *restful.Respons
 				response.WriteHeaderAndEntity(http.StatusCreated, OptionResponse{Success: true})
 			}
 		} else {
-			if _, err := db.Engine.Table("option").Where("optionid=?", op.OptionId).Incr("value").Update(&op); err != nil {
+			if _, err := db.Engine.Table("choices").Where("optionid=?", op.OptionId).Incr("value").Update(&op); err != nil {
 				response.WriteHeaderAndEntity(http.StatusInternalServerError, OptionResponse{Error: err.Error()})
 			} else {
 				response.WriteHeaderAndEntity(http.StatusCreated, OptionResponse{Success: true})

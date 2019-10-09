@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-10-09 06:14:27
+ * @Last Modified time: 2019-10-09 19:39:49
  * @Description:
  */
 package Models
@@ -428,7 +428,7 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 				storeErrMsgAndRedirect(request, response, err.Error(), "/console/manage")
 				return
 			}
-		} else {
+		} else if len(f) != 0 {
 			physical_filename := ParseFileNameFromURL(poster_info.Physical)
 			os.Remove("/var/arposter/files/" + physical_filename)
 			// delete original file
@@ -440,14 +440,14 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 			}
 		}
 
-		_, thumbnail, err := GetFileFromRequest("thumbnail", req)
+		f_thumbnail, thumbnail, err := GetFileFromRequest("thumbnail", req)
 		if err != nil {
 			if err == http.ErrMissingFile {
 			} else {
 				storeErrMsgAndRedirect(request, response, err.Error(), "/console/manage")
 				return
 			}
-		} else {
+		} else if len(f_thumbnail) != 0 {
 			thumbnail_filename := ParseFileNameFromURL(poster_info.Thumbnail)
 			os.Remove("/var/arposter/files/" + thumbnail_filename)
 			// delete original file
@@ -459,14 +459,14 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 			}
 		}
 
-		_, posterModel, err := GetFileFromRequest("armodel", req)
+		f_model, posterModel, err := GetFileFromRequest("armodel", req)
 		if err != nil {
 			if err == http.ErrMissingFile {
 			} else {
 				storeErrMsgAndRedirect(request, response, err.Error(), "/console/manage")
 				return
 			}
-		} else {
+		} else if len(f_model) != 0 {
 			model_filename := ParseFileNameFromURL(poster_info.Model)
 			os.Remove("/var/arposter/files/" + model_filename)
 			// delete original file
@@ -484,13 +484,15 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 			return
 		}
 
-		image := EncodeImageFromBytes(f)
-		vu := NewVuforiaManager()
-		name := p.UserInfo.Username + "_" + poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04")
-		if ok, err := vu.UpdateItem(poster_info.TargetId, name, 32.0, image, true, EncodeBase64FromBytes(metaDataBytes)); err != nil {
-			storeErrMsgAndRedirect(request, response, "Failed to update vuforia metafile: "+err.Error(), "")
-		} else if !ok {
-			storeErrMsgAndRedirect(request, response, "Failed to update vuforia metafile.", "")
+		if len(f) != 0 {
+			image := EncodeImageFromBytes(f)
+			vu := NewVuforiaManager()
+			name := p.UserInfo.Username + "_" + poster_info.PosTitle + "_" + time.Now().Format("Mon-02-Jan-2006-15-04")
+			if ok, err := vu.UpdateItem(poster_info.TargetId, name, 32.0, image, true, EncodeBase64FromBytes(metaDataBytes)); err != nil {
+				storeErrMsgAndRedirect(request, response, "Failed to update vuforia metafile: "+err.Error(), "")
+			} else if !ok {
+				storeErrMsgAndRedirect(request, response, "Failed to update vuforia metafile.", "")
+			}
 		}
 
 		hostURL := "http://" + req.Host + "/posters/update"

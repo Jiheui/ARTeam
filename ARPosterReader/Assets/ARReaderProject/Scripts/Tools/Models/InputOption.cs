@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Net;
 using System.IO;
 using System;
@@ -13,7 +13,16 @@ namespace Models
         public string targetid;
         public string content; // Format: [["Answer for Q0"], ["Answer for Q1"], ["Answer for Q2"]] --- if the type is checkbox, use semicolon to combine the selected option into a string.
 
-          
+
+        public class Question
+        {
+            public long id;
+            public int tid; // 1 - text; 2 - radio button; 3 - check box
+            public string name;
+            public string option_string; // options are separated by semicolon
+        }
+               
+
         [NonSerialized]
         public Question[] questions;
 
