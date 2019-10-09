@@ -17,6 +17,9 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
     public CameraManager eventManager;
     public ObserveImageTarget zoomBtn;
     public UpdateFavouriteButton favouriteButton;
+    public GameObject inputOpt;
+    public GameObject inputOpts;
+    public Transform parentTransForm;
     Image favImage;
     Poster poster;
     Image share;
@@ -36,6 +39,8 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
 
         favImage = favouriteButton.transform.GetChild(0).gameObject.GetComponent<Image>();
         favImage.color = new Color32(255, 255, 225, 0);
+
+        
     }
 
     protected override void OnTrackingFound()
@@ -94,6 +99,7 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
     {
         Poster detailPos = detail as Poster;
 
+
         posterTitle.text = detailPos.postitle;
         timeText.text = detailPos.posdate;
         addressText.text = detailPos.poslocation;
@@ -106,6 +112,110 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         {
             favouriteButton.changeText();
         }
+
+        InputOption inputOption = new InputOption();
+        inputOption.targetid = detailPos.targetid;
+        Debug.Log(detailPos.targetid);
+        inputOption.GetInputOptions();
+
+        Debug.Log(inputOption.questions.Length);
+        if (inputOption.questions == null || inputOption.questions.Length == 0)
+        {
+            
+            inputOpt.SetActive(false);
+        }
+        else
+        {
+            if(inputOption.questions[0].tid == 1) //text input
+            {
+                
+                Text nameI = inputOpt.GetComponentsInChildren<Text>()[0];
+                nameI.text = inputOption.questions[0].name;
+                InputField iptf = inputOpt.GetComponentsInChildren<InputField>()[0];
+                iptf.gameObject.SetActive(true);
+                Dropdown dpd= inputOpt.GetComponentsInChildren<Dropdown>()[0];
+                dpd.gameObject.SetActive(false);
+                Toggle tg = inputOpt.GetComponentsInChildren<Toggle>()[0];
+                tg.gameObject.SetActive(false);
+            }else if(inputOption.questions[0].tid == 2)
+            {
+                
+                Text nameI = inputOpt.GetComponentsInChildren<Text>()[0];
+                nameI.text = inputOption.questions[0].name;
+                InputField iptf = inputOpt.GetComponentsInChildren<InputField>()[0];
+                iptf.gameObject.SetActive(false);
+                Dropdown dpd = inputOpt.GetComponentsInChildren<Dropdown>()[0];
+                dpd.gameObject.SetActive(true);
+                Toggle tg = inputOpt.GetComponentsInChildren<Toggle>()[0];
+                tg.gameObject.SetActive(false);
+            }
+            else
+            {
+                
+                Text nameI = inputOpt.GetComponentsInChildren<Text>()[0];
+                nameI.text = inputOption.questions[0].name;
+                InputField iptf = inputOpt.GetComponentsInChildren<InputField>()[0];
+                iptf.gameObject.SetActive(false);
+                Dropdown dpd = inputOpt.GetComponentsInChildren<Dropdown>()[0];
+                dpd.gameObject.SetActive(false);
+                Toggle tg = inputOpt.GetComponentsInChildren<Toggle>()[0];
+                tg.gameObject.SetActive(true);
+            }
+
+            //for (int i = 1; i < inputOption.questions.Length; i++)
+            //{
+                
+            //    parentTransForm = inputOpt.transform.parent;
+            //    inputOpts = GameObject.Instantiate(inputOpt, parentTransForm);
+            //    if (inputOption.questions[i].tid == 1) //text input
+            //    {
+            //        Text[] nameIs = inputOpts.GetComponentsInChildren<Text>();
+            //        foreach (Text nameI1 in nameIs)
+            //        {
+            //            nameI1.text = inputOption.questions[i].name;
+            //        }
+            //        InputField iptf = inputOpts.GetComponentsInChildren<InputField>()[0];
+            //        iptf.gameObject.SetActive(true);
+            //        Dropdown dpd = inputOpts.GetComponentsInChildren<Dropdown>()[0];
+            //        dpd.gameObject.SetActive(false);
+            //        Toggle tg = inputOpts.GetComponentsInChildren<Toggle>()[0];
+            //        tg.gameObject.SetActive(false);
+            //    }
+            //    else if (inputOption.questions[i].tid == 2)
+            //    {
+
+            //        Text[] nameIs = inputOpts.GetComponentsInChildren<Text>();
+            //        foreach (Text nameI1 in nameIs)
+            //        {
+            //            nameI1.text = inputOption.questions[i].name;
+            //        }
+            //        InputField iptf = inputOpts.GetComponentsInChildren<InputField>()[0];
+            //        iptf.gameObject.SetActive(false);
+            //        Dropdown dpd = inputOpts.GetComponentsInChildren<Dropdown>()[0];
+            //        dpd.gameObject.SetActive(true);
+            //        Toggle tg = inputOpts.GetComponentsInChildren<Toggle>()[0];
+            //        tg.gameObject.SetActive(false);
+            //    }
+            //    else
+            //    {
+
+            //        Text[] nameIs = inputOpts.GetComponentsInChildren<Text>();
+            //        foreach (Text nameI1 in nameIs)
+            //        {
+            //            nameI1.text = inputOption.questions[i].name;
+            //        }
+            //        InputField iptf = inputOpts.GetComponentsInChildren<InputField>()[0];
+            //        iptf.gameObject.SetActive(false);
+            //        Dropdown dpd = inputOpts.GetComponentsInChildren<Dropdown>()[0];
+            //        dpd.gameObject.SetActive(false);
+            //        Toggle tg = inputOpts.GetComponentsInChildren<Toggle>()[0];
+            //        tg.gameObject.SetActive(true);
+            //    }
+            //}
+
+        }
+        
+
     }
 
     public void clearDetail()
@@ -117,6 +227,7 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
         addressURL.text = "";
         keyId.text = "";
         relevantInfo.text = "Relevant Information";
+        inputOpt.GetComponentsInChildren<Text>()[0].text = "Name";
         
         if (favouriteButton != null)
         {
