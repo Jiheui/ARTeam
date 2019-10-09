@@ -3,7 +3,7 @@
  * @Date: 2019-05-06 22:43:42
  * @Email: chris.dfo.only@gmail.com
  * @Last Modified by: Yutao Ge
- * @Last Modified time: 2019-10-09 18:54:42
+ * @Last Modified time: 2019-10-09 19:39:49
  * @Description:
  */
 package Models
@@ -423,14 +423,12 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 
 		f, physical, err := GetFileFromRequest("physical", req)
 		if err != nil {
-			log.Println(err.Error())
 			if err == http.ErrMissingFile {
 			} else {
 				storeErrMsgAndRedirect(request, response, err.Error(), "/console/manage")
 				return
 			}
-		} else {
-			log.Println("Upload File.")
+		} else if len(f) != 0 {
 			physical_filename := ParseFileNameFromURL(poster_info.Physical)
 			os.Remove("/var/arposter/files/" + physical_filename)
 			// delete original file
@@ -442,15 +440,14 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 			}
 		}
 
-		_, thumbnail, err := GetFileFromRequest("thumbnail", req)
+		f_thumbnail, thumbnail, err := GetFileFromRequest("thumbnail", req)
 		if err != nil {
 			if err == http.ErrMissingFile {
 			} else {
 				storeErrMsgAndRedirect(request, response, err.Error(), "/console/manage")
 				return
 			}
-		} else {
-			log.Println("Upload File.")
+		} else if len(f_thumbnail) != 0 {
 			thumbnail_filename := ParseFileNameFromURL(poster_info.Thumbnail)
 			os.Remove("/var/arposter/files/" + thumbnail_filename)
 			// delete original file
@@ -462,15 +459,14 @@ func (c *ConsoleResource) Manage(request *restful.Request, response *restful.Res
 			}
 		}
 
-		_, posterModel, err := GetFileFromRequest("armodel", req)
+		f_model, posterModel, err := GetFileFromRequest("armodel", req)
 		if err != nil {
 			if err == http.ErrMissingFile {
 			} else {
 				storeErrMsgAndRedirect(request, response, err.Error(), "/console/manage")
 				return
 			}
-		} else {
-			log.Println("Upload File.")
+		} else if len(f_model) != 0 {
 			model_filename := ParseFileNameFromURL(poster_info.Model)
 			os.Remove("/var/arposter/files/" + model_filename)
 			// delete original file
