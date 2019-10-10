@@ -4,9 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+
 public class YNRayCast : MonoBehaviour
 {
-    GameObject BarChart;
+    public GameObject vote;
+    public GameObject graph;
+
+    public GameObject BarChart;
 
     // Use this for initialization
     void Start()
@@ -63,19 +67,14 @@ public class YNRayCast : MonoBehaviour
                     GameObject go = objectHit2.gameObject;
                     try
                     {
-                        if (go.name.Equals("Yes"))
+                        if (go.name.Equals("Yes") || go.name.Equals("No"))
                         {
                             Option opt = new Option();
                             opt.targetid = "566a50d0a56f40a6ac85c5da65b038ed";
-                            opt.key = "Yes";
+                            opt.key = go.name;
                             opt.Incr();
-                        }
-                        else if (go.name.Equals("No"))
-                        {
-                            Option opt = new Option();
-                            opt.targetid = "566a50d0a56f40a6ac85c5da65b038ed";
-                            opt.key = "No";
-                            opt.Incr();
+                            graph.SetActive(true);
+                            vote.SetActive(false);
                         }
                     }catch(Exception e)
                     {

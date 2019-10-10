@@ -10,41 +10,36 @@ Date: 08/10/2019
 **/
 public class ActiveRayCastForShowcase : MonoBehaviour
 {
-
     GameObject Poster;
-    //If Displayed is 0 then it means false and if it is 1 then it is true.
-    int displayed;
-    
+    bool displayed;  
 
     // Use this for initialization
     void Start()
     {
         Poster = transform.parent.transform.GetChild(1).gameObject;
-        displayed = 0;
+        displayed = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount == 1)
+        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit))
             {
-                RaycastHit hit;
-
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit))
+                Collider objectHit2 = hit.collider;
+                GameObject g = objectHit2.gameObject;
+                if (displayed)
                 {
-                    Collider objectHit2 = hit.collider;
-                    GameObject g = objectHit2.gameObject;
-                    if (displayed == 0){
-                        displayAR();
-                        displayed = 1;
-                    }
-                    else {
-                        displayed = 0;
-                        hideAR();
-                    }
+                    displayed = false;
+                    hideAR();
+                }
+                else
+                {
+                    displayAR();
+                    displayed = true;
                 }
             }
         }
