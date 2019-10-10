@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 2564262582
+CRC: 2504694295
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -15,5 +15,5 @@ AssetBundleManifest:
       Name: hec_poster.unity3d
       Dependencies: {}
     Info_4:
-      Name: raider.unity3d
+      Name: railderposter.unity3d
       Dependencies: {}

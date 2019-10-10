@@ -42,11 +42,11 @@ namespace Models
             req.GetRequestStream().Write(bodyData, 0, bodyData.Length);
 
             var response = req.GetResponse() as HttpWebResponse;
-
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
                 var json = reader.ReadToEnd();
                 var fb = JsonUtility.FromJson<OptionResponse>(json);
+                Debug.Log(fb.error);
                 return fb.error;
             }
         }

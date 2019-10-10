@@ -18,6 +18,8 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
     public GameObject GraphTemplate;
 
     public string poster_id;
+    
+    public GameObject YANObject;
 
 
     public static class posterSessionId
@@ -63,6 +65,7 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
 
         string mTargetId = cloudRecoSearchResult.UniqueTargetId;
 
+        
         Poster p = new Poster();
         p.targetid = mTargetId;
         posterSessionId.posterId = mTargetId;
@@ -70,6 +73,14 @@ public class CustomCloudHandler : MonoBehaviour, IObjectRecoEventHandler
 
 
         newImageTarget.GetComponent<CustomImageTargetBehaviour>().setPoster(p);
+
+        if (mTargetId.Equals("13b49fe524904e80ad087ea3e8d95cea"))
+        {
+            YANObject.SetActive(true);
+            YANObject.transform.parent = newImageTarget.transform;
+            YANObject.transform.localPosition = new Vector3(0f, 0, 0);
+            return;
+        }
 
         if (p.type == 2) // 2 is graph type
         {
