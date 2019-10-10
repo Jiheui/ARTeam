@@ -39,8 +39,6 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
 
         favImage = favouriteButton.transform.GetChild(0).gameObject.GetComponent<Image>();
         favImage.color = new Color32(255, 255, 225, 0);
-
-        
     }
 
     protected override void OnTrackingFound()
@@ -174,12 +172,21 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
             //        {
             //            nameI1.text = inputOption.questions[i].name;
             //        }
-            //        InputField iptf = inputOpts.GetComponentsInChildren<InputField>()[0];
-            //        iptf.gameObject.SetActive(true);
-            //        Dropdown dpd = inputOpts.GetComponentsInChildren<Dropdown>()[0];
-            //        dpd.gameObject.SetActive(false);
-            //        Toggle tg = inputOpts.GetComponentsInChildren<Toggle>()[0];
-            //        tg.gameObject.SetActive(false);
+            //        InputField[] iptfs = inputOpts.GetComponentsInChildren<InputField>();
+            //        foreach (InputField iptf in iptfs)
+            //        {
+            //            iptf.gameObject.SetActive(true);
+            //        }
+            //        Dropdown[] dpds = inputOpts.GetComponentsInChildren<Dropdown>();
+            //        foreach (Dropdown dpd in dpds)
+            //        {
+            //            dpd.gameObject.SetActive(false);
+            //        }
+            //        Toggle[] tgs = inputOpts.GetComponentsInChildren<Toggle>();
+            //        foreach (Toggle tg in tgs)
+            //        {
+            //            tg.gameObject.SetActive(false);
+            //        }
             //    }
             //    else if (inputOption.questions[i].tid == 2)
             //    {
@@ -189,12 +196,21 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
             //        {
             //            nameI1.text = inputOption.questions[i].name;
             //        }
-            //        InputField iptf = inputOpts.GetComponentsInChildren<InputField>()[0];
-            //        iptf.gameObject.SetActive(false);
-            //        Dropdown dpd = inputOpts.GetComponentsInChildren<Dropdown>()[0];
-            //        dpd.gameObject.SetActive(true);
-            //        Toggle tg = inputOpts.GetComponentsInChildren<Toggle>()[0];
-            //        tg.gameObject.SetActive(false);
+            //        InputField[] iptfs = inputOpts.GetComponentsInChildren<InputField>();
+            //        foreach (InputField iptf in iptfs)
+            //        {
+            //            iptf.gameObject.SetActive(false);
+            //        }
+            //        Dropdown[] dpds = inputOpts.GetComponentsInChildren<Dropdown>();
+            //        foreach (Dropdown dpd in dpds)
+            //        {
+            //            dpd.gameObject.SetActive(true);
+            //        }
+            //        Toggle[] tgs = inputOpts.GetComponentsInChildren<Toggle>();
+            //        foreach (Toggle tg in tgs)
+            //        {
+            //            tg.gameObject.SetActive(false);
+            //        }
             //    }
             //    else
             //    {
@@ -204,12 +220,21 @@ public class CustomImageTargetBehaviour : DefaultTrackableEventHandler
             //        {
             //            nameI1.text = inputOption.questions[i].name;
             //        }
-            //        InputField iptf = inputOpts.GetComponentsInChildren<InputField>()[0];
-            //        iptf.gameObject.SetActive(false);
-            //        Dropdown dpd = inputOpts.GetComponentsInChildren<Dropdown>()[0];
-            //        dpd.gameObject.SetActive(false);
-            //        Toggle tg = inputOpts.GetComponentsInChildren<Toggle>()[0];
-            //        tg.gameObject.SetActive(true);
+            //        InputField[] iptfs = inputOpts.GetComponentsInChildren<InputField>();
+            //        foreach (InputField iptf in iptfs)
+            //        {
+            //            iptf.gameObject.SetActive(false);
+            //        }
+            //        Dropdown[] dpds = inputOpts.GetComponentsInChildren<Dropdown>();
+            //        foreach (Dropdown dpd in dpds)
+            //        {
+            //            dpd.gameObject.SetActive(false);
+            //        }
+            //        Toggle[] tgs = inputOpts.GetComponentsInChildren<Toggle>();
+            //        foreach (Toggle tg in tgs)
+            //        {
+            //            tg.gameObject.SetActive(true);
+            //        }
             //    }
             //}
 
